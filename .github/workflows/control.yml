@@ -43,5 +43,5 @@ jobs:
           git add control/state.json STATUS.md
           if ! git diff --cached --quiet; then
             git commit -m "control: ${{ inputs.action }} [skip ci]"
-            for i in 1 2 3 4; do git pull --rebase -q origin main && git push -q origin HEAD:main && break; sleep 3; done
+            for i in 1 2 3 4; do git pull --rebase -X ours -q origin main && git push -q origin HEAD:main && break; sleep 3; done
           fi

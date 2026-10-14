@@ -30,7 +30,11 @@ def git_persist(msg: str) -> None:
             return
         subprocess.run(["git", "commit", "-q", "-m", f"paper-trading: {msg} [skip ci]"], cwd=ROOT, check=True)
         for _ in range(4):
-            subprocess.run(["git", "pull", "-q", "--rebase", "origin", "main"], cwd=ROOT)
+            # Only this job writes the ledger and reports; if the Control workflow changed
+            # STATUS.md at the same moment, keep this job's (newer) version.
+            if subprocess.run(["git", "pull", "-q", "--rebase", "-X", "theirs", "origin", "main"], cwd=ROOT).returncode != 0:
+                subprocess.run(["git", "rebase", "--abort"], cwd=ROOT, capture_output=True)
+                continue
             if subprocess.run(["git", "push", "-q", "origin", "HEAD:main"], cwd=ROOT).returncode == 0:
                 return
         print("WARNING: could not push ledger update; will retry on next change", flush=True)
