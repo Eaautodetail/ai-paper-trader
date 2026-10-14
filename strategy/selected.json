@@ -1,0 +1,73 @@
+{
+  "selected_at": "2026-10-14T16:14:18-04:00",
+  "data": {
+    "source": "Yahoo Finance 1-minute bars via yfinance",
+    "first_day": "2026-09-15",
+    "last_day": "2026-10-13",
+    "in_sample_days": [
+      "2026-09-15",
+      "2026-09-16",
+      "2026-09-17",
+      "2026-09-18",
+      "2026-09-21",
+      "2026-09-22",
+      "2026-09-23",
+      "2026-09-24",
+      "2026-09-25",
+      "2026-09-28",
+      "2026-09-29",
+      "2026-09-30",
+      "2026-10-01",
+      "2026-10-02"
+    ],
+    "out_of_sample_days": [
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08",
+      "2026-10-09",
+      "2026-10-12",
+      "2026-10-13"
+    ],
+    "usdsek": 10.024970054626465,
+    "start_usd": 49.75077205041922
+  },
+  "rule": "Highest in-sample net P&L after all modeled costs among variants with >= 5 in-sample trades; out-of-sample days are reported but not used for the choice.",
+  "strategy": {
+    "name": "orb",
+    "params": {
+      "or_minutes": 5,
+      "rvol_min": 2.0,
+      "target_r": 2.5,
+      "stop_atr": 2.0,
+      "last_entry_minute": 90
+    }
+  },
+  "in_sample": {
+    "days": 14,
+    "trades": 11,
+    "net_pnl_usd": -0.311,
+    "return_pct": -0.625,
+    "win_rate_pct": 36.4,
+    "avg_net_per_trade_usd": -0.0283,
+    "modeled_costs_usd": 0.4622,
+    "max_drawdown_pct": -0.79,
+    "profit_factor": 0.477,
+    "positive_days": 2,
+    "avg_universe": 15.5
+  },
+  "out_of_sample": {
+    "days": 7,
+    "trades": 7,
+    "net_pnl_usd": -0.624,
+    "return_pct": -1.254,
+    "win_rate_pct": 14.3,
+    "avg_net_per_trade_usd": -0.0891,
+    "modeled_costs_usd": 0.3566,
+    "max_drawdown_pct": -1.254,
+    "profit_factor": 0.089,
+    "positive_days": 0,
+    "avg_universe": 15.0
+  },
+  "validated_out_of_sample": false
+}
