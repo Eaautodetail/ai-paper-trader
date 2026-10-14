@@ -1,0 +1,61 @@
+# The automatic scheduler. It wakes up on weekdays around the US market open (several
+# times, so a late or missed wake-up is covered) and after 11:30 New York time (to finish
+# any interrupted session). The program itself decides from the NYSE calendar and the
+# control switch whether there is anything to do; extra runs exit within a minute.
+# GitHub's cron uses UTC: 13:30 UTC = 09:30 New York in summer time, 14:30 UTC in winter.
+name: Paper trading
+on:
+  schedule:
+    - cron: "37 12 * * 1-5"
+    - cron: "41 13 * * 1-5"
+    - cron: "7 14 * * 1-5"
+    - cron: "49 15 * * 1-5"
+    - cron: "49 16 * * 1-5"
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: paper-trading
+  cancel-in-progress: false
+jobs:
+  session:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run today's paper-trading session (if one is due)
+        id: run
+        env:
+          PAPERTRADER_GIT_PERSIST: "1"
+        run: |
+          git config user.name "paper-trading-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          set +e
+          python -m papertrader run-session 2>&1 | tee run.log
+          code=${PIPESTATUS[0]}
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          { echo '## Paper-trading run'; echo '```'; tail -n 60 run.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$code" = "3" ]; then exit 0; fi
+          exit $code
+      - name: Alert - session skipped
+        if: steps.run.outputs.code == '3'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title "Paper trading: session skipped $(date -u +%F)" \
+            --body "The session was skipped safely because the exchange-open or data-freshness check failed. No trades were made and the session does not count toward the evaluation. Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      - name: Alert - run failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title "Paper trading: run failed $(date -u +%F)" \
+            --body "The paper-trading run failed. A later scheduled run will close any simulated positions left open (at the 11:30 New York price). Log: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

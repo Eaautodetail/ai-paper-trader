@@ -1,0 +1,59 @@
+# Settings for the paper-trading agent.
+# Everything here is SIMULATED. There is no setting that enables real trading:
+# the program refuses to start if `paper_trading` is anything but true.
+
+[mode]
+paper_trading = true
+
+[capital]
+initial_sek = 500.0
+# The 500 SEK are converted to USD once, when the first evaluation session starts,
+# and held as USD cash (like a USD currency account at a Swedish broker).
+fx_conversion_fee_pct = 0.25
+
+[schedule]
+exchange = "XNYS"                     # NYSE calendar (Nasdaq uses the same holidays and hours)
+exchange_timezone = "America/New_York"
+display_timezone = "Europe/Stockholm"
+session_start = "09:30"
+session_end = "11:30"
+# A run that starts more than this many minutes before the open exits and lets a later run take over.
+max_wait_before_open_minutes = 75
+# If the data check has not passed this many minutes after the open, the session is skipped.
+data_check_deadline_minutes = 15
+evaluation_sessions = 3
+poll_seconds = 20
+
+[risk]
+max_position_pct_equity = 20.0        # one position never larger than 20% of current equity
+max_risk_per_trade_pct_equity = 0.5   # planned loss (entry to stop, plus costs) per trade
+daily_loss_limit_pct = 2.0            # of the session's starting equity; stops new trades and closes positions
+max_open_positions = 3
+max_entries_per_session = 6
+min_price_usd = 2.0
+min_avg_daily_dollar_volume_usd = 20000000
+max_data_lag_seconds = 180
+min_reward_to_cost = 2.0              # expected gain at the target must be at least 2x the modeled round-trip cost
+
+[costs]
+# Default profile: a commission-free US broker. Regulatory fees and spreads are still charged.
+commission_per_share_usd = 0.0
+commission_min_usd = 0.0
+sec_fee_per_million_usd = 20.60       # SEC Section 31 rate from 2026-04-04, charged on sells
+taf_per_share_usd = 0.000195          # FINRA trading activity fee on sells (approximation)
+taf_max_usd = 9.79
+half_spread_bps = 5.0                 # assumed half bid/ask spread, in basis points (1 bp = 0.01%)
+min_half_spread_usd = 0.005           # never less than half a cent per share
+slippage_bps = 5.0                    # extra price movement against us on market orders
+
+[universe]
+# Liquid US-listed stocks. Each session only keeps those whose price lets at least one whole
+# share fit inside the 20% position limit and whose average daily dollar volume is high enough.
+symbols = [
+  "F", "NOK", "SOFI", "PLUG", "LCID", "RIG", "AAL", "VALE", "ITUB", "BBD",
+  "ABEV", "KGC", "NIO", "GRAB", "CLSK", "MARA", "RIOT", "SNAP", "WBD", "BTG",
+  "AGNC", "LUMN", "OPEN", "BB", "ACHR", "JOBY", "HL", "CDE", "IQ", "PBR",
+  "ERIC", "GOLD", "HBAN", "KEY", "SIRI", "INTC", "PCG", "CCL", "UBER", "T",
+]
+benchmark = "SPY"
+fx_symbol = "SEK=X"                   # Yahoo ticker for USD/SEK

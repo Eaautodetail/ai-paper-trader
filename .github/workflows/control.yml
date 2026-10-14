@@ -1,0 +1,47 @@
+# Start / stop buttons. Open the Actions tab -> "Control" -> "Run workflow" and pick an action.
+name: Control
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "What do you want to do?"
+        required: true
+        type: choice
+        options:
+          - start-evaluation
+          - stop-now
+          - rehearsal-next-session
+          - show-status
+permissions:
+  contents: write
+concurrency:
+  group: control
+  cancel-in-progress: false
+jobs:
+  control:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Apply
+        run: |
+          git config user.name "paper-trading-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          case "${{ inputs.action }}" in
+            start-evaluation) python -m papertrader start ;;
+            stop-now) python -m papertrader stop ;;
+            rehearsal-next-session) python -m papertrader rehearse "$(python -c 'from papertrader.config import load_config; from papertrader.market_calendar import MarketCalendar as M; c=M(load_config()); print(c.next_window(c.now()).day)')" ;;
+            show-status) true ;;
+          esac
+          python -m papertrader status | tee status.txt
+          { echo '## Status'; cat STATUS.md; } >> "$GITHUB_STEP_SUMMARY"
+          git add control/state.json STATUS.md
+          if ! git diff --cached --quiet; then
+            git commit -m "control: ${{ inputs.action }} [skip ci]"
+            for i in 1 2 3 4; do git pull --rebase -q origin main && git push -q origin HEAD:main && break; sleep 3; done
+          fi
