@@ -18,7 +18,7 @@ display_timezone = "Europe/Stockholm"
 session_start = "09:30"
 session_end = "11:30"
 # A run that starts more than this many minutes before the open exits and lets a later run take over.
-max_wait_before_open_minutes = 75
+max_wait_before_open_minutes = 100
 # If the data check has not passed this many minutes after the open, the session is skipped.
 data_check_deadline_minutes = 15
 evaluation_sessions = 3

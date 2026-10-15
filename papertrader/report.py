@@ -80,7 +80,7 @@ def status_page(root: Path, cfg: dict, ctrl: dict, eval_led: Ledger | None, next
     if next_window:
         lines.append(f"* Next trading window: {next_window.start.astimezone(st):%a %Y-%m-%d %H:%M}-{next_window.end.astimezone(st):%H:%M} Stockholm "
                      f"({next_window.start:%H:%M}-{next_window.end:%H:%M} New York)")
-    if ctrl.get("rehearsal_date"):
+    if ctrl.get("rehearsal_date") and ctrl["rehearsal_date"] >= datetime.now(st).date().isoformat():
         lines.append(f"* Rehearsal (test session, separate ledger) scheduled for: {ctrl['rehearsal_date']}")
     if eval_led and eval_led.account():
         a = eval_led.account()

@@ -1,11 +1,12 @@
 # The automatic scheduler. It wakes up on weekdays around the US market open (several
-# times, so a late or missed wake-up is covered) and after 11:30 New York time (to finish
+# times, so a late or missed wake-up is covered; GitHub often starts scheduled runs 30-45 min late) and after 11:30 New York time (to finish
 # any interrupted session). The program itself decides from the NYSE calendar and the
 # control switch whether there is anything to do; extra runs exit within a minute.
 # GitHub's cron uses UTC: 13:30 UTC = 09:30 New York in summer time, 14:30 UTC in winter.
 name: Paper trading
 on:
   schedule:
+    - cron: "7 12 * * 1-5"
     - cron: "37 12 * * 1-5"
     - cron: "41 13 * * 1-5"
     - cron: "7 14 * * 1-5"
@@ -27,10 +28,12 @@ jobs:
         with:
           fetch-depth: 0
       - uses: actions/setup-python@v6
+        timeout-minutes: 10
         with:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
+        timeout-minutes: 10
       - name: Run today's paper-trading session (if one is due)
         id: run
         env:
