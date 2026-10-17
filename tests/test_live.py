@@ -54,6 +54,7 @@ def test_too_early_exits(cfg, tmp_root):
 
 def test_full_evaluation_three_sessions_then_stops(cfg, tmp_root):
     c = small_universe_cfg(cfg)
+    c["training"]["enabled"] = False
     control.write(tmp_root, evaluation_enabled=True)
     strat_file(tmp_root, {"name": "orb", "params": {"or_minutes": 15, "rvol_min": 1.2, "target_r": 2.5}})
     c["risk"]["min_reward_to_cost"] = 0.5  # synthetic moves are small; let the mechanics run
@@ -166,3 +167,34 @@ def test_rehearsal_uses_separate_ledger(cfg, tmp_root):
     assert ledger_path(tmp_root, "rehearsal").exists()
     led = Ledger(ledger_path(tmp_root, "evaluation"))
     assert led.account() is None
+
+
+def test_training_continues_after_evaluation_in_same_account(cfg, tmp_root):
+    c = small_universe_cfg(cfg)
+    c["risk"]["min_reward_to_cost"] = 0.5
+    c["training"]["weekdays"] = [1]  # Tuesdays
+    control.write(tmp_root, evaluation_enabled=True)
+    strat_file(tmp_root, {"name": "orb", "params": {"or_minutes": 15, "rvol_min": 1.2, "target_r": 2.5}})
+    days = ["2026-10-15", "2026-10-16", "2026-10-19", "2026-10-20", "2026-10-21"]
+    feed = days_feed(days)
+    for d in days[:3]:
+        y, m, dd = map(int, d.split("-"))
+        rt, _ = rt_for(tmp_root, c, feed, datetime(y, m, dd, 8, 50, tzinfo=NY))
+        assert "evaluation session" in run_once(rt)
+    led = Ledger(ledger_path(tmp_root, "evaluation"))
+    cash_after_eval = led.cash()
+    led.close()
+    rt, _ = rt_for(tmp_root, c, feed, datetime(2026, 10, 20, 8, 50, tzinfo=NY))  # Tuesday
+    assert "training session 2026-10-20 completed" in run_once(rt)
+    rt, _ = rt_for(tmp_root, c, feed, datetime(2026, 10, 21, 8, 50, tzinfo=NY))  # Wednesday: not a training day
+    assert "not today" in run_once(rt)
+    led = Ledger(ledger_path(tmp_root, "evaluation"))
+    assert led.session("2026-10-20")["kind"] == "training"
+    assert led.session("2026-10-20")["start_equity_usd"] == cash_after_eval  # same account carries on
+    assert led.account()["initial_sek"] == 500 and led.completed_sessions("evaluation") == 3
+    assert (tmp_root / "reports" / "training" / "2026-10-20.md").exists()
+    assert "NOT READY" in (tmp_root / "reports" / "readiness.md").read_text()
+    assert not (tmp_root / "reports" / "READY_FOR_REVIEW.md").exists()
+    assert (tmp_root / "data" / "bars" / "2026-10-20.csv.gz").exists()
+    write_status(rt, __import__("papertrader.market_calendar", fromlist=["x"]).MarketCalendar(c))
+    assert "TRAINING" in (tmp_root / "STATUS.md").read_text()

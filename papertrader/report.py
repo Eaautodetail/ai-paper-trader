@@ -115,6 +115,11 @@ def status_page(root: Path, cfg: dict, ctrl: dict, eval_led: Ledger | None, next
     done = eval_led.completed_sessions("evaluation") if eval_led else 0
     if ctrl.get("stop_requested"):
         state = "STOPPED (press Start in the Control workflow to resume)"
+    elif done >= n and ctrl.get("evaluation_enabled") and cfg.get("training", {}).get("enabled"):
+        trained = len([s for s in eval_led.sessions("training") if s["status"] == "completed"]) if eval_led else 0
+        days = ", ".join(["Mon", "Tue", "Wed", "Thu", "Fri"][d] for d in cfg["training"]["weekdays"])
+        state = (f"TRAINING - evaluation finished ({n}/{n}), {trained} training sessions since ({days}). "
+                 f"See reports/readiness.md")
     elif done >= n:
         state = f"EVALUATION FINISHED ({done}/{n} sessions). Automatic trading is off. Read reports/evaluation_final.md"
     elif ctrl.get("evaluation_enabled"):
@@ -122,6 +127,10 @@ def status_page(root: Path, cfg: dict, ctrl: dict, eval_led: Ledger | None, next
     else:
         state = "NOT STARTED - press Start in the Control workflow"
     lines.append(f"* Evaluation: **{state}**")
+    rp = root / "reports" / "readiness.md"
+    if rp.exists():
+        verdict = next((l for l in rp.read_text().splitlines() if l.startswith("**Verdict")), "")
+        lines.append(f"* Readiness self-check: {verdict.strip('*').replace('Verdict: ', '')} ([details](reports/readiness.md))")
     if next_window:
         lines.append(f"* Next trading window: {next_window.start.astimezone(st):%a %Y-%m-%d %H:%M}-{next_window.end.astimezone(st):%H:%M} Stockholm "
                      f"({next_window.start:%H:%M}-{next_window.end:%H:%M} New York)")
@@ -136,12 +145,12 @@ def status_page(root: Path, cfg: dict, ctrl: dict, eval_led: Ledger | None, next
         lines += [f"* Starting capital: {a['initial_sek']:.2f} SEK (= {a['initial_usd']:.2f} USD after a {a['fx_fee_sek']:.2f} SEK conversion fee)",
                   f"* Current equity: {eq:.2f} USD = {eq * fx_now:.2f} SEK at USD/SEK {fx_now:.4f}",
                   f"* Cash: {a['cash_usd']:.2f} USD",
-                  f"* Strategy (frozen for the evaluation): `{a['strategy_json']}`"]
+                  f"* Strategy in use: `{a['strategy_json']}`"]
         pos = eval_led.positions()
         lines.append(f"* Open positions: {', '.join(f'{p['qty']} {p['symbol']}' for p in pos) if pos else 'none'}")
         lines += ["", "| Session | Kind | Status | Start equity USD | End equity USD | Trades |", "|---|---|---|---|---|---|"]
         for s in eval_led.sessions():
-            lines.append(f"| [{s['day']}](reports/evaluation/{s['day']}.md) | {s['kind']} | {s['status']} | "
+            lines.append(f"| [{s['day']}](reports/{s['kind']}/{s['day']}.md) | {s['kind']} | {s['status']} | "
                          f"{(s['start_equity_usd'] or 0):.2f} | {(s['end_equity_usd'] or 0):.2f} | {len(eval_led.trades(s['day']))} |")
     if note:
         lines += ["", f"Last run: {note}"]
@@ -162,7 +171,8 @@ def final_report(led: Ledger, cfg: dict, backtest_sel: dict | None) -> str:
     wins = [t for t in trades if t["net_pnl"] > 0]
     by_exit = Counter(t["exit_kind"] for t in trades)
     lines = ["# Evaluation report (3 paper-trading sessions)", "", f"_{DISCLAIMER}_", "",
-             "Automatic trading has stopped. Live trading was never enabled and cannot be enabled by this program.", "",
+             ("Paper trading now continues as training (see readiness.md). " if cfg.get("training", {}).get("enabled")
+              else "Automatic trading has stopped. ") + "Live trading was never enabled and cannot be enabled by this program.", "",
              "## Money", "",
              f"* Starting capital: {a['initial_sek']:.2f} SEK -> {a['initial_usd']:.4f} USD (USD/SEK {fx0:.4f}, conversion fee {a['fx_fee_sek']:.2f} SEK)",
              f"* Final equity: {eq:.4f} USD = {eq * fx1:.2f} SEK at USD/SEK {fx1:.4f}",

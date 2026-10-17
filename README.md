@@ -111,14 +111,21 @@ You only need a web browser. Everything happens on github.com.
 
 **Read the results**
 
-12. After the third session the program stops trading by itself and writes **reports/evaluation_final.md**: starting and final value in USD and SEK, every session, number of trades, winners/losers, total costs and notes. STATUS.md then says `EVALUATION FINISHED`.
+12. After the third session the program writes **reports/evaluation_final.md**: starting and final value in USD and SEK, every session, number of trades, winners/losers, total costs and notes.
+
+**Training after the evaluation (on by default)**
+
+13. After the 3 sessions the same paper account keeps trading as **training** on the weekdays in `config.toml` -> `[training] weekdays` (1 = Tuesday, 3 = Thursday; 0-4 = Monday-Friday). STATUS.md says `TRAINING`. Daily reports go to `reports/training/<date>.md`. Set `enabled = false` there to stop after the evaluation instead.
+14. Every Saturday, **Research -> weekly-review** re-tests all strategies on all real data collected so far (`data/bars/` grows each session). It switches strategy only if another one clearly did better on both older and recent days. Each decision is written to `reports/weekly_review.md` and `reports/learning_log.md`.
+15. **reports/readiness.md** checks fixed rules after every session (at least 60 sessions and 100 trades, profitable over the last 40 sessions, statistically positive average per trade, profit factor at least 1.3, drawdown at most 10%, at least 2 of the last 3 twenty-session blocks positive, and the same strategy for at least 40 sessions). Only when all pass does it open the issue **"Agent self-check: ready for your review"**. It never switches to real money; that would be a separate project you decide on.
 
 ## 7. Useful extras
 
 * **Actions -> Research -> check-data**: tests the data feed and exchange calendar right now.
 * **Actions -> Research -> backtest**: re-runs the strategy comparison and updates reports/backtest.md (does not change a running evaluation).
+* **Actions -> Research -> weekly-review**: runs the Saturday learning step now.
 * **Actions -> Control -> rehearsal-next-session**: a full test session on a *separate* ledger (`ledger/rehearsal.sqlite`, `reports/rehearsal/`). It does not touch the evaluation.
-* **Actions -> Tests**: runs the 31 automated tests.
+* **Actions -> Tests**: runs the automated tests.
 
 ## 8. Alternative: run it on your own computer
 

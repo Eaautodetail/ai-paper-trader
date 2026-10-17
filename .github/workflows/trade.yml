@@ -48,6 +48,14 @@ jobs:
           { echo '## Paper-trading run'; echo '```'; tail -n 60 run.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           if [ "$code" = "3" ]; then exit 0; fi
           exit $code
+      - name: Notify - readiness criteria met
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f reports/READY_FOR_REVIEW.md ] && ! gh issue list --state all --search "Agent self-check: ready for your review" --json number -q '.[0].number' | grep -q .; then
+            gh issue create --title "Agent self-check: ready for your review" --body-file reports/READY_FOR_REVIEW.md
+          fi
       - name: Alert - session skipped
         if: steps.run.outputs.code == '3'
         env:

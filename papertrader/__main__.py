@@ -23,7 +23,7 @@ def git_persist(msg: str) -> None:
     """Commit the ledger, reports and status to GitHub (only inside GitHub Actions)."""
     if os.environ.get("PAPERTRADER_GIT_PERSIST") != "1":
         return
-    paths = ["ledger", "reports", "STATUS.md"]
+    paths = ["ledger", "reports", "STATUS.md", "data"]
     try:
         subprocess.run(["git", "add", *paths], cwd=ROOT, check=True)
         if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT).returncode == 0:
@@ -82,7 +82,7 @@ def main(argv=None) -> int:
         return 0 if bars is not None and len(bars) else 1
     if cmd == "backtest":
         from .backtest import run
-        sel = run(cfg, ROOT / "reports")
+        sel = run(cfg, ROOT / "reports", root=ROOT)
         (ROOT / "strategy").mkdir(exist_ok=True)
         (ROOT / "strategy" / "selected.json").write_text(json.dumps(sel, indent=2) + "\n")
         print(json.dumps(sel, indent=2))
@@ -93,7 +93,7 @@ def main(argv=None) -> int:
         from .strategies import build, momentum_grid
         current = json.loads((ROOT / "strategy" / "selected.json").read_text())["strategy"]
         sel = run(cfg, ROOT / "reports", strategies=[build({"name": "no_trade"}), build(current)] + momentum_grid(),
-                  tag="backtest_momentum")
+                  tag="backtest_momentum", root=ROOT)
         print(json.dumps(sel, indent=2))
         return 0
     if cmd == "set-evaluation-strategy":
@@ -104,6 +104,11 @@ def main(argv=None) -> int:
         led = Ledger(ROOT / "ledger" / "evaluation.sqlite")
         led.set_strategy(spec, argv[2] if len(argv) > 2 else "changed by the user")
         led.close()
+        return 0
+    if cmd == "weekly-review":
+        from .review import weekly_review
+        print(json.dumps(weekly_review(cfg, ROOT), indent=2, default=str))
+        write_status(rt, cal)
         return 0
     if cmd == "status":
         write_status(rt, cal)

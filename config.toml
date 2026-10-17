@@ -24,6 +24,13 @@ data_check_deadline_minutes = 15
 evaluation_sessions = 3
 poll_seconds = 20
 
+[training]
+# After the 3-session evaluation, paper trading continues as "training" on these weekdays
+# (0 = Monday ... 4 = Friday) until stopped. A weekly review re-tests all strategies on the
+# growing history, and readiness.md reports whether the record meets the fixed criteria.
+enabled = true
+weekdays = [1, 3]            # Tuesday and Thursday: fits GitHub's free minutes for a private repository
+
 [risk]
 max_position_pct_equity = 20.0        # one position never larger than 20% of current equity
 max_risk_per_trade_pct_equity = 0.5   # planned loss (entry to stop, plus costs) per trade

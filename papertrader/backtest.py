@@ -36,6 +36,7 @@ def day_frames(bars: dict[str, pd.DataFrame], cal: MarketCalendar, d) -> tuple:
 
 
 def run_strategy(strategy: Strategy, days: list, prepared: dict, cfg: dict, start_usd: float, fx: float) -> dict:
+    """Runs one strategy over the given days, starting from start_usd, compounding day to day."""
     costs = CostModel(cfg)
     risk = RiskManager(cfg, costs)
     led = Ledger(":memory:")
@@ -44,7 +45,7 @@ def run_strategy(strategy: Strategy, days: list, prepared: dict, cfg: dict, star
                    (start_usd * fx, fx, start_usd, start_usd, json.dumps(strategy.describe())))
     daily = []
     for d in days:
-        w, frames, liq = prepared[d]
+        w, frames, liq, market = prepared[d]
         if w is None or not frames:
             continue
         eq0 = led.cash()
@@ -52,7 +53,7 @@ def run_strategy(strategy: Strategy, days: list, prepared: dict, cfg: dict, star
         frames = {s: f for s, f in frames.items() if s in universe}
         led.start_session(d.isoformat(), "backtest", eq0, fx, universe)
         eng = SessionEngine(led, w, strategy, costs, risk, "backtest", fx_usdsek=fx)
-        eng.process(frames)
+        eng.process(frames, market=market)
         if not eng.flat():
             eng.finalize_without_bars(pd.Timestamp(w.end))
         eq1 = led.cash()
@@ -88,37 +89,58 @@ def metrics(res: dict, start_usd: float) -> dict:
     }
 
 
-def run(cfg: dict, out_dir: Path, days_back: int = 29, oos_fraction: float = 1 / 3,
-        strategies: list | None = None, tag: str = "backtest") -> dict:
+def load_history(cfg: dict, root: Path | None = None, days_back: int = 29) -> dict:
+    """Real 1-minute bars: everything in the local archive plus Yahoo's last ~30 days."""
+    from . import archive
     cal = MarketCalendar(cfg)
     tz = cal.tz
-    syms = cfg["universe"]["symbols"]
+    bench = cfg["universe"]["benchmark"]
+    syms = cfg["universe"]["symbols"] + [bench]
     end = datetime.now(tz)
     start = end - timedelta(days=days_back)
     print(f"Downloading 1-minute bars {start:%Y-%m-%d}..{end:%Y-%m-%d} for {len(syms)} symbols", flush=True)
     bars = md.intraday_range(syms, tz, start, end + timedelta(days=1))
-    daily_bars = md.daily(syms, tz, period="6mo")
+    if root is not None:
+        stored = archive.load(root, tz)
+        if stored:
+            print(f"Adding archived bars for {len({d for df in stored.values() for d in df.index.date})} days", flush=True)
+            bars = archive.merge(stored, bars)
+    daily_bars = md.daily(syms, tz, period="1y")
     fx = md.usdsek(cfg["universe"]["fx_symbol"])
-    start_usd = cfg["capital"]["initial_sek"] * (1 - cfg["capital"]["fx_conversion_fee_pct"] / 100) / fx
-
     days = sorted({d for df in bars.values() for d in df.index.date if cal.is_trading_day(d) and d < end.date()})
     prepared = {}
     for d in days:
         w, frames = day_frames(bars, cal, d)
-        prepared[d] = (w, frames, md.liquidity_table(daily_bars, pd.Timestamp(d)))
+        market = frames.pop(bench, None)
+        prepared[d] = (w, frames, md.liquidity_table(daily_bars, pd.Timestamp(d)), market)
     days = [d for d in days if prepared[d][1]]
+    return {"days": days, "prepared": prepared, "fx": fx}
+
+
+def evaluate(cfg: dict, hist: dict, strategies: list, oos_fraction: float = 1 / 3, start_usd: float | None = None) -> tuple:
+    days, prepared, fx = hist["days"], hist["prepared"], hist["fx"]
+    if start_usd is None:
+        start_usd = cfg["capital"]["initial_sek"] * (1 - cfg["capital"]["fx_conversion_fee_pct"] / 100) / fx
     n_oos = max(1, round(len(days) * oos_fraction))
     ins, oos = days[:-n_oos], days[-n_oos:]
     print(f"{len(days)} trading days with data: {len(ins)} in-sample, {len(oos)} out-of-sample", flush=True)
-
     rows = []
-    for strat in strategies or candidate_grid():
+    for strat in strategies:
         r_in = run_strategy(strat, ins, prepared, cfg, start_usd, fx)
         r_out = run_strategy(strat, oos, prepared, cfg, start_usd, fx)
         m_in, m_out = metrics(r_in, start_usd), metrics(r_out, start_usd)
         top_rej = pd.Series([m.split("rejected: ")[-1].split(" (")[0][:60] for m in r_in["rejections"] + r_out["rejections"]]).value_counts().head(3).to_dict()
         rows.append({"strategy": strat.describe(), "in_sample": m_in, "out_of_sample": m_out, "top_rejections": top_rej})
         print(f"{strat.name} {strat.params}: IS {m_in.get('net_pnl_usd')} USD/{m_in.get('trades')} tr | OOS {m_out.get('net_pnl_usd')} USD/{m_out.get('trades')} tr", flush=True)
+    return rows, ins, oos, start_usd
+
+
+def run(cfg: dict, out_dir: Path, days_back: int = 29, oos_fraction: float = 1 / 3,
+        strategies: list | None = None, tag: str = "backtest", root: Path | None = None) -> dict:
+    tz = MarketCalendar(cfg).tz
+    hist = load_history(cfg, root, days_back)
+    days, fx = hist["days"], hist["fx"]
+    rows, ins, oos, start_usd = evaluate(cfg, hist, strategies or candidate_grid(), oos_fraction)
 
     # Selection uses in-sample results only. Requires a minimum number of trades.
     eligible = [r for r in rows if r["strategy"]["name"] != "no_trade" and r["in_sample"].get("trades", 0) >= 5]

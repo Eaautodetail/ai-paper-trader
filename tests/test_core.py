@@ -331,3 +331,76 @@ def test_old_ledger_files_are_upgraded(tmp_path):
     db.close()
     led = Ledger(p)
     assert "trail" in {r[1] for r in led.db.execute("PRAGMA table_info(positions)")}
+
+
+# ---------------------------------------------------------------- learning and readiness
+def _fake_record(led, n_sessions, pnl_per_trade, trades_per_session=2):
+    led.open_account(500, 10.0, 0.25, {"name": "orb", "params": {}})
+    eq = led.cash()
+    for k in range(n_sessions):
+        day = (pd.Timestamp("2026-01-05") + pd.Timedelta(days=k)).date().isoformat()
+        led.start_session(day, "training", eq, 10.0, [])
+        for j in range(trades_per_session):
+            p = pnl_per_trade[(k * trades_per_session + j) % len(pnl_per_trade)]
+            led.db.execute("INSERT INTO trades (day, symbol, qty, entry_price, exit_price, net_pnl, costs) VALUES (?,?,?,?,?,?,?)",
+                           (day, "AAA", 1, 5.0, 5.0 + p, p, 0.02))
+            eq += p
+        led.mark_session(day, "training", "completed", end_equity_usd=eq)
+
+
+def test_readiness_not_ready_with_short_record(tmp_path):
+    from papertrader import readiness
+    led = Ledger(tmp_path / "r.sqlite"); led.quiet = True
+    _fake_record(led, 10, [0.3, -0.1])
+    res = readiness.assess(led)
+    assert not res["ready"]
+    assert "NOT READY" in readiness.markdown(res)
+
+
+def test_readiness_ready_only_with_long_profitable_stable_record(tmp_path):
+    from papertrader import readiness
+    led = Ledger(tmp_path / "r.sqlite"); led.quiet = True
+    _fake_record(led, 70, [0.05, 0.04, -0.02, 0.06])
+    assert readiness.assess(led)["ready"]
+    led2 = Ledger(tmp_path / "r2.sqlite"); led2.quiet = True
+    _fake_record(led2, 70, [0.05, -0.06])  # losing record
+    assert not readiness.assess(led2)["ready"]
+
+
+def test_weekly_review_only_switches_on_clear_improvement():
+    from papertrader.review import decide
+    cur = {"name": "orb", "params": {"a": 1}}
+    def row(spec, i_net, o_net, i_tr=20, o_tr=8):
+        return {"strategy": spec, "in_sample": {"net_pnl_usd": i_net, "trades": i_tr}, "out_of_sample": {"net_pnl_usd": o_net, "trades": o_tr}}
+    better = {"name": "momentum_leaders", "params": {"b": 2}}
+    rows = [row(cur, -1.0, -0.5), row(better, 0.5, 0.2), row({"name": "no_trade", "params": {}}, 0, 0, 0, 0)]
+    assert decide(rows, cur, 50.0, evaluation_done=False)[0] is None      # never during the evaluation
+    assert decide(rows, cur, 50.0, evaluation_done=True)[0] == better
+    slight = [row(cur, 0.10, 0.05), row(better, 0.15, 0.06)]                # within the 0.5% margin
+    assert decide(slight, cur, 50.0, evaluation_done=True)[0] is None
+    worse_recent = [row(cur, -1.0, 0.5), row(better, 1.0, 0.1)]             # better overall, worse recently
+    assert decide(worse_recent, cur, 50.0, evaluation_done=True)[0] is None
+
+
+def test_archive_roundtrip(tmp_path):
+    from papertrader import archive
+    a = make_day("2026-10-15", 4.0, flat_path)
+    archive.save_day(tmp_path, {"AAA": a}, date(2026, 10, 15))
+    back = archive.load(tmp_path, NY)["AAA"]
+    assert len(back) == len(a) and back.index[0] == a.index[0]
+    assert back["Close"].iloc[10] == pytest.approx(a["Close"].iloc[10], rel=1e-5)
+
+
+def test_market_filter_blocks_entries_when_spy_is_weak(cfg, cal, tmp_path):
+    s = BuyAt(minute=20, stop_pct=0.01, target_pct=0.02)
+    s.params["market_filter"] = True
+    led, eng, w = setup_engine(cfg, cal, tmp_path, s)
+    df = make_day("2026-10-15", 4.0, breakout_path)
+    spy_down = compute_features(make_day("2026-10-15", 500.0, lambda i: 1 - 0.001 * i), w.open)
+    eng.process(feats(df, w), market=spy_down)
+    assert not led.orders()
+    led2, eng2, w2 = setup_engine(cfg, cal, tmp_path / "b", BuyAt(minute=20, stop_pct=0.01, target_pct=0.02))
+    eng2.strategy.params["market_filter"] = True
+    spy_up = compute_features(make_day("2026-10-15", 500.0, lambda i: 1 + 0.001 * i), w2.open)
+    eng2.process(feats(df, w2), market=spy_up)
+    assert led2.orders()

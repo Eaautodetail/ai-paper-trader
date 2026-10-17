@@ -64,7 +64,24 @@ class Runtime:
 
 
 def ledger_path(root: Path, kind: str) -> Path:
-    return root / "ledger" / f"{kind}.sqlite"
+    # Training continues in the evaluation account, so capital and history carry over.
+    return root / "ledger" / f"{'evaluation' if kind == 'training' else kind}.sqlite"
+
+
+def training_day(cfg: dict, d) -> bool:
+    t = cfg.get("training", {})
+    return bool(t.get("enabled")) and d.weekday() in t.get("weekdays", [0, 1, 2, 3, 4])
+
+
+def next_session_window(cfg: dict, cal: MarketCalendar, now: datetime, eval_done: bool):
+    w = cal.next_window(now)
+    if not eval_done or not cfg.get("training", {}).get("enabled"):
+        return w
+    for _ in range(30):
+        if training_day(cfg, w.day):
+            return w
+        w = cal.next_window(w.end + timedelta(minutes=1))
+    return None
 
 
 def selected_strategy(root: Path) -> dict:
@@ -146,8 +163,12 @@ def run_once(rt: Runtime) -> str:
         return "Stop is switched on; not trading."
     if ctrl.get("evaluation_enabled") and not eval_done:
         kind = "evaluation"
+    elif ctrl.get("evaluation_enabled") and eval_done and training_day(cfg, today):
+        kind = "training"
     elif ctrl.get("rehearsal_date") == today.isoformat():
         kind = "rehearsal"
+    elif eval_done and cfg.get("training", {}).get("enabled") and ctrl.get("evaluation_enabled"):
+        return "Evaluation finished; training sessions run on the configured weekdays, not today."
     elif eval_done:
         return "Evaluation finished; automatic trading is off."
     else:
@@ -228,15 +249,20 @@ def _run_session(rt: Runtime, cal: MarketCalendar, w, kind: str, led: Ledger, n_
             eng.stop_requested = True
             led.log(day, "WARN", "STOP pressed: no new trades, closing all positions at the next bar")
         syms = sorted(set(universe) | {p["symbol"] for p in led.positions()})
+        bench = cfg["universe"]["benchmark"]
         try:
-            bars = rt.feed.intraday(syms, now) if syms else {}
+            bars = rt.feed.intraday(syms + [bench], now) if syms else {}
+            market_bars = bars.pop(bench, None)
+            if bench in universe and market_bars is not None:
+                bars[bench] = market_bars
             fresh = True
             newest = max((df.index[-1] for df in bars.values() if len(df)), default=None)
             if newest is None or (pd.Timestamp(now) - newest).total_seconds() > 60 + cfg["risk"]["max_data_lag_seconds"]:
                 fresh = False
                 led.log(day, "WARN", "Market data is stale; no new entries until it is current")
             frames = {k: compute_features(v, w.open) for k, v in bars.items() if len(v)}
-            eng.process(frames, data_fresh=fresh)
+            market = compute_features(market_bars, w.open) if market_bars is not None and len(market_bars) else None
+            eng.process(frames, data_fresh=fresh, market=market)
         except Exception as e:  # keep running; exits are retried on the next poll
             led.log(day, "ERROR", f"Data/processing error, retrying: {e}")
         if eng.changed or time.monotonic() - last_persist > 600:
@@ -259,9 +285,22 @@ def _run_session(rt: Runtime, cal: MarketCalendar, w, kind: str, led: Ledger, n_
     led.mark_session(day, kind, status, "stopped by user" if status == "stopped" else "", end_equity_usd=eq)
     led.log(day, "INFO", f"Session {status}. End equity {eq:.2f} USD ({eq * fx:.2f} SEK); "
                          f"{len(led.trades(day))} round trips; no positions left open")
+    save_archive(rt, w)
     write_reports(rt, cal, led, day, w, kind, n_eval)
     rt.persist(f"{kind} {day}: session {status}")
     return f"{kind} session {day} {status}"
+
+
+def save_archive(rt: Runtime, w) -> None:
+    """Keep today's 1-minute bars for all watched stocks, so future reviews can learn from them."""
+    from . import archive
+    syms = rt.cfg["universe"]["symbols"] + [rt.cfg["universe"]["benchmark"]]
+    try:
+        p = archive.save_day(rt.root, rt.feed.bars_for_day(syms, w.day), w.day)
+        if p:
+            print(f"Archived bars to {p}", flush=True)
+    except Exception as e:
+        print(f"WARNING: could not archive bars: {e}", flush=True)
 
 
 class SessionSkipped(RuntimeError):
@@ -277,7 +316,18 @@ def write_reports(rt: Runtime, cal, led: Ledger, day: str, w, kind: str, n_eval:
             sel_p = rt.root / "strategy" / "selected.json"
             sel = json.loads(sel_p.read_text()) if sel_p.exists() else None
             (rt.root / "reports" / "evaluation_final.md").write_text(report.final_report(led, rt.cfg, sel))
-            led.log(day, "INFO", f"Evaluation complete ({n_eval} sessions). Automatic trading stops; final report written.")
+            more = ("Paper trading continues as training on the configured weekdays."
+                    if rt.cfg.get("training", {}).get("enabled") else "Automatic trading stops.")
+            led.log(day, "INFO", f"Evaluation complete ({n_eval} sessions). Final report written. {more}")
+    if kind in ("evaluation", "training"):
+        from . import readiness
+        res = readiness.assess(led)
+        (rt.root / "reports" / "readiness.md").write_text(readiness.markdown(res))
+        marker = rt.root / "reports" / "READY_FOR_REVIEW.md"
+        if res["ready"] and not marker.exists():
+            marker.write_text(readiness.markdown(res) + "\nThe agent believes its paper-trading record is strong enough "
+                              "for you to review a next step. Nothing has been changed: trading is still simulated.\n")
+            led.log(day, "INFO", "Readiness criteria met: READY_FOR_REVIEW.md written. Real trading remains disabled.")
     write_status(rt, cal)
 
 
@@ -285,7 +335,8 @@ def write_status(rt: Runtime, cal: MarketCalendar, note: str = "") -> None:
     p = ledger_path(rt.root, "evaluation")
     led = Ledger(p) if p.exists() else None
     ctrl = (rt.control or (lambda: read_local(rt.root)))()
-    nxt = cal.next_window(rt.now())
+    done = bool(led and led.completed_sessions("evaluation") >= rt.cfg["schedule"]["evaluation_sessions"])
+    nxt = next_session_window(rt.cfg, cal, rt.now(), done)
     (rt.root / "STATUS.md").write_text(report.status_page(rt.root, rt.cfg, ctrl, led, nxt, note))
     if led:
         led.close()

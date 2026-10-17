@@ -140,8 +140,11 @@ class SessionEngine:
                 self.changed = True
 
     # ---- main step ---------------------------------------------------------------
-    def process(self, frames: dict[str, pd.DataFrame], data_fresh: bool = True, now: pd.Timestamp | None = None) -> None:
-        """frames: per symbol, feature frames holding only COMPLETED bars of this session day."""
+    def process(self, frames: dict[str, pd.DataFrame], data_fresh: bool = True, now: pd.Timestamp | None = None,
+                market: pd.DataFrame | None = None) -> None:
+        """frames: per symbol, feature frames holding only COMPLETED bars of this session day.
+        market: SPY feature frame for strategies that check the overall market (read only up to each bar)."""
+        self.strategy.market = market
         times = sorted({t for f in frames.values() for t in f.index if self.last_bar is None or t > self.last_bar})
         for t in times:
             self._step(t, frames, data_fresh)
@@ -186,6 +189,9 @@ class SessionEngine:
             if t not in f.index:
                 continue
             sig = self.strategy.signal(sym, f, f.index.get_loc(t))
+            if sig is not None and not self.strategy.market_ok(t):
+                self.l.log(self.day, "SKIP", f"{sym} {sig.strategy} signal rejected: market (SPY) below its VWAP")
+                continue
             if sig is not None:
                 signals.append(sig)
         for sig in sorted(signals, key=lambda s: -s.score):

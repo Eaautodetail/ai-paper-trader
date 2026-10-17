@@ -3,6 +3,8 @@
 # keeps the strategy it started with; a new selection only applies to a future evaluation.
 name: Research
 on:
+  schedule:
+    - cron: "0 9 * * 6"          # Saturdays 09:00 UTC: weekly strategy review
   workflow_dispatch:
     inputs:
       task:
@@ -13,15 +15,16 @@ on:
           - check-data
           - backtest
           - backtest-momentum
+          - weekly-review
 permissions:
   contents: write
 concurrency:
-  group: research
+  group: paper-trading
   cancel-in-progress: false
 jobs:
   research:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -34,13 +37,13 @@ jobs:
       - name: Run
         run: |
           set -o pipefail
-          python -m papertrader ${{ inputs.task }} 2>&1 | tee out.log
+          python -m papertrader ${{ inputs.task || 'weekly-review' }} 2>&1 | tee out.log
           { echo '## Output'; echo '```'; tail -n 120 out.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
       - name: Save backtest results
         if: inputs.task != 'check-data'
         run: |
           git config user.name "paper-trading-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add strategy reports/backtest*.md reports/backtest*_results.json
+          git add strategy reports ledger STATUS.md
           git commit -m "research: backtest results [skip ci]" || exit 0
           for i in 1 2 3 4; do git pull --rebase -q origin main && git push -q origin HEAD:main && break; sleep 3; done

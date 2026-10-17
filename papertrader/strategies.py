@@ -30,12 +30,28 @@ def _ok(*vals) -> bool:
 class Strategy:
     name: str = "base"
     params: dict = field(default_factory=dict)
+    market: pd.DataFrame | None = None  # SPY feature frame, set by the engine each step
+
+    def market_ok(self, t) -> bool:
+        """With market_filter on, only buy while the whole market (SPY) trades above its VWAP."""
+        if not self.params.get("market_filter"):
+            return True
+        m = self.market
+        if m is None or m.empty or t < m.index[0]:
+            return False
+        r = m.loc[:t].iloc[-1]
+        return bool(r.Close > r.vwap)
 
     def signal(self, symbol: str, f: pd.DataFrame, i: int) -> Signal | None:
         raise NotImplementedError
 
     def describe(self) -> dict:
         return {"name": self.name, "params": self.params}
+
+    def with_market_filter(self) -> "Strategy":
+        s = type(self)(**{k: v for k, v in self.params.items() if k != "market_filter"})
+        s.params["market_filter"] = True
+        return s
 
 
 class NoTrade(Strategy):
@@ -50,9 +66,11 @@ class NoTrade(Strategy):
 class OpeningRangeBreakout(Strategy):
     """Buy when price closes above the first N minutes' high with above-average volume,
     while above VWAP. Stop under the range (capped by ATR), target = target_r x risk."""
-    def __init__(self, or_minutes=15, rvol_min=1.5, target_r=2.0, stop_atr=2.0, last_entry_minute=90):
+    def __init__(self, or_minutes=15, rvol_min=1.5, target_r=2.0, stop_atr=2.0, last_entry_minute=90, market_filter=False):
         super().__init__("orb", dict(or_minutes=or_minutes, rvol_min=rvol_min, target_r=target_r,
                                      stop_atr=stop_atr, last_entry_minute=last_entry_minute))
+        if market_filter:
+            self.params["market_filter"] = True
 
     def signal(self, symbol, f, i):
         p = self.params
@@ -76,9 +94,11 @@ class OpeningRangeBreakout(Strategy):
 class VwapTrendPullback(Strategy):
     """In an up-trend (EMA9 > EMA21, above VWAP, 30-min momentum), buy a green bar that
     dipped to the EMA9. Stop under EMA21 / bar low, target = target_r x risk."""
-    def __init__(self, min_ret30=0.004, pull_atr=0.5, target_r=2.0, first_minute=30, last_entry_minute=100):
+    def __init__(self, min_ret30=0.004, pull_atr=0.5, target_r=2.0, first_minute=30, last_entry_minute=100, market_filter=False):
         super().__init__("vwap_trend", dict(min_ret30=min_ret30, pull_atr=pull_atr, target_r=target_r,
                                             first_minute=first_minute, last_entry_minute=last_entry_minute))
+        if market_filter:
+            self.params["market_filter"] = True
 
     def signal(self, symbol, f, i):
         p = self.params
@@ -100,9 +120,11 @@ class VwapTrendPullback(Strategy):
 class VwapReversion(Strategy):
     """Buy a sharp stretch below VWAP (in ATRs) with oversold RSI once a green bar appears.
     Target = VWAP, stop = bar low - stop_atr x ATR."""
-    def __init__(self, dev_atr=3.0, rsi_max=25.0, stop_atr=1.0, first_minute=15, last_entry_minute=100):
+    def __init__(self, dev_atr=3.0, rsi_max=25.0, stop_atr=1.0, first_minute=15, last_entry_minute=100, market_filter=False):
         super().__init__("vwap_reversion", dict(dev_atr=dev_atr, rsi_max=rsi_max, stop_atr=stop_atr,
                                                 first_minute=first_minute, last_entry_minute=last_entry_minute))
+        if market_filter:
+            self.params["market_filter"] = True
 
     def signal(self, symbol, f, i):
         p = self.params
@@ -124,10 +146,12 @@ class MomentumLeaders(Strategy):
     once the biggest riser is tried first. Exit with a trailing stop that follows the price up
     (trail_atr x ATR below the highest price), at +take_profit, or at 11:30 at the latest."""
     def __init__(self, min_gain=0.02, rvol_min=1.5, trail_atr=3.0, take_profit=0.05, first_minute=15,
-                 last_entry_minute=75):
+                 last_entry_minute=75, market_filter=False):
         super().__init__("momentum_leaders", dict(min_gain=min_gain, rvol_min=rvol_min, trail_atr=trail_atr,
                                                   take_profit=take_profit, first_minute=first_minute,
                                                   last_entry_minute=last_entry_minute))
+        if market_filter:
+            self.params["market_filter"] = True
 
     def signal(self, symbol, f, i):
         p = self.params
@@ -170,7 +194,8 @@ def candidate_grid() -> list[Strategy]:
     for d in (2.0, 3.0):
         for rs in (25.0, 35.0):
             out.append(VwapReversion(dev_atr=d, rsi_max=rs))
-    return out + momentum_grid()
+    out += momentum_grid()
+    return out + [s.with_market_filter() for s in out if s.name in ("orb", "momentum_leaders")]
 
 
 def momentum_grid() -> list[Strategy]:
