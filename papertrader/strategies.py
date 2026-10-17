@@ -18,6 +18,8 @@ class Signal:
     target: float
     strategy: str
     reason: str
+    trail: float = 0.0         # trailing-stop distance in USD (0 = fixed stop)
+    score: float = 0.0         # when several stocks signal at once, higher scores are tried first
 
 
 def _ok(*vals) -> bool:
@@ -116,8 +118,39 @@ class VwapReversion(Strategy):
                       self.name, f"{(r.vwap - r.Close) / r.atr:.1f} ATR below VWAP, RSI {r.rsi:.0f}")
 
 
+class MomentumLeaders(Strategy):
+    """Buy the morning's strongest risers: up at least `min_gain` since the open, above VWAP,
+    in an up-trend, on heavy volume and at a new 10-minute high. When several stocks qualify at
+    once the biggest riser is tried first. Exit with a trailing stop that follows the price up
+    (trail_atr x ATR below the highest price), at +take_profit, or at 11:30 at the latest."""
+    def __init__(self, min_gain=0.02, rvol_min=1.5, trail_atr=3.0, take_profit=0.05, first_minute=15,
+                 last_entry_minute=75):
+        super().__init__("momentum_leaders", dict(min_gain=min_gain, rvol_min=rvol_min, trail_atr=trail_atr,
+                                                  take_profit=take_profit, first_minute=first_minute,
+                                                  last_entry_minute=last_entry_minute))
+
+    def signal(self, symbol, f, i):
+        p = self.params
+        if i < 10:
+            return None
+        r = f.iloc[i]
+        if not _ok(r.atr, r.vwap, r.rvol, r.ret_open) or not (p["first_minute"] <= r.minute <= p["last_entry_minute"]):
+            return None
+        prior_high = float(f["High"].iloc[i - 10:i].max())
+        if not (r.ret_open >= p["min_gain"] and r.Close > r.vwap and r.ema9 > r.ema21
+                and r.rvol >= p["rvol_min"] and r.Close >= prior_high):
+            return None
+        trail = p["trail_atr"] * float(r.atr)
+        stop = float(r.Close) - trail
+        if stop <= 0:
+            return None
+        return Signal(symbol, f.index[i], float(r.Close), stop, float(r.Close) * (1 + p["take_profit"]), self.name,
+                      f"up {r.ret_open:+.1%} since the open, new 10-min high, rvol {r.rvol:.1f}, above VWAP {r.vwap:.2f}",
+                      trail=trail, score=float(r.ret_open))
+
+
 REGISTRY = {"no_trade": NoTrade, "orb": OpeningRangeBreakout, "vwap_trend": VwapTrendPullback,
-            "vwap_reversion": VwapReversion}
+            "vwap_reversion": VwapReversion, "momentum_leaders": MomentumLeaders}
 
 
 def build(spec: dict) -> Strategy:
@@ -137,4 +170,13 @@ def candidate_grid() -> list[Strategy]:
     for d in (2.0, 3.0):
         for rs in (25.0, 35.0):
             out.append(VwapReversion(dev_atr=d, rsi_max=rs))
+    return out + momentum_grid()
+
+
+def momentum_grid() -> list[Strategy]:
+    out: list[Strategy] = []
+    for g in (0.015, 0.03):
+        for tr in (2.0, 4.0):
+            for tp in (0.03, 0.08):
+                out.append(MomentumLeaders(min_gain=g, trail_atr=tr, take_profit=tp))
     return out

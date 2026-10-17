@@ -85,7 +85,7 @@ class SessionEngine:
                     continue
                 comm = self.costs.commission(qty)
                 self.l.record_buy(o["id"], sym, qty, price, t.isoformat(), comm, (price - float(bar.Open)) * qty,
-                                  o["stop"], o["target"], self.day, o["strategy"])
+                                  o["stop"], o["target"], self.day, o["strategy"], o["trail"])
                 self.l.log(self.day, "TRADE", f"BUY {qty} {sym} @ {price:.4f} (bar open {bar.Open:.4f}) stop {o['stop']:.4f} target {o['target']:.4f}")
             else:
                 self._sell(o["id"], sym, o["qty"], self.costs.sell_price(float(bar.Open)), float(bar.Open), t, o["exit_kind"] or "market")
@@ -132,6 +132,12 @@ class SessionEngine:
             self._exit_now(p, t, self.costs.stop_fill(p["stop"], float(bar.Open)), ref, "stop")
         elif pd.Timestamp(p["entry_time"]) < t and bar.High >= p["target"] + self.costs.half_spread(p["target"]):
             self._exit_now(p, t, float(p["target"]), float(p["target"]), "target")
+        elif p["trail"] > 0:
+            # Trailing stop: after this bar, the stop follows the highest price minus the trail.
+            new_stop = float(bar.High) - p["trail"]
+            if new_stop > p["stop"]:
+                self.l.raise_stop(p["symbol"], new_stop)
+                self.changed = True
 
     # ---- main step ---------------------------------------------------------------
     def process(self, frames: dict[str, pd.DataFrame], data_fresh: bool = True, now: pd.Timestamp | None = None) -> None:
@@ -175,13 +181,15 @@ class SessionEngine:
         orders = self._today_orders()
         traded = {o["symbol"] for o in orders if o["side"] == "buy" and o["status"] in ("filled", "pending")}
         entries = sum(1 for o in orders if o["side"] == "buy" and o["status"] in ("filled", "pending"))
+        signals = []
         for sym, f in frames.items():
             if t not in f.index:
                 continue
-            i = f.index.get_loc(t)
-            sig = self.strategy.signal(sym, f, i)
-            if sig is None:
-                continue
+            sig = self.strategy.signal(sym, f, f.index.get_loc(t))
+            if sig is not None:
+                signals.append(sig)
+        for sig in sorted(signals, key=lambda s: -s.score):
+            sym = sig.symbol
             ctx = RiskContext(equity=eq, cash=self.l.cash() - self._reserved_cash(), session_start_equity=start_eq,
                               session_pnl=pnl, open_symbols=open_syms, pending_symbols=pending_syms,
                               traded_symbols=traded, entries_today=entries, in_window=True,
@@ -192,7 +200,7 @@ class SessionEngine:
                 continue
             key = f"{self.day}|{sig.strategy}|{sym}|{sig.bar_time.isoformat()}"
             oid = self.l.add_order(key, self.day, sym, "buy", d.qty, submit.isoformat(), sig.strategy, sig.reason,
-                                   sig.stop, sig.target)
+                                   sig.stop, sig.target, sig.trail)
             if oid is not None:
                 self.l.log(self.day, "ORDER", f"BUY {d.qty} {sym} at next bar open (est {d.est_entry:.4f}); planned max loss {d.planned_loss:.3f} USD; {sig.reason}")
                 pending_syms.add(sym)

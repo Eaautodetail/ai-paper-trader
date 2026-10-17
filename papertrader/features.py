@@ -21,6 +21,7 @@ def compute_features(bars: pd.DataFrame, session_open=None) -> pd.DataFrame:
     prev_close = df["Close"].shift(1).fillna(df["Open"])
     tr = pd.concat([df["High"] - df["Low"], (df["High"] - prev_close).abs(), (df["Low"] - prev_close).abs()], axis=1).max(axis=1)
     df["atr"] = tr.rolling(14, min_periods=5).mean().bfill()
+    df["ret_open"] = df["Close"] / df["Open"].iloc[0] - 1  # gain since the first bar of the day
     df["ret15"] = df["Close"] / df["Close"].shift(15) - 1
     df["ret30"] = df["Close"] / df["Close"].shift(30) - 1
     df["rvol"] = vol / vol.rolling(30, min_periods=5).mean().shift(1)

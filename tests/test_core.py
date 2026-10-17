@@ -265,3 +265,69 @@ def test_features_are_causal():
 def test_candidate_grid_has_baseline():
     names = {s.name for s in candidate_grid()}
     assert {"no_trade", "orb", "vwap_trend", "vwap_reversion"} <= names
+
+
+# ---------------------------------------------------------------- trailing stop / momentum
+class BuyTrail(Strategy):
+    def __init__(self, minute=20, trail_pct=0.01):
+        super().__init__("buy_trail", dict(minute=minute, trail_pct=trail_pct))
+
+    def signal(self, symbol, f, i):
+        r = f.iloc[i]
+        if r.minute != self.params["minute"]:
+            return None
+        trail = float(r.Close) * self.params["trail_pct"]
+        return Signal(symbol, f.index[i], float(r.Close), float(r.Close) - trail, float(r.Close) * 2, self.name,
+                      "test", trail=trail)
+
+
+def test_trailing_stop_follows_price_up_and_exits_in_profit(cfg, cal, tmp_path):
+    led, eng, w = setup_engine(cfg, cal, tmp_path, BuyTrail(minute=20, trail_pct=0.01))
+    # rises 3% then falls back 5%
+    df = make_day("2026-10-15", 4.0, lambda i: 1.0 if i <= 20 else (1 + 0.001 * (i - 20) if i <= 50 else 1.03 - 0.002 * (i - 50)))
+    eng.process(feats(df, w))
+    t = led.trades()[0]
+    assert t["exit_kind"] == "stop"
+    assert t["exit_price"] > t["entry_price"]  # the stop had moved above the entry
+    assert pd.Timestamp(t["exit_time"]) > df.index[50]
+
+
+def test_highest_score_signal_goes_first(cfg, cal, tmp_path):
+    class Two(Strategy):
+        def __init__(self):
+            super().__init__("two", {})
+
+        def signal(self, symbol, f, i):
+            r = f.iloc[i]
+            if r.minute != 20:
+                return None
+            return Signal(symbol, f.index[i], float(r.Close), float(r.Close) * 0.99, float(r.Close) * 1.05, "two", "t",
+                          score={"AAA": 1.0, "BBB": 5.0}[symbol])
+    c = copy.deepcopy(cfg)
+    c["risk"]["max_open_positions"] = 1
+    led, eng, w = setup_engine(c, cal, tmp_path, Two())
+    df = make_day("2026-10-15", 4.0, flat_path)
+    eng.process({"AAA": compute_features(df, w.open), "BBB": compute_features(df, w.open)})
+    assert [o["symbol"] for o in led.orders() if o["side"] == "buy"] == ["BBB"]
+
+
+def test_momentum_leaders_signal():
+    from papertrader.strategies import MomentumLeaders
+    df = make_day("2026-10-15", 4.0, lambda i: 1.0 + 0.001 * i + (0.002 * (i - 24) if i >= 25 else 0))
+    df.loc[df.index[25:30], "Volume"] = 300_000
+    f = compute_features(df, df.index[0])
+    s = MomentumLeaders(min_gain=0.02, rvol_min=1.5)
+    hits = [x for x in (s.signal("AAA", f, i) for i in range(len(f))) if x]
+    assert hits and all(h.trail > 0 and h.stop < h.ref_price < h.target for h in hits)
+    assert all(f.loc[h.bar_time, "ret_open"] >= 0.02 for h in hits)
+
+
+def test_old_ledger_files_are_upgraded(tmp_path):
+    import sqlite3
+    from papertrader.ledger import SCHEMA
+    p = tmp_path / "old.sqlite"
+    db = sqlite3.connect(p)
+    db.executescript(SCHEMA)
+    db.close()
+    led = Ledger(p)
+    assert "trail" in {r[1] for r in led.db.execute("PRAGMA table_info(positions)")}

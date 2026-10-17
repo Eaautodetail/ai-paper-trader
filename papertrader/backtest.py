@@ -87,7 +87,8 @@ def metrics(res: dict, start_usd: float) -> dict:
     }
 
 
-def run(cfg: dict, out_dir: Path, days_back: int = 29, oos_fraction: float = 1 / 3) -> dict:
+def run(cfg: dict, out_dir: Path, days_back: int = 29, oos_fraction: float = 1 / 3,
+        strategies: list | None = None, tag: str = "backtest") -> dict:
     cal = MarketCalendar(cfg)
     tz = cal.tz
     syms = cfg["universe"]["symbols"]
@@ -110,7 +111,7 @@ def run(cfg: dict, out_dir: Path, days_back: int = 29, oos_fraction: float = 1 /
     print(f"{len(days)} trading days with data: {len(ins)} in-sample, {len(oos)} out-of-sample", flush=True)
 
     rows = []
-    for strat in candidate_grid():
+    for strat in strategies or candidate_grid():
         r_in = run_strategy(strat, ins, prepared, cfg, start_usd, fx)
         r_out = run_strategy(strat, oos, prepared, cfg, start_usd, fx)
         m_in, m_out = metrics(r_in, start_usd), metrics(r_out, start_usd)
@@ -137,8 +138,8 @@ def run(cfg: dict, out_dir: Path, days_back: int = 29, oos_fraction: float = 1 /
         selection.update({"strategy": {"name": "no_trade", "params": {}}, "validated_out_of_sample": False,
                           "note": "No candidate traded enough to evaluate."})
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "backtest_results.json").write_text(json.dumps(rows, indent=1))
-    write_markdown(out_dir / "backtest.md", rows, selection)
+    (out_dir / f"{tag}_results.json").write_text(json.dumps(rows, indent=1))
+    write_markdown(out_dir / f"{tag}.md", rows, selection)
     return selection
 
 

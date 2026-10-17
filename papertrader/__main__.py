@@ -87,6 +87,15 @@ def main(argv=None) -> int:
         (ROOT / "strategy" / "selected.json").write_text(json.dumps(sel, indent=2) + "\n")
         print(json.dumps(sel, indent=2))
         return 0
+    if cmd == "backtest-momentum":
+        # Compare the momentum strategy with the current one without changing strategy/selected.json.
+        from .backtest import run
+        from .strategies import build, momentum_grid
+        current = json.loads((ROOT / "strategy" / "selected.json").read_text())["strategy"]
+        sel = run(cfg, ROOT / "reports", strategies=[build({"name": "no_trade"}), build(current)] + momentum_grid(),
+                  tag="backtest_momentum")
+        print(json.dumps(sel, indent=2))
+        return 0
     if cmd == "status":
         write_status(rt, cal)
         print((ROOT / "STATUS.md").read_text())

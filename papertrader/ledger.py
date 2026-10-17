@@ -62,6 +62,10 @@ class Ledger:
         self.db.row_factory = sqlite3.Row
         self.db.execute("PRAGMA journal_mode=DELETE")
         self.db.executescript(SCHEMA)
+        for table in ("orders", "positions"):  # columns added after the first release
+            cols = {r[1] for r in self.db.execute(f"PRAGMA table_info({table})")}
+            if "trail" not in cols:
+                self.db.execute(f"ALTER TABLE {table} ADD COLUMN trail REAL NOT NULL DEFAULT 0")
 
     def close(self):
         self.db.close()
@@ -132,13 +136,13 @@ class Ledger:
     # ---- orders and fills -----------------------------------------------------
     def add_order(self, key: str, day: str, symbol: str, side: str, qty: int, submitted_at: str,
                   strategy: str = "", reason: str = "", stop: float | None = None,
-                  target: float | None = None) -> int | None:
+                  target: float | None = None, trail: float = 0.0) -> int | None:
         """Returns the new order id, or None if an order with this key already exists."""
         try:
             cur = self.db.execute(
-                "INSERT INTO orders (key, day, symbol, side, qty, submitted_at, status, strategy, reason, stop, target)"
-                " VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?)",
-                (key, day, symbol, side, qty, submitted_at, strategy, reason, stop, target))
+                "INSERT INTO orders (key, day, symbol, side, qty, submitted_at, status, strategy, reason, stop, target, trail)"
+                " VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?)",
+                (key, day, symbol, side, qty, submitted_at, strategy, reason, stop, target, trail or 0.0))
             return cur.lastrowid
         except sqlite3.IntegrityError:
             return None
@@ -160,7 +164,7 @@ class Ledger:
                         "WHERE id = ? AND status = 'pending'", (why, order_id))
 
     def record_buy(self, order_id: int, symbol: str, qty: int, price: float, fill_time: str, commission: float,
-                   spread_cost: float, stop: float, target: float, day: str, strategy: str):
+                   spread_cost: float, stop: float, target: float, day: str, strategy: str, trail: float = 0.0):
         cost = qty * price + commission
         with self.db:
             self.db.execute("BEGIN")
@@ -171,8 +175,13 @@ class Ledger:
             self.db.execute("UPDATE orders SET status='filled', fill_time=?, fill_price=?, commission=?, spread_cost=? WHERE id=?",
                             (fill_time, price, commission, spread_cost, order_id))
             self.db.execute("UPDATE account SET cash_usd = cash_usd - ? WHERE id = 1", (cost,))
-            self.db.execute("INSERT INTO positions VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                            (symbol, qty, price, fill_time, stop, target, day, commission + spread_cost, strategy))
+            self.db.execute("INSERT INTO positions (symbol, qty, avg_price, entry_time, stop, target, day, entry_cost, strategy, trail)"
+                            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                            (symbol, qty, price, fill_time, stop, target, day, commission + spread_cost, strategy, trail or 0.0))
+
+    def raise_stop(self, symbol: str, stop: float):
+        """Trailing stops only ever move up."""
+        self.db.execute("UPDATE positions SET stop = ? WHERE symbol = ? AND stop < ?", (stop, symbol, stop))
 
     def record_sell(self, order_id: int, symbol: str, qty: int, price: float, fill_time: str, commission: float,
                     fees: float, spread_cost: float, exit_kind: str):
