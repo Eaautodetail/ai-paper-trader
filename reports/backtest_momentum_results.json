@@ -1,0 +1,422 @@
+[
+ {
+  "strategy": {
+   "name": "no_trade",
+   "params": {}
+  },
+  "in_sample": {
+   "days": 14,
+   "trades": 0,
+   "net_pnl_usd": 0.0,
+   "return_pct": 0.0,
+   "win_rate_pct": null,
+   "avg_net_per_trade_usd": null,
+   "modeled_costs_usd": 0.0,
+   "max_drawdown_pct": 0.0,
+   "profit_factor": null,
+   "positive_days": 0,
+   "avg_universe": 15.6
+  },
+  "out_of_sample": {
+   "days": 7,
+   "trades": 0,
+   "net_pnl_usd": 0.0,
+   "return_pct": 0.0,
+   "win_rate_pct": null,
+   "avg_net_per_trade_usd": null,
+   "modeled_costs_usd": 0.0,
+   "max_drawdown_pct": 0.0,
+   "profit_factor": null,
+   "positive_days": 0,
+   "avg_universe": 16.7
+  },
+  "top_rejections": {}
+ },
+ {
+  "strategy": {
+   "name": "orb",
+   "params": {
+    "or_minutes": 5,
+    "rvol_min": 2.0,
+    "target_r": 2.5,
+    "stop_atr": 2.0,
+    "last_entry_minute": 90
+   }
+  },
+  "in_sample": {
+   "days": 14,
+   "trades": 15,
+   "net_pnl_usd": -0.7321,
+   "return_pct": -1.455,
+   "win_rate_pct": 33.3,
+   "avg_net_per_trade_usd": -0.0488,
+   "modeled_costs_usd": 0.6802,
+   "max_drawdown_pct": -1.791,
+   "profit_factor": 0.32,
+   "positive_days": 2,
+   "avg_universe": 15.6
+  },
+  "out_of_sample": {
+   "days": 7,
+   "trades": 6,
+   "net_pnl_usd": -0.4223,
+   "return_pct": -0.839,
+   "win_rate_pct": 16.7,
+   "avg_net_per_trade_usd": -0.0704,
+   "modeled_costs_usd": 0.2952,
+   "max_drawdown_pct": -0.839,
+   "profit_factor": 0.286,
+   "positive_days": 1,
+   "avg_universe": 16.7
+  },
+  "top_rejections": {
+   "already traded this symbol this session": 3,
+   "expected gain 0.071 USD is under 2x costs 0.060 USD": 2,
+   "already have a position or order in this symbol": 2
+  }
+ },
+ {
+  "strategy": {
+   "name": "momentum_leaders",
+   "params": {
+    "min_gain": 0.015,
+    "rvol_min": 1.5,
+    "trail_atr": 2.0,
+    "take_profit": 0.03,
+    "first_minute": 15,
+    "last_entry_minute": 75
+   }
+  },
+  "in_sample": {
+   "days": 14,
+   "trades": 21,
+   "net_pnl_usd": -0.8442,
+   "return_pct": -1.677,
+   "win_rate_pct": 19.0,
+   "avg_net_per_trade_usd": -0.0402,
+   "modeled_costs_usd": 0.8607,
+   "max_drawdown_pct": -1.713,
+   "profit_factor": 0.138,
+   "positive_days": 3,
+   "avg_universe": 15.6
+  },
+  "out_of_sample": {
+   "days": 7,
+   "trades": 22,
+   "net_pnl_usd": -1.5291,
+   "return_pct": -3.038,
+   "win_rate_pct": 4.5,
+   "avg_net_per_trade_usd": -0.0695,
+   "modeled_costs_usd": 1.0196,
+   "max_drawdown_pct": -3.038,
+   "profit_factor": 0.008,
+   "positive_days": 0,
+   "avg_universe": 16.4
+  },
+  "top_rejections": {
+   "already have a position or order in this symbol": 27,
+   "already traded this symbol this session": 24,
+   "max entries per session reached": 10
+  }
+ },
+ {
+  "strategy": {
+   "name": "momentum_leaders",
+   "params": {
+    "min_gain": 0.015,
+    "rvol_min": 1.5,
+    "trail_atr": 2.0,
+    "take_profit": 0.08,
+    "first_minute": 15,
+    "last_entry_minute": 75
+   }
+  },
+  "in_sample": {
+   "days": 14,
+   "trades": 21,
+   "net_pnl_usd": -0.8442,
+   "return_pct": -1.677,
+   "win_rate_pct": 19.0,
+   "avg_net_per_trade_usd": -0.0402,
+   "modeled_costs_usd": 0.8607,
+   "max_drawdown_pct": -1.713,
+   "profit_factor": 0.138,
+   "positive_days": 3,
+   "avg_universe": 15.6
+  },
+  "out_of_sample": {
+   "days": 7,
+   "trades": 22,
+   "net_pnl_usd": -1.5291,
+   "return_pct": -3.038,
+   "win_rate_pct": 4.5,
+   "avg_net_per_trade_usd": -0.0695,
+   "modeled_costs_usd": 1.0196,
+   "max_drawdown_pct": -3.038,
+   "profit_factor": 0.008,
+   "positive_days": 0,
+   "avg_universe": 16.4
+  },
+  "top_rejections": {
+   "already have a position or order in this symbol": 27,
+   "already traded this symbol this session": 24,
+   "max entries per session reached": 10
+  }
+ },
+ {
+  "strategy": {
+   "name": "momentum_leaders",
+   "params": {
+    "min_gain": 0.015,
+    "rvol_min": 1.5,
+    "trail_atr": 4.0,
+    "take_profit": 0.03,
+    "first_minute": 15,
+    "last_entry_minute": 75
+   }
+  },
+  "in_sample": {
+   "days": 14,
+   "trades": 20,
+   "net_pnl_usd": -1.2228,
+   "return_pct": -2.429,
+   "win_rate_pct": 5.0,
+   "avg_net_per_trade_usd": -0.0611,
+   "modeled_costs_usd": 0.8137,
+   "max_drawdown_pct": -2.429,
+   "profit_factor": 0.072,
+   "positive_days": 0,
+   "avg_universe": 15.4
+  },
+  "out_of_sample": {
+   "days": 7,
+   "trades": 17,
+   "net_pnl_usd": -0.6959,
+   "return_pct": -1.383,
+   "win_rate_pct": 35.3,
+   "avg_net_per_trade_usd": -0.0409,
+   "modeled_costs_usd": 0.7824,
+   "max_drawdown_pct": -1.383,
+   "profit_factor": 0.357,
+   "positive_days": 2,
+   "avg_universe": 16.4
+  },
+  "top_rejections": {
+   "already have a position or order in this symbol": 46,
+   "max open positions reached": 21
+  }
+ },
+ {
+  "strategy": {
+   "name": "momentum_leaders",
+   "params": {
+    "min_gain": 0.015,
+    "rvol_min": 1.5,
+    "trail_atr": 4.0,
+    "take_profit": 0.08,
+    "first_minute": 15,
+    "last_entry_minute": 75
+   }
+  },
+  "in_sample": {
+   "days": 14,
+   "trades": 20,
+   "net_pnl_usd": -1.2228,
+   "return_pct": -2.429,
+   "win_rate_pct": 5.0,
+   "avg_net_per_trade_usd": -0.0611,
+   "modeled_costs_usd": 0.8137,
+   "max_drawdown_pct": -2.429,
+   "profit_factor": 0.072,
+   "positive_days": 0,
+   "avg_universe": 15.4
+  },
+  "out_of_sample": {
+   "days": 7,
+   "trades": 17,
+   "net_pnl_usd": -0.7192,
+   "return_pct": -1.429,
+   "win_rate_pct": 35.3,
+   "avg_net_per_trade_usd": -0.0423,
+   "modeled_costs_usd": 0.7958,
+   "max_drawdown_pct": -1.429,
+   "profit_factor": 0.335,
+   "positive_days": 2,
+   "avg_universe": 16.4
+  },
+  "top_rejections": {
+   "already have a position or order in this symbol": 46,
+   "max open positions reached": 21
+  }
+ },
+ {
+  "strategy": {
+   "name": "momentum_leaders",
+   "params": {
+    "min_gain": 0.03,
+    "rvol_min": 1.5,
+    "trail_atr": 2.0,
+    "take_profit": 0.03,
+    "first_minute": 15,
+    "last_entry_minute": 75
+   }
+  },
+  "in_sample": {
+   "days": 14,
+   "trades": 8,
+   "net_pnl_usd": -0.1834,
+   "return_pct": -0.364,
+   "win_rate_pct": 37.5,
+   "avg_net_per_trade_usd": -0.0229,
+   "modeled_costs_usd": 0.3017,
+   "max_drawdown_pct": -0.437,
+   "profit_factor": 0.343,
+   "positive_days": 3,
+   "avg_universe": 15.6
+  },
+  "out_of_sample": {
+   "days": 7,
+   "trades": 8,
+   "net_pnl_usd": -0.5552,
+   "return_pct": -1.103,
+   "win_rate_pct": 12.5,
+   "avg_net_per_trade_usd": -0.0694,
+   "modeled_costs_usd": 0.3879,
+   "max_drawdown_pct": -1.103,
+   "profit_factor": 0.002,
+   "positive_days": 0,
+   "avg_universe": 16.7
+  },
+  "top_rejections": {
+   "already have a position or order in this symbol": 12,
+   "already traded this symbol this session": 6
+  }
+ },
+ {
+  "strategy": {
+   "name": "momentum_leaders",
+   "params": {
+    "min_gain": 0.03,
+    "rvol_min": 1.5,
+    "trail_atr": 2.0,
+    "take_profit": 0.08,
+    "first_minute": 15,
+    "last_entry_minute": 75
+   }
+  },
+  "in_sample": {
+   "days": 14,
+   "trades": 8,
+   "net_pnl_usd": -0.1834,
+   "return_pct": -0.364,
+   "win_rate_pct": 37.5,
+   "avg_net_per_trade_usd": -0.0229,
+   "modeled_costs_usd": 0.3017,
+   "max_drawdown_pct": -0.437,
+   "profit_factor": 0.343,
+   "positive_days": 3,
+   "avg_universe": 15.6
+  },
+  "out_of_sample": {
+   "days": 7,
+   "trades": 8,
+   "net_pnl_usd": -0.5552,
+   "return_pct": -1.103,
+   "win_rate_pct": 12.5,
+   "avg_net_per_trade_usd": -0.0694,
+   "modeled_costs_usd": 0.3879,
+   "max_drawdown_pct": -1.103,
+   "profit_factor": 0.002,
+   "positive_days": 0,
+   "avg_universe": 16.7
+  },
+  "top_rejections": {
+   "already have a position or order in this symbol": 12,
+   "already traded this symbol this session": 6
+  }
+ },
+ {
+  "strategy": {
+   "name": "momentum_leaders",
+   "params": {
+    "min_gain": 0.03,
+    "rvol_min": 1.5,
+    "trail_atr": 4.0,
+    "take_profit": 0.03,
+    "first_minute": 15,
+    "last_entry_minute": 75
+   }
+  },
+  "in_sample": {
+   "days": 14,
+   "trades": 8,
+   "net_pnl_usd": -0.4788,
+   "return_pct": -0.951,
+   "win_rate_pct": 12.5,
+   "avg_net_per_trade_usd": -0.0599,
+   "modeled_costs_usd": 0.3016,
+   "max_drawdown_pct": -0.951,
+   "profit_factor": 0.165,
+   "positive_days": 1,
+   "avg_universe": 15.6
+  },
+  "out_of_sample": {
+   "days": 7,
+   "trades": 8,
+   "net_pnl_usd": -0.0804,
+   "return_pct": -0.16,
+   "win_rate_pct": 37.5,
+   "avg_net_per_trade_usd": -0.0101,
+   "modeled_costs_usd": 0.3332,
+   "max_drawdown_pct": -0.362,
+   "profit_factor": 0.71,
+   "positive_days": 2,
+   "avg_universe": 16.7
+  },
+  "top_rejections": {
+   "already have a position or order in this symbol": 18
+  }
+ },
+ {
+  "strategy": {
+   "name": "momentum_leaders",
+   "params": {
+    "min_gain": 0.03,
+    "rvol_min": 1.5,
+    "trail_atr": 4.0,
+    "take_profit": 0.08,
+    "first_minute": 15,
+    "last_entry_minute": 75
+   }
+  },
+  "in_sample": {
+   "days": 14,
+   "trades": 8,
+   "net_pnl_usd": -0.4788,
+   "return_pct": -0.951,
+   "win_rate_pct": 12.5,
+   "avg_net_per_trade_usd": -0.0599,
+   "modeled_costs_usd": 0.3016,
+   "max_drawdown_pct": -0.951,
+   "profit_factor": 0.165,
+   "positive_days": 1,
+   "avg_universe": 15.6
+  },
+  "out_of_sample": {
+   "days": 7,
+   "trades": 8,
+   "net_pnl_usd": 0.1382,
+   "return_pct": 0.275,
+   "win_rate_pct": 37.5,
+   "avg_net_per_trade_usd": 0.0173,
+   "modeled_costs_usd": 0.3515,
+   "max_drawdown_pct": -0.36,
+   "profit_factor": 1.498,
+   "positive_days": 2,
+   "avg_universe": 16.7
+  },
+  "top_rejections": {
+   "already have a position or order in this symbol": 18
+  }
+ }
+]
