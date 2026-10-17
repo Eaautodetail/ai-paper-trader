@@ -88,6 +88,11 @@ class Ledger:
     def cash(self) -> float:
         return float(self.account()["cash_usd"])
 
+    def set_strategy(self, spec: dict, why: str) -> None:
+        """Change the strategy used by later sessions (recorded in the event log)."""
+        self.db.execute("UPDATE account SET strategy_json = ? WHERE id = 1", (json.dumps(spec),))
+        self.log(None, "INFO", f"Strategy changed to {json.dumps(spec)}: {why}")
+
     def strategy_spec(self) -> dict | None:
         a = self.account()
         return json.loads(a["strategy_json"]) if a and a["strategy_json"] else None

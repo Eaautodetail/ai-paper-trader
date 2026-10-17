@@ -96,6 +96,15 @@ def main(argv=None) -> int:
                   tag="backtest_momentum")
         print(json.dumps(sel, indent=2))
         return 0
+    if cmd == "set-evaluation-strategy":
+        from .ledger import Ledger
+        from .strategies import build
+        spec = json.loads(argv[1])
+        build(spec)  # must be a known strategy with valid parameters
+        led = Ledger(ROOT / "ledger" / "evaluation.sqlite")
+        led.set_strategy(spec, argv[2] if len(argv) > 2 else "changed by the user")
+        led.close()
+        return 0
     if cmd == "status":
         write_status(rt, cal)
         print((ROOT / "STATUS.md").read_text())

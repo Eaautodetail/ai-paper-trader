@@ -133,7 +133,12 @@ def final_report(led: Ledger, cfg: dict, backtest_sel: dict | None) -> str:
     for s in sessions:
         lines.append(f"| [{s['day']}](evaluation/{s['day']}.md) | {s['status']} | {(s['start_equity_usd'] or 0):.4f} | {(s['end_equity_usd'] or 0):.4f} | "
                      f"{((s['end_equity_usd'] or 0) - (s['start_equity_usd'] or 0)):+.4f} | {len(led.trades(s['day']))} |")
-    lines += ["", "## Strategy", "", f"* Used: `{a['strategy_json']}`"]
+    lines += ["", "## Strategy", ""]
+    for s in sessions:
+        used = [e["message"].split("; start equity")[0] for e in led.events(s["day"]) if e["message"].startswith("Strategy {")]
+        lines.append(f"* {s['day']}: `{used[-1][len('Strategy '):] if used else a['strategy_json']}`")
+    changes = [e["message"] for e in led.events(None, limit=100) if e["message"].startswith("Strategy changed")]
+    lines += [f"* {c}" for c in reversed(changes)]
     if backtest_sel and "data" in backtest_sel:
         lines += [f"* Chosen by backtest on {backtest_sel['data']['first_day']}..{backtest_sel['data']['last_day']}; "
                   f"passed out-of-sample check: {'yes' if backtest_sel.get('validated_out_of_sample') else 'no'} (see backtest.md)"]
