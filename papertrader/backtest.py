@@ -82,6 +82,7 @@ def metrics(res: dict, start_usd: float) -> dict:
         "win_rate_pct": round(100 * len(wins) / n, 1) if n else None,
         "avg_net_per_trade_usd": round(net / n, 4) if n else None,
         "modeled_costs_usd": round(float(trades["costs"].sum()), 4) if n else 0.0,
+        "gross_before_costs_usd": round(float((trades["net_pnl"] + trades["costs"]).sum()), 4) if n else 0.0,
         "max_drawdown_pct": round(100 * dd, 3), "profit_factor": round(pf, 3) if pf else None,
         "positive_days": int((daily["pnl"] > 0).sum()), "avg_universe": round(float(daily["universe"].mean()), 1),
     }
@@ -149,18 +150,21 @@ def write_markdown(path: Path, rows: list, sel: dict) -> None:
         return "-" if v is None else f"{v}"
     lines = ["# Strategy backtest", "",
              "Real 1-minute Yahoo bars, same simulator, risk limits and costs as paper trading, starting from 500 SEK.",
-             "Only 09:30-11:30 New York time is traded. **This is a short sample and is not evidence of a profitable edge.**", "",
+             "Only 09:30-11:30 New York time is traded. **This is a short sample and is not evidence of a profitable edge.**",
+             "If 'move before costs' is negative, the strategy lost before any fees, so a bigger trade size would only lose more.", "",
              f"* Data: {sel['data']['first_day']} to {sel['data']['last_day']}; "
              f"in-sample {len(sel['data']['in_sample_days'])} days, out-of-sample {len(sel['data']['out_of_sample_days'])} days",
              f"* USD/SEK used: {sel['data']['usdsek']:.4f}; starting cash {sel['data']['start_usd']:.2f} USD after conversion fee",
              f"* Selection rule: {sel['rule']}",
              f"* **Selected: `{sel['strategy']['name']}` {json.dumps(sel['strategy']['params'])}**",
              f"* Out-of-sample check passed: **{'yes' if sel.get('validated_out_of_sample') else 'no'}**", "",
-             "| Strategy | Params | IS trades | IS net USD | IS max DD % | OOS trades | OOS net USD | OOS win % | Most common rejections |",
-             "|---|---|---|---|---|---|---|---|---|"]
+             "| Strategy | Params | IS trades | IS net USD | IS max DD % | OOS trades | OOS net USD | OOS win % | All days: move before costs USD | All days: costs USD | Most common rejections |",
+             "|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in sorted(rows, key=lambda r: -(r["in_sample"].get("net_pnl_usd") or 0)):
         i, o = r["in_sample"], r["out_of_sample"]
         rej = "; ".join(f"{k} ({v})" for k, v in r["top_rejections"].items())
         lines.append(f"| {r['strategy']['name']} | `{json.dumps(r['strategy']['params'])}` | {fmt(i,'trades')} | {fmt(i,'net_pnl_usd')} | "
-                     f"{fmt(i,'max_drawdown_pct')} | {fmt(o,'trades')} | {fmt(o,'net_pnl_usd')} | {fmt(o,'win_rate_pct')} | {rej} |")
+                     f"{fmt(i,'max_drawdown_pct')} | {fmt(o,'trades')} | {fmt(o,'net_pnl_usd')} | {fmt(o,'win_rate_pct')} | "
+                     f"{(i.get('gross_before_costs_usd') or 0) + (o.get('gross_before_costs_usd') or 0):+.4f} | "
+                     f"{(i.get('modeled_costs_usd') or 0) + (o.get('modeled_costs_usd') or 0):.4f} | {rej} |")
     path.write_text("\n".join(lines) + "\n")

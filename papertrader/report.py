@@ -23,6 +23,50 @@ def _local(ts: str | None, tz: str) -> str:
     return datetime.fromisoformat(ts).astimezone(ZoneInfo(tz)).strftime("%H:%M")
 
 
+def cost_analysis(trades, cfg: dict, fx: float | None) -> list[str]:
+    """Was a loss caused by costs (trade too small) or by the price move itself?"""
+    from .costs import CostModel
+    c = CostModel(cfg)
+    sek = (lambda usd: f" ({usd * fx:,.0f} SEK)") if fx else (lambda usd: "")
+    lines = ["## Was it the fees?", "",
+             "Each trade's result split into the price move (before any costs) and the costs. Costs come in two kinds: "
+             "*fixed* (US fees rounded up to whole cents, about 0.02 USD per sale no matter the size) and *proportional* "
+             "(spread and slippage, a percentage of the trade). Fixed fees shrink in % as trades get bigger; proportional "
+             "costs do not. This is analysis only: the real limits (20% of equity per position) are never raised.", "",
+             "| Stock | Trade size USD | Price move before costs | Costs | Net | Verdict |", "|---|---|---|---|---|---|"]
+    tot_gross = tot_cost = 0.0
+    fee_only = losing = 0
+    for t in trades:
+        size = t["entry_price"] * t["qty"]
+        gross = t["net_pnl"] + t["costs"]
+        fixed = c.sell_fees(t["qty"], t["exit_price"]) + 2 * c.commission(t["qty"])
+        prop = max(0.0, t["costs"] - fixed)
+        g_pct, p_pct = gross / size, prop / size
+        tot_gross += gross
+        tot_cost += t["costs"]
+        if t["net_pnl"] > 0:
+            verdict = "profitable after costs"
+        elif gross <= 0:
+            verdict = "the price moved against us; no trade size would have made this a profit"
+        elif g_pct <= p_pct:
+            verdict = "the gain was smaller than the spread and slippage; no trade size would have helped"
+        else:
+            need = fixed / (g_pct - p_pct)
+            verdict = f"lost only because of fixed fees; would have broken even at about {need:,.0f} USD{sek(need)} per trade"
+        if t["net_pnl"] <= 0:
+            losing += 1
+            fee_only += verdict.startswith("lost only")
+        lines.append(f"| {t['symbol']} | {size:.2f} | {gross:+.4f} USD ({g_pct:+.2%}) | {t['costs']:.4f} USD ({t['costs'] / size:.2%}) | "
+                     f"{t['net_pnl']:+.4f} USD | {verdict} |")
+    if not trades:
+        lines.append("| (no trades) | | | | | |")
+    else:
+        lines += ["", f"Total price move before costs: {tot_gross:+.4f} USD; total costs: {tot_cost:.4f} USD. "
+                      f"{fee_only} of {losing} losing trades lost only because of fees; "
+                      f"the rest would have lost at any size."]
+    return lines + [""]
+
+
 def session_report(led: Ledger, day: str, cfg: dict, window=None) -> str:
     s = led.session(day)
     fx = s["fx_usdsek"] if s else None
@@ -54,7 +98,8 @@ def session_report(led: Ledger, day: str, cfg: dict, window=None) -> str:
                      f"{t['exit_price']:.4f} | {t['exit_kind']} | {t['net_pnl']:.4f} | {t['costs']:.4f} |")
     if not trades:
         lines.append("| (no trades) | | | | | | | | |")
-    lines += ["", "## Signals the risk manager rejected", ""]
+    lines += [""] + cost_analysis(trades, cfg, fx)
+    lines += ["## Signals the risk manager rejected", ""]
     lines += [f"* {n} x {why}" for why, n in skips.most_common(10)] or ["* none"]
     lines += ["", "## Warnings", ""] + ([f"* {w}" for w in warns] or ["* none"])
     lines += ["", "## Full event log", "", "```"] + [f"{_local(e['ts'], st)} {e['level']:5} {e['message']}" for e in events] + ["```", ""]
@@ -142,7 +187,8 @@ def final_report(led: Ledger, cfg: dict, backtest_sel: dict | None) -> str:
     if backtest_sel and "data" in backtest_sel:
         lines += [f"* Chosen by backtest on {backtest_sel['data']['first_day']}..{backtest_sel['data']['last_day']}; "
                   f"passed out-of-sample check: {'yes' if backtest_sel.get('validated_out_of_sample') else 'no'} (see backtest.md)"]
-    lines += ["", "## How to read this", "",
+    lines += [""] + cost_analysis(trades, cfg, fx1)
+    lines += ["## How to read this", "",
               "* Three sessions are far too few to judge profitability; the goal was to prove the system runs safely and records everything.",
               "* Check that every position was closed by 11:30 New York time (exit reason `window_end` or earlier) and that no limits were broken.",
               "* With 500 SEK, one position may be at most 20% (about 100 SEK), so only cheaper stocks fit and fixed fees weigh heavily.",
