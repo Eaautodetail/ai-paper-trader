@@ -29,7 +29,8 @@ poll_seconds = 20
 # (0 = Monday ... 4 = Friday) until stopped. A weekly review re-tests all strategies on the
 # growing history, and readiness.md reports whether the record meets the fixed criteria.
 enabled = true
-weekdays = [1, 3]            # Tuesday and Thursday: fits GitHub's free minutes for a private repository
+weekdays = [1, 3]            # private repository: Tuesday and Thursday, fits GitHub's free minutes
+weekdays_public = [0, 1, 2, 3, 4]   # public repository (unlimited free minutes): every trading day
 
 [risk]
 max_position_pct_equity = 20.0        # one position never larger than 20% of current equity

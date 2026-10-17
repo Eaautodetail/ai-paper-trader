@@ -8,6 +8,7 @@ the control switch and the ledger, so starting it extra times is harmless:
     current (or skips the session safely), trades until 11:30, closes everything and reports.
 """
 import json
+import os
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
@@ -68,9 +69,18 @@ def ledger_path(root: Path, kind: str) -> Path:
     return root / "ledger" / f"{'evaluation' if kind == 'training' else kind}.sqlite"
 
 
+def training_weekdays(cfg: dict) -> list:
+    """Weekdays used for training. A public GitHub repository has unlimited free Actions time,
+    so it trains every weekday; a private one uses the smaller list to stay inside the free minutes."""
+    t = cfg.get("training", {})
+    if os.environ.get("PAPERTRADER_REPO_PRIVATE", "").strip().lower() == "false":
+        return t.get("weekdays_public", [0, 1, 2, 3, 4])
+    return t.get("weekdays", [0, 1, 2, 3, 4])
+
+
 def training_day(cfg: dict, d) -> bool:
     t = cfg.get("training", {})
-    return bool(t.get("enabled")) and d.weekday() in t.get("weekdays", [0, 1, 2, 3, 4])
+    return bool(t.get("enabled")) and d.weekday() in training_weekdays(cfg)
 
 
 def next_session_window(cfg: dict, cal: MarketCalendar, now: datetime, eval_done: bool):

@@ -38,7 +38,10 @@ jobs:
         id: run
         env:
           PAPERTRADER_GIT_PERSIST: "1"
+          GH_TOKEN: ${{ github.token }}
         run: |
+          # public repository = unlimited free minutes = train every weekday (see config.toml [training])
+          export PAPERTRADER_REPO_PRIVATE=$(gh api "repos/$GITHUB_REPOSITORY" --jq .private 2>/dev/null || echo true)
           git config user.name "paper-trading-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           set +e

@@ -198,3 +198,15 @@ def test_training_continues_after_evaluation_in_same_account(cfg, tmp_root):
     assert (tmp_root / "data" / "bars" / "2026-10-20.csv.gz").exists()
     write_status(rt, __import__("papertrader.market_calendar", fromlist=["x"]).MarketCalendar(c))
     assert "TRAINING" in (tmp_root / "STATUS.md").read_text()
+
+
+def test_public_repo_trains_every_weekday(cfg, monkeypatch):
+    from datetime import date
+    from papertrader.live import training_day
+    wed = date(2026, 10, 21)
+    monkeypatch.setenv("PAPERTRADER_REPO_PRIVATE", "true")
+    assert not training_day(cfg, wed)
+    monkeypatch.setenv("PAPERTRADER_REPO_PRIVATE", "false")
+    assert training_day(cfg, wed)
+    monkeypatch.delenv("PAPERTRADER_REPO_PRIVATE")
+    assert not training_day(cfg, wed)  # unknown visibility: assume private

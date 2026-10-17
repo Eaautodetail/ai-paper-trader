@@ -31,7 +31,10 @@ jobs:
       - run: pip install -r requirements.txt
         timeout-minutes: 10
       - name: Apply
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          export PAPERTRADER_REPO_PRIVATE=$(gh api "repos/$GITHUB_REPOSITORY" --jq .private 2>/dev/null || echo true)
           git config user.name "paper-trading-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           case "${{ inputs.action }}" in
