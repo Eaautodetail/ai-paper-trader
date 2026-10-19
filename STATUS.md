@@ -18,4 +18,6 @@
 | [2026-10-16](reports/evaluation/2026-10-16.md) | evaluation | completed | 50.04 | 49.83 | 1 |
 | [2026-10-19](reports/evaluation/2026-10-19.md) | evaluation | completed | 49.83 | 49.64 | 2 |
 
+Last run: evaluation session 2026-10-19 completed
+
 _Simulated paper trading only. No real money, no brokerage connection. Results from a few sessions are an operational test, not evidence of a profitable strategy._
