@@ -117,7 +117,9 @@ def status_page(root: Path, cfg: dict, ctrl: dict, eval_led: Ledger | None, next
         state = "STOPPED (press Start in the Control workflow to resume)"
     elif done >= n and ctrl.get("evaluation_enabled") and cfg.get("training", {}).get("enabled"):
         trained = len([s for s in eval_led.sessions("training") if s["status"] == "completed"]) if eval_led else 0
-        days = ", ".join(["Mon", "Tue", "Wed", "Thu", "Fri"][d] for d in cfg["training"]["weekdays"])
+        from .live import training_weekdays
+        wd = training_weekdays(cfg)
+        days = "every trading day" if sorted(wd) == [0, 1, 2, 3, 4] else ", ".join(["Mon", "Tue", "Wed", "Thu", "Fri"][d] for d in wd)
         state = (f"TRAINING - evaluation finished ({n}/{n}), {trained} training sessions since ({days}). "
                  f"See reports/readiness.md")
     elif done >= n:

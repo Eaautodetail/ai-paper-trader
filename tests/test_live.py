@@ -169,7 +169,8 @@ def test_rehearsal_uses_separate_ledger(cfg, tmp_root):
     assert led.account() is None
 
 
-def test_training_continues_after_evaluation_in_same_account(cfg, tmp_root):
+def test_training_continues_after_evaluation_in_same_account(cfg, tmp_root, monkeypatch):
+    monkeypatch.setenv("PAPERTRADER_REPO_PRIVATE", "true")
     c = small_universe_cfg(cfg)
     c["risk"]["min_reward_to_cost"] = 0.5
     c["training"]["weekdays"] = [1]  # Tuesdays
