@@ -22,4 +22,6 @@
 | [2026-10-22](reports/training/2026-10-22.md) | training | completed | 49.59 | 49.31 | 2 |
 | [2026-10-23](reports/training/2026-10-23.md) | training | completed | 49.31 | 49.20 | 1 |
 
+Last run: training session 2026-10-23 completed
+
 _Simulated paper trading only. No real money, no brokerage connection. Results from a few sessions are an operational test, not evidence of a profitable strategy._
