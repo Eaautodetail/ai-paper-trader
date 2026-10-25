@@ -12,7 +12,8 @@ import json
 from datetime import datetime
 from pathlib import Path
 
-from .backtest import evaluate, load_history
+from . import lessons
+from .backtest import evaluate, load_history, run_strategy
 from .ledger import Ledger
 from .strategies import build, candidate_grid
 
@@ -23,6 +24,11 @@ SWITCH_MARGIN_PCT = 0.5     # must beat the current strategy by at least 0.5% of
 
 def _score(r):
     return (r["in_sample"].get("net_pnl_usd") or 0) + (r["out_of_sample"].get("net_pnl_usd") or 0)
+
+
+def cfg_tz(cfg):
+    from .market_calendar import MarketCalendar
+    return MarketCalendar(cfg).tz
 
 
 def decide(rows: list, current: dict, start_usd: float, evaluation_done: bool) -> tuple[dict | None, str]:
@@ -65,6 +71,14 @@ def weekly_review(cfg: dict, root: Path, hist: dict | None = None) -> dict:
                   "in_sample": len(ins), "out_of_sample": len(oos), "current": current,
                   "new": new, "why": why}
         _write(root, rows, result)
+        try:
+            spec = new or current
+            res = run_strategy(build(spec), hist["days"], hist["prepared"], cfg, start_usd, hist["fx"])
+            h = lessons.summarize(lessons.history_trade_traits(res["trades"], hist["prepared"]))
+            lessons.write(root, real=lessons.summarize(lessons.real_trade_traits(root, led, cfg_tz(cfg))),
+                          history={**h, "strategy": spec, "days": len(hist["days"])})
+        except Exception as e:
+            print(f"trade lessons not updated: {e}", flush=True)
         return result
     finally:
         led.close()

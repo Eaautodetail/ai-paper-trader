@@ -404,3 +404,20 @@ def test_market_filter_blocks_entries_when_spy_is_weak(cfg, cal, tmp_path):
     spy_up = compute_features(make_day("2026-10-15", 500.0, lambda i: 1 + 0.001 * i), w2.open)
     eng2.process(feats(df, w2), market=spy_up)
     assert led2.orders()
+
+
+def test_trade_lessons_groups_traits(tmp_path):
+    import pandas as pd
+    from papertrader import lessons
+    from papertrader.features import compute_features
+    idx = pd.date_range("2026-10-20 09:30", periods=60, freq="1min", tz="America/New_York")
+    bars = pd.DataFrame({"Open": 5.0, "High": 5.05, "Low": 4.95, "Close": [5 + i * 0.002 for i in range(60)], "Volume": 1000}, index=idx)
+    f = compute_features(bars, idx[0])
+    trades = [{"day": "2026-10-20", "symbol": "AAA", "entry_time": str(idx[10 + i]), "entry_price": 5.0, "qty": 2,
+               "net_pnl": 0.05 if i % 2 else -0.05, "costs": 0.03, "exit_kind": "stop"} for i in range(12)]
+    df = lessons.traits(trades, {"2026-10-20": {"AAA": f}}, {"2026-10-20": f})
+    assert len(df) == 12 and df["entry_minute"].min() == 10
+    s = lessons.summarize(df)
+    assert s["trades"] == 12 and "entry_minute" in s["tables"]
+    p = lessons.write(tmp_path, real=s)
+    assert "Real paper trades" in p.read_text()

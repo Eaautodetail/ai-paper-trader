@@ -330,6 +330,11 @@ def write_reports(rt: Runtime, cal, led: Ledger, day: str, w, kind: str, n_eval:
                     if rt.cfg.get("training", {}).get("enabled") else "Automatic trading stops.")
             led.log(day, "INFO", f"Evaluation complete ({n_eval} sessions). Final report written. {more}")
     if kind in ("evaluation", "training"):
+        from . import lessons
+        try:
+            lessons.write(rt.root, real=lessons.summarize(lessons.real_trade_traits(rt.root, led, cal.tz)))
+        except Exception as e:  # analysis must never break a trading session
+            led.log(day, "WARN", f"trade lessons not updated: {e}")
         from . import readiness
         res = readiness.assess(led)
         (rt.root / "reports" / "readiness.md").write_text(readiness.markdown(res))
