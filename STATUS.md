@@ -2,10 +2,10 @@
 
 **Mode: PAPER TRADING (simulated). Real-money trading: DISABLED - there is no brokerage connection in this program.**
 
-* Updated: 2026-10-24 11:28 Stockholm time
-* Evaluation: **TRAINING - evaluation finished (3/3), 4 training sessions since (Tue, Thu). See reports/readiness.md**
+* Updated: 2026-10-25 02:24 Stockholm time
+* Evaluation: **TRAINING - evaluation finished (3/3), 4 training sessions since (every trading day). See reports/readiness.md**
 * Readiness self-check: NOT READY - still training (0 of 8 criteria met) ([details](reports/readiness.md))
-* Next trading window: Tue 2026-10-27 14:30-16:30 Stockholm (09:30-11:30 New York)
+* Next trading window: Mon 2026-10-26 14:30-16:30 Stockholm (09:30-11:30 New York)
 * Starting capital: 500.00 SEK (= 50.09 USD after a 1.25 SEK conversion fee)
 * Current equity: 49.20 USD = 488.74 SEK at USD/SEK 9.9334
 * Cash: 49.20 USD

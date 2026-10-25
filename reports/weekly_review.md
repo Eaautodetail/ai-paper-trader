@@ -1,8 +1,8 @@
 # Weekly strategy review
 
-* Date: 2026-10-24; history: 21 trading days of real 1-minute data (14 older days used for ranking, 7 recent days for checking)
-* Strategy before the review: `{"name": "orb", "params": {"or_minutes": 5, "rvol_min": 2.0, "target_r": 2.5, "stop_atr": 2.0, "last_entry_minute": 90}}`
-* Decision: **Switching: momentum_leaders beat the current strategy by +1.47 USD over all tested days and also on the most recent days.**
+* Date: 2026-10-25; history: 21 trading days of real 1-minute data (14 older days used for ranking, 7 recent days for checking)
+* Strategy before the review: `{"name": "momentum_leaders", "params": {"min_gain": 0.03, "rvol_min": 1.5, "trail_atr": 4.0, "take_profit": 0.03, "first_minute": 15, "last_entry_minute": 75}}`
+* Decision: **The current strategy is still the best tested one; keeping it.**
 * Strategy from now on: `{"name": "momentum_leaders", "params": {"min_gain": 0.03, "rvol_min": 1.5, "trail_atr": 4.0, "take_profit": 0.03, "first_minute": 15, "last_entry_minute": 75}}`
 
 Top candidates (net USD after all costs, starting from 500 SEK each time):
