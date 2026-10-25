@@ -96,6 +96,14 @@ def main(argv=None) -> int:
                   tag="backtest_momentum", root=ROOT)
         print(json.dumps(sel, indent=2))
         return 0
+    if cmd == "fullday-study":
+        # Research only: compares later daily deadlines; does not change the schedule or strategy.
+        from .fullday import study
+        res = study(cfg, ROOT)
+        print(json.dumps(res["real_trades"], indent=2))
+        for r in res["backtest"]:
+            print(r)
+        return 0
     if cmd == "set-evaluation-strategy":
         from .ledger import Ledger
         from .strategies import build

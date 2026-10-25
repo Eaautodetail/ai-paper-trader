@@ -16,6 +16,7 @@ on:
           - backtest
           - backtest-momentum
           - weekly-review
+          - fullday-study
 permissions:
   contents: write
 concurrency:
@@ -35,8 +36,11 @@ jobs:
       - run: pip install -r requirements.txt
         timeout-minutes: 10
       - name: Run
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -o pipefail
+          export PAPERTRADER_REPO_PRIVATE=$(gh api "repos/$GITHUB_REPOSITORY" --jq .private 2>/dev/null || echo true)
           python -m papertrader ${{ inputs.task || 'weekly-review' }} 2>&1 | tee out.log
           { echo '## Output'; echo '```'; tail -n 120 out.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
       - name: Save backtest results
