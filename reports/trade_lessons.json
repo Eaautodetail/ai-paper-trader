@@ -1,12 +1,12 @@
 {
   "real": {
-    "trades": 11,
-    "win_pct": 18.2,
-    "net": -0.6328,
-    "avg_move_pct": -0.181,
-    "avg_cost_pct": 0.553,
+    "trades": 12,
+    "win_pct": 16.7,
+    "net": -0.7466,
+    "avg_move_pct": -0.233,
+    "avg_cost_pct": 0.542,
     "exits": {
-      "stop": 7,
+      "stop": 8,
       "window_end": 3,
       "target": 1
     },
@@ -39,11 +39,11 @@
         },
         {
           "group": "45 to 60",
-          "trades": 4.0,
-          "win_pct": 25.0,
-          "avg_net": -0.0237,
-          "total_net": -0.0947,
-          "avg_move_pct": 0.3247
+          "trades": 5.0,
+          "win_pct": 20.0,
+          "avg_net": -0.0417,
+          "total_net": -0.2085,
+          "avg_move_pct": 0.0981
         }
       ],
       "gain_open_pct": [
@@ -65,14 +65,22 @@
         },
         {
           "group": "3 to 5",
-          "trades": 1.0,
+          "trades": 2.0,
           "win_pct": 0.0,
-          "avg_net": -0.1277,
-          "total_net": -0.1277,
-          "avg_move_pct": -1.0265
+          "avg_net": -0.1208,
+          "total_net": -0.2416,
+          "avg_move_pct": -0.9175
         }
       ],
       "rvol": [
+        {
+          "group": "1.5 to 2",
+          "trades": 1.0,
+          "win_pct": 0.0,
+          "avg_net": -0.1138,
+          "total_net": -0.1138,
+          "avg_move_pct": -0.8086
+        },
         {
           "group": "2 to 3",
           "trades": 5.0,
@@ -125,14 +133,22 @@
         },
         {
           "group": "3 or more",
-          "trades": 4.0,
+          "trades": 5.0,
           "win_pct": 0.0,
-          "avg_net": -0.1177,
-          "total_net": -0.4706,
-          "avg_move_pct": -0.8438
+          "avg_net": -0.1169,
+          "total_net": -0.5845,
+          "avg_move_pct": -0.8367
         }
       ],
       "atr_pct": [
+        {
+          "group": "0.2 to 0.3",
+          "trades": 1.0,
+          "win_pct": 0.0,
+          "avg_net": -0.1138,
+          "total_net": -0.1138,
+          "avg_move_pct": -0.8086
+        },
         {
           "group": "0.3 to 0.5",
           "trades": 9.0,
@@ -169,21 +185,21 @@
         },
         {
           "group": "0.3 or more",
-          "trades": 3.0,
-          "win_pct": 33.3333,
-          "avg_net": 0.011,
-          "total_net": 0.0331,
-          "avg_move_pct": 0.7751
+          "trades": 4.0,
+          "win_pct": 25.0,
+          "avg_net": -0.0202,
+          "total_net": -0.0807,
+          "avg_move_pct": 0.3792
         }
       ],
       "cost_pct": [
         {
           "group": "0.3 to 0.5",
-          "trades": 3.0,
+          "trades": 4.0,
           "win_pct": 0.0,
-          "avg_net": -0.109,
-          "total_net": -0.3269,
-          "avg_move_pct": -0.7996
+          "avg_net": -0.1102,
+          "total_net": -0.4407,
+          "avg_move_pct": -0.8019
         },
         {
           "group": "0.5 to 0.75",
@@ -221,11 +237,11 @@
         },
         {
           "group": "8 to 12",
-          "trades": 3.0,
+          "trades": 4.0,
           "win_pct": 0.0,
-          "avg_net": -0.109,
-          "total_net": -0.3269,
-          "avg_move_pct": -0.7996
+          "avg_net": -0.1102,
+          "total_net": -0.4407,
+          "avg_move_pct": -0.8019
         }
       ]
     }

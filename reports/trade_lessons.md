@@ -6,9 +6,9 @@ What winning and losing trades had in common at the moment of buying. Analysis o
 
 All simulated trades so far, updated after every session.
 
-* Trades: 11; winners: 18.2%; total net after costs: -0.633 USD
-* Average price move before costs: -0.18% per trade; average costs: 0.55% per trade
-* How trades ended: stop 7, window_end 3, target 1
+* Trades: 12; winners: 16.7%; total net after costs: -0.747 USD
+* Average price move before costs: -0.23% per trade; average costs: 0.54% per trade
+* How trades ended: stop 8, window_end 3, target 1
 
 _Too few trades per group (needs 5) to call out patterns yet._
 
@@ -19,7 +19,7 @@ _Too few trades per group (needs 5) to call out patterns yet._
 | 0 to 15 | 3 | 33 | -0.0450 | -0.1350 | -0.17 |
 | 15 to 30 | 2 | 0 | -0.1115 | -0.2230 | -0.86 |
 | 30 to 45 | 2 | 0 | -0.0901 | -0.1802 | -0.53 |
-| 45 to 60 | 4 | 25 | -0.0237 | -0.0947 | +0.32 |
+| 45 to 60 | 5 | 20 | -0.0417 | -0.2085 | +0.10 |
 
 </details>
 
@@ -29,7 +29,7 @@ _Too few trades per group (needs 5) to call out patterns yet._
 |---|---|---|---|---|---|
 | 0 to 1 | 6 | 17 | -0.0684 | -0.4107 | -0.24 |
 | 1 to 2 | 4 | 25 | -0.0236 | -0.0944 | +0.11 |
-| 3 to 5 | 1 | 0 | -0.1277 | -0.1277 | -1.03 |
+| 3 to 5 | 2 | 0 | -0.1208 | -0.2416 | -0.92 |
 
 </details>
 
@@ -37,6 +37,7 @@ _Too few trades per group (needs 5) to call out patterns yet._
 
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
+| 1.5 to 2 | 1 | 0 | -0.1138 | -0.1138 | -0.81 |
 | 2 to 3 | 5 | 20 | -0.0645 | -0.3224 | -0.35 |
 | 3 to 5 | 3 | 0 | -0.1118 | -0.3353 | -0.74 |
 | 5 or more | 3 | 33 | +0.0083 | +0.0248 | +0.65 |
@@ -50,7 +51,7 @@ _Too few trades per group (needs 5) to call out patterns yet._
 | 0 to 1 | 2 | 50 | +0.0143 | +0.0286 | +0.64 |
 | 1 to 2 | 4 | 25 | -0.0197 | -0.0789 | +0.25 |
 | 2 to 3 | 1 | 0 | -0.1119 | -0.1119 | -0.90 |
-| 3 or more | 4 | 0 | -0.1177 | -0.4706 | -0.84 |
+| 3 or more | 5 | 0 | -0.1169 | -0.5845 | -0.84 |
 
 </details>
 
@@ -58,6 +59,7 @@ _Too few trades per group (needs 5) to call out patterns yet._
 
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
+| 0.2 to 0.3 | 1 | 0 | -0.1138 | -0.1138 | -0.81 |
 | 0.3 to 0.5 | 9 | 11 | -0.0846 | -0.7614 | -0.46 |
 | 0.5 or more | 2 | 50 | +0.0643 | +0.1286 | +1.09 |
 
@@ -69,7 +71,7 @@ _Too few trades per group (needs 5) to call out patterns yet._
 |---|---|---|---|---|---|
 | -0.3 to 0 | 3 | 33 | -0.0330 | -0.0991 | +0.09 |
 | 0 to 0.3 | 5 | 0 | -0.1134 | -0.5668 | -0.92 |
-| 0.3 or more | 3 | 33 | +0.0110 | +0.0331 | +0.78 |
+| 0.3 or more | 4 | 25 | -0.0202 | -0.0807 | +0.38 |
 
 </details>
 
@@ -77,7 +79,7 @@ _Too few trades per group (needs 5) to call out patterns yet._
 
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
-| 0.3 to 0.5 | 3 | 0 | -0.1090 | -0.3269 | -0.80 |
+| 0.3 to 0.5 | 4 | 0 | -0.1102 | -0.4407 | -0.80 |
 | 0.5 to 0.75 | 8 | 25 | -0.0382 | -0.3059 | +0.05 |
 
 </details>
@@ -89,7 +91,7 @@ _Too few trades per group (needs 5) to call out patterns yet._
 | 0 to 3 | 2 | 50 | +0.0580 | +0.1161 | +1.35 |
 | 3 to 5 | 4 | 25 | -0.0749 | -0.2995 | -0.33 |
 | 5 to 8 | 2 | 0 | -0.0613 | -0.1226 | -0.49 |
-| 8 to 12 | 3 | 0 | -0.1090 | -0.3269 | -0.80 |
+| 8 to 12 | 4 | 0 | -0.1102 | -0.4407 | -0.80 |
 
 </details>
 
