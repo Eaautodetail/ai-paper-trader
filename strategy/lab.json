@@ -81,15 +81,16 @@
           "below_vwap_atr": 1.0,
           "rsi_max": 35,
           "spy_above_vwap": true,
-          "stop_atr": 1.5,
+          "stop_atr": 4.0,
           "trail": false,
-          "target_r": 1.5,
+          "target_r": null,
           "first_minute": 20,
           "last_entry_minute": 100,
-          "score": "dip"
+          "score": "dip",
+          "take_profit": 0.015
         }
       },
-      "why": "Different style: buy a short dip below VWAP in a stock that is still up on the day, only while the market is strong",
+      "why": "Different style: buy a short dip below VWAP in a stock that is still up on the day, only while the market is strong; aims for +1.5%",
       "added": "2026-10-29",
       "active": true
     },

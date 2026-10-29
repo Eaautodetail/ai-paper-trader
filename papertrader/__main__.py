@@ -101,7 +101,10 @@ def main(argv=None) -> int:
         from .backtest import run
         from .lab import entries
         from .strategies import build
-        current = json.loads((ROOT / "strategy" / "selected.json").read_text())["strategy"]
+        from .ledger import Ledger
+        led = Ledger(ROOT / "ledger" / "evaluation.sqlite")
+        current = led.strategy_spec() or json.loads((ROOT / "strategy" / "selected.json").read_text())["strategy"]
+        led.close()
         strats = [build({"name": "no_trade"}), build(current)] + [build(a["spec"]) for a in entries(ROOT)]
         run(cfg, ROOT / "reports", strategies=strats, tag="lab_backtest", root=ROOT)
         print((ROOT / "reports" / "lab_backtest.md").read_text())
