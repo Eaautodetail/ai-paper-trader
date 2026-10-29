@@ -17,6 +17,7 @@ on:
           - backtest-momentum
           - weekly-review
           - fullday-study
+          - lab-backtest
 permissions:
   contents: write
 concurrency:

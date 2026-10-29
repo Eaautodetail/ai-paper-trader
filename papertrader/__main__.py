@@ -23,7 +23,7 @@ def git_persist(msg: str) -> None:
     """Commit the ledger, reports and status to GitHub (only inside GitHub Actions)."""
     if os.environ.get("PAPERTRADER_GIT_PERSIST") != "1":
         return
-    paths = ["ledger", "reports", "STATUS.md", "data"]
+    paths = ["ledger", "reports", "STATUS.md", "data", "strategy/lab.json"]
     try:
         subprocess.run(["git", "add", *paths], cwd=ROOT, check=True)
         if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT).returncode == 0:
@@ -95,6 +95,16 @@ def main(argv=None) -> int:
         sel = run(cfg, ROOT / "reports", strategies=[build({"name": "no_trade"}), build(current)] + momentum_grid(),
                   tag="backtest_momentum", root=ROOT)
         print(json.dumps(sel, indent=2))
+        return 0
+    if cmd == "lab-backtest":
+        # Backtests every lab strategy on all stored history; changes nothing.
+        from .backtest import run
+        from .lab import entries
+        from .strategies import build
+        current = json.loads((ROOT / "strategy" / "selected.json").read_text())["strategy"]
+        strats = [build({"name": "no_trade"}), build(current)] + [build(a["spec"]) for a in entries(ROOT)]
+        run(cfg, ROOT / "reports", strategies=strats, tag="lab_backtest", root=ROOT)
+        print((ROOT / "reports" / "lab_backtest.md").read_text())
         return 0
     if cmd == "fullday-study":
         # Research only: compares later daily deadlines; does not change the schedule or strategy.

@@ -119,6 +119,12 @@ You only need a web browser. Everything happens on github.com.
 14. Every Saturday, **Research -> weekly-review** re-tests all strategies on all real data collected so far (`data/bars/` grows each session). It switches strategy only if another one clearly did better on both older and recent days. Each decision is written to `reports/weekly_review.md` and `reports/learning_log.md`.
 15. **reports/readiness.md** checks fixed rules after every session (at least 60 sessions and 100 trades, profitable over the last 40 sessions, statistically positive average per trade, profit factor at least 1.3, drawdown at most 10%, at least 2 of the last 3 twenty-session blocks positive, and the same strategy for at least 40 sessions). Only when all pass does it open the issue **"Agent self-check: ready for your review"**. It never switches to real money; that would be a separate project you decide on.
 
+**Strategy lab**
+
+16. Besides the main account, up to 8 *lab* accounts trade the same sessions, each with its own 500 SEK of play money and its own strategy (listed in `strategy/lab.json`). Same costs, limits and 11:30 deadline; they never affect the main account or its readiness check. The leaderboard is `reports/lab.md`.
+17. A lab account is judged only after 20 sessions and 15 trades. It is retired (stops trading, record kept) if it is losing with a profit factor below 0.8, or if it is still losing after 40 sessions. Winners keep going.
+18. Every week new ideas are added to the lab as rule sets (no code changes); **Research -> lab-backtest** tests all lab strategies on the stored history.
+
 ## 7. Useful extras
 
 * **Actions -> Research -> check-data**: tests the data feed and exchange calendar right now.

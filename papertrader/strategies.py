@@ -173,8 +173,92 @@ class MomentumLeaders(Strategy):
                       trail=trail, score=float(r.ret_open))
 
 
+class RuleStrategy(Strategy):
+    """A strategy assembled from fixed building blocks, so new ideas can be tried in the lab by
+    writing a parameter set (strategy/lab.json) instead of new code. Every condition left out
+    is not checked. All exits are the usual ones: stop, target, trailing stop, 11:30 deadline.
+
+    Entry building blocks (on the completed 1-minute bar):
+      first_minute / last_entry_minute  minutes after the open when buying is allowed
+      min_gain / max_gain               stock's gain since the open (0.02 = 2%)
+      rvol_min                          volume vs its recent average
+      new_high_minutes                  close at or above the highest high of the previous N bars
+      above_vwap                        close above VWAP
+      max_vwap_atr                      at most this many ATRs above VWAP (avoids chasing)
+      uptrend                           EMA9 above EMA21
+      min_atr_pct / max_atr_pct         1-minute ATR as a % of price
+      min_price / max_price             share price in USD
+      spy_min_gain                      whole market (SPY) at least this much up since the open
+      spy_above_vwap                    SPY above its VWAP
+      rsi_max                           RSI at most this (for dip-buying ideas)
+      below_vwap_atr                    at least this many ATRs BELOW VWAP (dip-buying)
+    Exits: stop_atr (stop distance in ATRs), then either trail (trailing stop of the same
+      distance) and/or target_r (target = risk x R) or take_profit (target in %).
+    Ranking when several stocks signal at once: score = "gain", "rvol" or "dip".
+    """
+    def __init__(self, **params):
+        p = {"first_minute": 15, "last_entry_minute": 90, "stop_atr": 2.0, "trail": False,
+             "target_r": 2.0, "take_profit": None, "score": "gain"}
+        p.update(params)
+        super().__init__("rules", p)
+
+    def _spy_ok(self, t) -> bool:
+        p = self.params
+        if p.get("spy_min_gain") is None and not p.get("spy_above_vwap"):
+            return True
+        m = self.market
+        if m is None or m.empty or t < m.index[0]:
+            return False
+        r = m.loc[:t].iloc[-1]
+        if p.get("spy_min_gain") is not None and not r.ret_open >= p["spy_min_gain"]:
+            return False
+        return not p.get("spy_above_vwap") or bool(r.Close > r.vwap)
+
+    def signal(self, symbol, f, i):
+        p = self.params
+        if i < 10:
+            return None
+        r = f.iloc[i]
+        if not _ok(r.atr, r.vwap, r.rvol, r.ret_open, r.rsi) or r.atr <= 0:
+            return None
+        if not (p["first_minute"] <= r.minute <= p["last_entry_minute"]):
+            return None
+        c = float(r.Close)
+        checks = [
+            p.get("min_gain") is None or r.ret_open >= p["min_gain"],
+            p.get("max_gain") is None or r.ret_open <= p["max_gain"],
+            p.get("rvol_min") is None or r.rvol >= p["rvol_min"],
+            not p.get("above_vwap") or c > r.vwap,
+            p.get("max_vwap_atr") is None or (c - r.vwap) / r.atr <= p["max_vwap_atr"],
+            p.get("below_vwap_atr") is None or (r.vwap - c) / r.atr >= p["below_vwap_atr"],
+            not p.get("uptrend") or r.ema9 > r.ema21,
+            p.get("min_atr_pct") is None or 100 * r.atr / c >= p["min_atr_pct"],
+            p.get("max_atr_pct") is None or 100 * r.atr / c <= p["max_atr_pct"],
+            p.get("min_price") is None or c >= p["min_price"],
+            p.get("max_price") is None or c <= p["max_price"],
+            p.get("rsi_max") is None or r.rsi <= p["rsi_max"],
+            not p.get("new_high_minutes") or c >= float(f["High"].iloc[max(0, i - int(p["new_high_minutes"])):i].max()),
+        ]
+        if not all(checks) or not self._spy_ok(f.index[i]):
+            return None
+        dist = p["stop_atr"] * float(r.atr)
+        stop = c - dist
+        if stop <= 0:
+            return None
+        if p.get("take_profit"):
+            target = c * (1 + p["take_profit"])
+        elif p.get("target_r"):
+            target = c + p["target_r"] * dist
+        else:
+            target = c * 10  # no target: trailing stop or the deadline exits
+        score = {"gain": float(r.ret_open), "rvol": float(r.rvol), "dip": float((r.vwap - c) / r.atr)}[p.get("score", "gain")]
+        return Signal(symbol, f.index[i], c, stop, target, self.name,
+                      f"rules: up {r.ret_open:+.1%} since open, rvol {r.rvol:.1f}, {(c - r.vwap) / r.atr:+.1f} ATR vs VWAP",
+                      trail=dist if p.get("trail") else 0.0, score=score)
+
+
 REGISTRY = {"no_trade": NoTrade, "orb": OpeningRangeBreakout, "vwap_trend": VwapTrendPullback,
-            "vwap_reversion": VwapReversion, "momentum_leaders": MomentumLeaders}
+            "vwap_reversion": VwapReversion, "momentum_leaders": MomentumLeaders, "rules": RuleStrategy}
 
 
 def build(spec: dict) -> Strategy:

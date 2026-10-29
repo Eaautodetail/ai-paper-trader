@@ -211,3 +211,79 @@ def test_public_repo_trains_every_weekday(cfg, monkeypatch):
     assert training_day(cfg, wed)
     monkeypatch.delenv("PAPERTRADER_REPO_PRIVATE")
     assert not training_day(cfg, wed)  # unknown visibility: assume private
+
+
+def _lab(root, accounts):
+    (root / "strategy" / "lab.json").write_text(json.dumps({"accounts": accounts}))
+
+
+def test_lab_accounts_trade_alongside_without_touching_main(cfg, tmp_root):
+    from papertrader import lab as labmod
+    c = small_universe_cfg(cfg)
+    c["risk"]["min_reward_to_cost"] = 0.5
+    spec = {"name": "orb", "params": {"or_minutes": 15, "rvol_min": 1.2, "target_r": 2.5}}
+    strat_file(tmp_root, spec)
+    days = ["2026-10-15"]
+
+    def run(root):
+        control.write(root, evaluation_enabled=True)
+        rt, _ = rt_for(root, c, days_feed(days), datetime(2026, 10, 15, 8, 50, tzinfo=NY))
+        assert "completed" in run_once(rt)
+        led = Ledger(ledger_path(root, "evaluation"))
+        out = (led.cash(), len(led.trades()))
+        led.close()
+        return out
+
+    without = run(tmp_root)
+    other = tmp_root.parent / "with_lab"
+    import shutil
+    shutil.copytree(tmp_root, other)
+    for p in [other / "ledger" / "evaluation.sqlite"]:
+        p.unlink()
+    for p in (other / "reports").rglob("*.md"):
+        p.unlink()
+    _lab(other, [{"id": "same_orb", "spec": spec, "why": "test"},
+                 {"id": "never", "spec": {"name": "no_trade", "params": {}}, "why": "test"},
+                 {"id": "bad id!", "spec": spec}])
+    assert run(other) == without                     # main account unchanged by the lab
+    a = Ledger(labmod.ledger_file(other, "same_orb"))
+    assert a.account()["initial_sek"] == 500 and a.session("2026-10-15")["status"] == "completed"
+    assert len(a.trades()) == without[1] and abs(a.cash() - without[0]) < 1e-9 and not a.positions()
+    a.close()
+    n = Ledger(labmod.ledger_file(other, "never"))
+    assert not n.trades()
+    n.close()
+    assert not labmod.ledger_file(other, "bad id!").exists()
+    text = (other / "reports" / "lab.md").read_text()
+    assert "same_orb" in text and "never" in text
+
+
+def test_lab_retires_only_clear_failures(tmp_root):
+    from papertrader import lab as labmod
+    base = {"sessions": 25, "trades": 20, "net_usd": -1.0, "profit_factor": 0.5}
+    assert labmod.retire_reason(base)
+    assert labmod.retire_reason({**base, "sessions": 10}) is None        # too early to judge
+    assert labmod.retire_reason({**base, "trades": 5}) is None
+    assert labmod.retire_reason({**base, "net_usd": 0.2}) is None         # winners keep going
+    assert labmod.retire_reason({**base, "profit_factor": 0.95}) is None  # losing a little: more time
+    assert labmod.retire_reason({**base, "profit_factor": 0.95, "sessions": 40})
+
+
+def test_rule_strategy_conditions():
+    import pandas as pd
+    from papertrader.features import compute_features
+    from papertrader.strategies import build
+    idx = pd.date_range("2026-10-20 09:30", periods=60, freq="1min", tz="America/New_York")
+    close = [5 * (1 + 0.001 * i) for i in range(60)]
+    bars = pd.DataFrame({"Open": close, "High": [x * 1.001 for x in close], "Low": [x * 0.999 for x in close],
+                         "Close": close, "Volume": [1000] * 40 + [5000] * 20}, index=idx)
+    f = compute_features(bars, idx[0])
+    s = build({"name": "rules", "params": {"min_gain": 0.02, "rvol_min": 1.5, "above_vwap": True, "trail": True,
+                                           "first_minute": 15, "last_entry_minute": 90}})
+    sig = s.signal("AAA", f, 45)
+    assert sig is not None and sig.trail > 0 and sig.stop < sig.ref_price
+    assert build({"name": "rules", "params": {"min_gain": 0.2}}).signal("AAA", f, 45) is None
+    assert build({"name": "rules", "params": {"max_price": 3}}).signal("AAA", f, 45) is None
+    m = build({"name": "rules", "params": {"spy_min_gain": 0.5}})
+    m.market = f
+    assert m.signal("AAA", f, 45) is None

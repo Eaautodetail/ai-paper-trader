@@ -148,6 +148,14 @@ def status_page(root: Path, cfg: dict, ctrl: dict, eval_led: Ledger | None, next
                   f"* Current equity: {eq:.2f} USD = {eq * fx_now:.2f} SEK at USD/SEK {fx_now:.4f}",
                   f"* Cash: {a['cash_usd']:.2f} USD",
                   f"* Strategy in use: `{a['strategy_json']}`"]
+        try:
+            from .lab import entries
+            n_lab = sum(1 for x in entries(root) if x.get("active", True))
+            if n_lab:
+                lines.append(f"* Strategy lab: {n_lab} extra 500 SEK paper accounts testing other strategies "
+                             f"([leaderboard](reports/lab.md))")
+        except Exception:
+            pass
         pos = eval_led.positions()
         lines.append(f"* Open positions: {', '.join(f'{p['qty']} {p['symbol']}' for p in pos) if pos else 'none'}")
         lines += ["", "| Session | Kind | Status | Start equity USD | End equity USD | Trades |", "|---|---|---|---|---|---|"]

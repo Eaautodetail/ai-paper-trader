@@ -235,9 +235,9 @@ def _run_session(rt: Runtime, cal: MarketCalendar, w, kind: str, led: Ledger, n_
     strategy = build(led.strategy_spec())
     costs = CostModel(cfg)
     risk = RiskManager(cfg, costs)
+    liq = md.liquidity_table(rt.feed.daily(cfg["universe"]["symbols"]), pd.Timestamp(w.open))
     if not resuming:
         eq0 = led.cash() + sum(p["qty"] * p["avg_price"] for p in led.positions())
-        liq = md.liquidity_table(rt.feed.daily(cfg["universe"]["symbols"]), pd.Timestamp(w.open))
         universe = md.select_universe(liq, cfg, eq0, costs) if not liq.empty else []
         led.start_session(day, kind, eq0, fx, universe)
         led.log(day, "INFO", f"Strategy {strategy.describe()}; start equity {eq0:.2f} USD ({eq0 * fx:.2f} SEK); "
@@ -250,6 +250,13 @@ def _run_session(rt: Runtime, cal: MarketCalendar, w, kind: str, led: Ledger, n_
     rt.persist(f"{kind} {day}: session started")
 
     eng = SessionEngine(led, w, strategy, costs, risk, kind, entries_allowed_from=entries_from, fx_usdsek=fx)
+    lab = None
+    if kind in ("evaluation", "training"):
+        from .lab import Lab
+        lab = Lab(root, cfg, w, fx, liq, entries_from, lambda m: led.log(day, "WARN", m))
+        if lab.accounts:
+            led.log(day, "INFO", f"Strategy lab: {len(lab.accounts)} extra paper accounts trade alongside "
+                                 f"({', '.join(a['id'] for a in lab.accounts)})")
     last_persist = time.monotonic()
     status = "completed"
     while True:
@@ -258,7 +265,8 @@ def _run_session(rt: Runtime, cal: MarketCalendar, w, kind: str, led: Ledger, n_
         if ctrl.get("stop_requested") and not eng.stop_requested:
             eng.stop_requested = True
             led.log(day, "WARN", "STOP pressed: no new trades, closing all positions at the next bar")
-        syms = sorted(set(universe) | {p["symbol"] for p in led.positions()})
+        mine = set(universe) | {p["symbol"] for p in led.positions()}
+        syms = sorted(mine | (lab.symbols() if lab else set()))
         bench = cfg["universe"]["benchmark"]
         try:
             bars = rt.feed.intraday(syms + [bench], now) if syms else {}
@@ -272,21 +280,26 @@ def _run_session(rt: Runtime, cal: MarketCalendar, w, kind: str, led: Ledger, n_
                 led.log(day, "WARN", "Market data is stale; no new entries until it is current")
             frames = {k: compute_features(v, w.open) for k, v in bars.items() if len(v)}
             market = compute_features(market_bars, w.open) if market_bars is not None and len(market_bars) else None
-            eng.process(frames, data_fresh=fresh, market=market)
+            eng.process({k: v for k, v in frames.items() if k in mine}, data_fresh=fresh, market=market)
+            if lab and lab.process(frames, fresh, market, eng.stop_requested):
+                eng.changed = True
         except Exception as e:  # keep running; exits are retried on the next poll
             led.log(day, "ERROR", f"Data/processing error, retrying: {e}")
         if eng.changed or time.monotonic() - last_persist > 600:
             rt.persist(f"{kind} {day}: update")
             eng.changed, last_persist = False, time.monotonic()
-        if eng.stop_requested and eng.flat():
+        lab_flat = lab.flat() if lab else True
+        if eng.stop_requested and eng.flat() and lab_flat:
             status = "stopped"
             break
-        if eng.halted and eng.flat():
+        if eng.halted and eng.flat() and not (lab and lab.accounts):
             break
-        if now >= w.end and eng.flat():
+        if now >= w.end and eng.flat() and lab_flat:
             break
         if now >= w.end + timedelta(minutes=15):
             eng.finalize_without_bars(pd.Timestamp(w.end))
+            if lab:
+                lab.finalize(pd.Timestamp(w.end))
             break
         rt.sleep(cfg["schedule"]["poll_seconds"])
 
@@ -295,6 +308,11 @@ def _run_session(rt: Runtime, cal: MarketCalendar, w, kind: str, led: Ledger, n_
     led.mark_session(day, kind, status, "stopped by user" if status == "stopped" else "", end_equity_usd=eq)
     led.log(day, "INFO", f"Session {status}. End equity {eq:.2f} USD ({eq * fx:.2f} SEK); "
                          f"{len(led.trades(day))} round trips; no positions left open")
+    if lab:
+        try:
+            lab.finish(root, fx, status)
+        except Exception as e:
+            led.log(day, "WARN", f"strategy lab results not saved: {e}")
     save_archive(rt, w)
     write_reports(rt, cal, led, day, w, kind, n_eval)
     rt.persist(f"{kind} {day}: session {status}")
