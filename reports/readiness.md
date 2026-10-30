@@ -6,13 +6,13 @@ The agent checks itself after every session against fixed rules decided in advan
 
 | Criterion | Now | Needed | Met |
 |---|---|---|---|
-| Paper-trading sessions | 11 | >= 60 | no |
-| Completed trades | 18 | >= 100 | no |
-| Profit after all costs, last 40 sessions | -1.37 USD | > 0 over a full 40 sessions | no |
+| Paper-trading sessions | 12 | >= 60 | no |
+| Completed trades | 19 | >= 100 | no |
+| Profit after all costs, last 40 sessions | -1.38 USD | > 0 over a full 40 sessions | no |
 | Average trade is profitable with 95% confidence (last 100 trades) | - | lower bound > 0 | no |
 | Profit factor (gains / losses, last 100 trades) | 0.17 | >= 1.3 | no |
-| Largest drop from a high (drawdown) | 2.7% | <= 10% | no |
+| Largest drop from a high (drawdown) | 2.8% | <= 10% | no |
 | Consistency: positive 20-session blocks (of the last 3) | 0 of 0 | at least 2 of 3 | no |
-| Same strategy for the whole recent record | 4 sessions | >= 40 | no |
+| Same strategy for the whole recent record | 5 sessions | >= 40 | no |
 
 Why so strict: a few good days happen by luck. These rules require months of results, enough trades to measure, profit after every cost, and the same strategy throughout.
