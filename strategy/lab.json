@@ -110,6 +110,53 @@
       "why": "Opening-range breakout that only buys while the market is above its VWAP (top of the weekly review list on 2026-10-17)",
       "added": "2026-10-29",
       "active": true
+    },
+    {
+      "id": "big_mover_ride",
+      "spec": {
+        "name": "rules",
+        "params": {
+          "min_gain": 0.05,
+          "rvol_min": 2.0,
+          "new_high_minutes": 15,
+          "above_vwap": true,
+          "uptrend": true,
+          "spy_above_vwap": true,
+          "stop_atr": 6.0,
+          "trail": true,
+          "target_r": null,
+          "take_profit": null,
+          "first_minute": 30,
+          "last_entry_minute": 90,
+          "score": "gain"
+        }
+      },
+      "why": "Costs (~0.55%) eat the small +0.36% average move, so only take the day's very strongest movers (up 5%+) in a strong market and let a wide trailing stop ride the trend for a bigger move per trade",
+      "added": "2026-10-31",
+      "active": true
+    },
+    {
+      "id": "vwap_pullback_leader",
+      "spec": {
+        "name": "rules",
+        "params": {
+          "min_gain": 0.02,
+          "above_vwap": true,
+          "max_vwap_atr": 0.5,
+          "uptrend": true,
+          "spy_min_gain": 0.0,
+          "stop_atr": 3.0,
+          "trail": false,
+          "target_r": null,
+          "take_profit": 0.02,
+          "first_minute": 30,
+          "last_entry_minute": 100,
+          "score": "gain"
+        }
+      },
+      "why": "Instead of buying at a new high (where real losers often bought 4-5 ATR above VWAP), wait until a stock that is up 2%+ pulls back close to VWAP, with the market up, and aim for +2%",
+      "added": "2026-10-31",
+      "active": true
     }
   ]
 }
