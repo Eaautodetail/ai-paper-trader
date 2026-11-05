@@ -2,8 +2,8 @@
 
 **Mode: PAPER TRADING (simulated). Real-money trading: DISABLED - there is no brokerage connection in this program.**
 
-* Updated: 2026-11-05 17:30 Stockholm time
-* Evaluation: **TRAINING - evaluation finished (3/3), 12 training sessions since (every trading day). See reports/readiness.md**
+* Updated: 2026-11-05 17:49 Stockholm time
+* Evaluation: **TRAINING - evaluation finished (3/3), 13 training sessions since (every trading day). See reports/readiness.md**
 * Readiness self-check: NOT READY - still training (0 of 8 criteria met) ([details](reports/readiness.md))
 * Next trading window: Fri 2026-11-06 15:30-17:30 Stockholm (09:30-11:30 New York)
 * Starting capital: 500.00 SEK (= 50.09 USD after a 1.25 SEK conversion fee)
@@ -30,8 +30,8 @@
 | [2026-11-02](reports/training/2026-11-02.md) | training | completed | 48.71 | 48.65 | 2 |
 | [2026-11-03](reports/training/2026-11-03.md) | training | completed | 48.65 | 48.88 | 2 |
 | [2026-11-04](reports/training/2026-11-04.md) | training | completed | 48.88 | 48.50 | 4 |
-| [2026-11-05](reports/training/2026-11-05.md) | training | running | 48.50 | 0.00 | 0 |
+| [2026-11-05](reports/training/2026-11-05.md) | training | completed | 48.50 | 48.50 | 0 |
 
-Last run: Trading window for 2026-11-05 has ended; nothing to do.
+Last run: training session 2026-11-05 already completed.
 
 _Simulated paper trading only. No real money, no brokerage connection. Results from a few sessions are an operational test, not evidence of a profitable strategy._
