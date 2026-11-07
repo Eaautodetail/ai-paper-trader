@@ -157,6 +157,31 @@
       "why": "Instead of buying at a new high (where real losers often bought 4-5 ATR above VWAP), wait until a stock that is up 2%+ pulls back close to VWAP, with the market up, and aim for +2%",
       "added": "2026-10-31",
       "active": true
+    },
+    {
+      "id": "volatile_breakout",
+      "spec": {
+        "name": "rules",
+        "params": {
+          "min_gain": 0.01,
+          "rvol_min": 1.5,
+          "new_high_minutes": 15,
+          "above_vwap": true,
+          "uptrend": true,
+          "min_atr_pct": 0.5,
+          "spy_above_vwap": true,
+          "stop_atr": 2.0,
+          "trail": false,
+          "target_r": 2.5,
+          "take_profit": null,
+          "first_minute": 15,
+          "last_entry_minute": 90,
+          "score": "gain"
+        }
+      },
+      "why": "Both the real trades and the 21-day history did best on the most volatile stocks (1-min ATR at least 0.5% of price): bigger moves beat the fixed costs. Breakout of the last 15 minutes' high, only in a strong market",
+      "added": "2026-11-07",
+      "active": true
     }
   ]
 }

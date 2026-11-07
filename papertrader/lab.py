@@ -195,7 +195,7 @@ def write_leaderboard(root: Path, fx: float | None = None, main_row: dict | None
          f"Retirement rule (fixed): judged only after {RETIRE_MIN_SESSIONS} sessions and {RETIRE_MIN_TRADES} trades; retired if losing "
          f"with profit factor below {RETIRE_MAX_PROFIT_FACTOR}, or still losing after {RETIRE_HARD_SESSIONS} sessions. Winners keep going. "
          "A retired account stops trading but its record is kept, so the lessons are not lost.", "",
-         "| Rank | Lab account | Sessions | Trades | Winners | Net after costs USD | Account SEK | Active | Idea |",
+         "| Rank | Lab account | Sessions | Trades | Winners | Net after costs USD | Account SEK (incl. currency moves) | Active | Idea |",
          "|---|---|---|---|---|---|---|---|---|"]
     for i, r in enumerate(rows, 1):
         win = f"{100 * r['wins'] / r['trades']:.0f}%" if r["trades"] else "-"
