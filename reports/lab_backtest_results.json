@@ -16,7 +16,7 @@
    "max_drawdown_pct": 0.0,
    "profit_factor": null,
    "positive_days": 0,
-   "avg_universe": 16.6
+   "avg_universe": 17.2
   },
   "out_of_sample": {
    "days": 7,
@@ -30,54 +30,54 @@
    "max_drawdown_pct": 0.0,
    "profit_factor": null,
    "positive_days": 0,
-   "avg_universe": 17.1
+   "avg_universe": 17.0
   },
   "top_rejections": {}
  },
  {
   "strategy": {
-   "name": "momentum_leaders",
+   "name": "orb",
    "params": {
-    "min_gain": 0.03,
-    "rvol_min": 1.5,
-    "trail_atr": 4.0,
-    "take_profit": 0.03,
-    "first_minute": 15,
-    "last_entry_minute": 75
+    "or_minutes": 5,
+    "rvol_min": 2.0,
+    "target_r": 2.5,
+    "stop_atr": 2.0,
+    "last_entry_minute": 90,
+    "market_filter": true
    }
   },
   "in_sample": {
    "days": 14,
-   "trades": 16,
-   "net_pnl_usd": 0.0287,
-   "return_pct": 0.057,
-   "win_rate_pct": 43.8,
-   "avg_net_per_trade_usd": 0.0018,
-   "modeled_costs_usd": 0.6211,
-   "gross_before_costs_usd": 0.6498,
-   "max_drawdown_pct": -0.81,
-   "profit_factor": 1.038,
+   "trades": 14,
+   "net_pnl_usd": 0.1033,
+   "return_pct": 0.205,
+   "win_rate_pct": 42.9,
+   "avg_net_per_trade_usd": 0.0074,
+   "modeled_costs_usd": 0.6174,
+   "gross_before_costs_usd": 0.7206,
+   "max_drawdown_pct": -0.436,
+   "profit_factor": 1.127,
    "positive_days": 4,
-   "avg_universe": 16.6
+   "avg_universe": 17.2
   },
   "out_of_sample": {
    "days": 7,
-   "trades": 11,
-   "net_pnl_usd": -0.4749,
-   "return_pct": -0.934,
-   "win_rate_pct": 27.3,
-   "avg_net_per_trade_usd": -0.0432,
-   "modeled_costs_usd": 0.4681,
-   "gross_before_costs_usd": -0.0067,
-   "max_drawdown_pct": -0.964,
-   "profit_factor": 0.431,
-   "positive_days": 1,
-   "avg_universe": 17.1
+   "trades": 9,
+   "net_pnl_usd": 0.0736,
+   "return_pct": 0.146,
+   "win_rate_pct": 33.3,
+   "avg_net_per_trade_usd": 0.0082,
+   "modeled_costs_usd": 0.423,
+   "gross_before_costs_usd": 0.4966,
+   "max_drawdown_pct": -0.658,
+   "profit_factor": 1.147,
+   "positive_days": 2,
+   "avg_universe": 17.0
   },
   "top_rejections": {
-   "already have a position or order in this symbol": 29,
-   "max open positions reached": 11,
-   "already traded this symbol this session": 2
+   "market": 27,
+   "max open positions reached": 2,
+   "expected gain 0.091 USD is under 2x costs 0.047 USD": 2
   }
  },
  {
@@ -102,35 +102,35 @@
   "in_sample": {
    "days": 14,
    "trades": 7,
-   "net_pnl_usd": 0.6002,
-   "return_pct": 1.181,
-   "win_rate_pct": 57.1,
-   "avg_net_per_trade_usd": 0.0857,
-   "modeled_costs_usd": 0.2531,
-   "gross_before_costs_usd": 0.8533,
-   "max_drawdown_pct": -0.148,
-   "profit_factor": 5.338,
-   "positive_days": 2,
-   "avg_universe": 16.7
+   "net_pnl_usd": 0.3786,
+   "return_pct": 0.751,
+   "win_rate_pct": 42.9,
+   "avg_net_per_trade_usd": 0.0541,
+   "modeled_costs_usd": 0.2568,
+   "gross_before_costs_usd": 0.6354,
+   "max_drawdown_pct": -0.25,
+   "profit_factor": 2.426,
+   "positive_days": 1,
+   "avg_universe": 17.2
   },
   "out_of_sample": {
    "days": 7,
-   "trades": 1,
-   "net_pnl_usd": -0.1088,
-   "return_pct": -0.214,
-   "win_rate_pct": 0.0,
-   "avg_net_per_trade_usd": -0.1088,
-   "modeled_costs_usd": 0.0392,
-   "gross_before_costs_usd": -0.0696,
-   "max_drawdown_pct": -0.214,
-   "profit_factor": null,
+   "trades": 10,
+   "net_pnl_usd": -0.6025,
+   "return_pct": -1.195,
+   "win_rate_pct": 20.0,
+   "avg_net_per_trade_usd": -0.0602,
+   "modeled_costs_usd": 0.4145,
+   "gross_before_costs_usd": -0.188,
+   "max_drawdown_pct": -1.195,
+   "profit_factor": 0.191,
    "positive_days": 0,
-   "avg_universe": 17.1
+   "avg_universe": 17.0
   },
   "top_rejections": {
-   "already have a position or order in this symbol": 11,
-   "max open positions reached": 4,
-   "already traded this symbol this session": 2
+   "already have a position or order in this symbol": 19,
+   "max open positions reached": 6,
+   "already traded this symbol this session": 3
   }
  },
  {
@@ -153,35 +153,35 @@
   },
   "in_sample": {
    "days": 14,
-   "trades": 14,
-   "net_pnl_usd": 0.0681,
-   "return_pct": 0.134,
-   "win_rate_pct": 42.9,
-   "avg_net_per_trade_usd": 0.0049,
-   "modeled_costs_usd": 0.5501,
-   "gross_before_costs_usd": 0.6182,
-   "max_drawdown_pct": -0.547,
-   "profit_factor": 1.12,
+   "trades": 22,
+   "net_pnl_usd": -0.5266,
+   "return_pct": -1.044,
+   "win_rate_pct": 36.4,
+   "avg_net_per_trade_usd": -0.0239,
+   "modeled_costs_usd": 0.8987,
+   "gross_before_costs_usd": 0.3721,
+   "max_drawdown_pct": -1.273,
+   "profit_factor": 0.577,
    "positive_days": 3,
-   "avg_universe": 16.6
+   "avg_universe": 17.2
   },
   "out_of_sample": {
    "days": 7,
    "trades": 12,
-   "net_pnl_usd": -0.7902,
-   "return_pct": -1.555,
+   "net_pnl_usd": -0.8677,
+   "return_pct": -1.721,
    "win_rate_pct": 25.0,
-   "avg_net_per_trade_usd": -0.0659,
-   "modeled_costs_usd": 0.5182,
-   "gross_before_costs_usd": -0.272,
-   "max_drawdown_pct": -1.555,
-   "profit_factor": 0.18,
+   "avg_net_per_trade_usd": -0.0723,
+   "modeled_costs_usd": 0.5161,
+   "gross_before_costs_usd": -0.3516,
+   "max_drawdown_pct": -1.721,
+   "profit_factor": 0.104,
    "positive_days": 1,
-   "avg_universe": 17.1
+   "avg_universe": 17.0
   },
   "top_rejections": {
-   "already have a position or order in this symbol": 32,
-   "max open positions reached": 12
+   "already have a position or order in this symbol": 37,
+   "max open positions reached": 10
   }
  },
  {
@@ -206,33 +206,35 @@
   },
   "in_sample": {
    "days": 14,
-   "trades": 2,
-   "net_pnl_usd": 0.0709,
-   "return_pct": 0.14,
-   "win_rate_pct": 50.0,
-   "avg_net_per_trade_usd": 0.0355,
-   "modeled_costs_usd": 0.0755,
-   "gross_before_costs_usd": 0.1464,
-   "max_drawdown_pct": -0.03,
-   "profit_factor": 5.63,
+   "trades": 3,
+   "net_pnl_usd": 0.01,
+   "return_pct": 0.02,
+   "win_rate_pct": 33.3,
+   "avg_net_per_trade_usd": 0.0033,
+   "modeled_costs_usd": 0.1126,
+   "gross_before_costs_usd": 0.1227,
+   "max_drawdown_pct": -0.121,
+   "profit_factor": 1.131,
    "positive_days": 1,
-   "avg_universe": 16.6
+   "avg_universe": 17.2
   },
   "out_of_sample": {
    "days": 7,
-   "trades": 2,
-   "net_pnl_usd": -0.2399,
-   "return_pct": -0.472,
+   "trades": 1,
+   "net_pnl_usd": -0.1047,
+   "return_pct": -0.208,
    "win_rate_pct": 0.0,
-   "avg_net_per_trade_usd": -0.12,
-   "modeled_costs_usd": 0.0745,
-   "gross_before_costs_usd": -0.1654,
-   "max_drawdown_pct": -0.472,
+   "avg_net_per_trade_usd": -0.1047,
+   "modeled_costs_usd": 0.0351,
+   "gross_before_costs_usd": -0.0696,
+   "max_drawdown_pct": -0.208,
    "profit_factor": null,
    "positive_days": 0,
-   "avg_universe": 17.1
+   "avg_universe": 17.0
   },
-  "top_rejections": {}
+  "top_rejections": {
+   "planned loss for 1 share exceeds the per-trade limit": 1
+  }
  },
  {
   "strategy": {
@@ -253,36 +255,36 @@
   },
   "in_sample": {
    "days": 14,
-   "trades": 2,
-   "net_pnl_usd": -0.1107,
-   "return_pct": -0.218,
+   "trades": 5,
+   "net_pnl_usd": -0.5517,
+   "return_pct": -1.094,
    "win_rate_pct": 0.0,
-   "avg_net_per_trade_usd": -0.0553,
-   "modeled_costs_usd": 0.0778,
-   "gross_before_costs_usd": -0.0329,
-   "max_drawdown_pct": -0.218,
+   "avg_net_per_trade_usd": -0.1103,
+   "modeled_costs_usd": 0.2009,
+   "gross_before_costs_usd": -0.3508,
+   "max_drawdown_pct": -1.094,
    "profit_factor": null,
    "positive_days": 0,
-   "avg_universe": 16.6
+   "avg_universe": 17.2
   },
   "out_of_sample": {
    "days": 7,
-   "trades": 6,
-   "net_pnl_usd": -0.6186,
-   "return_pct": -1.217,
+   "trades": 3,
+   "net_pnl_usd": -0.2041,
+   "return_pct": -0.405,
    "win_rate_pct": 0.0,
-   "avg_net_per_trade_usd": -0.1031,
-   "modeled_costs_usd": 0.2378,
-   "gross_before_costs_usd": -0.3808,
-   "max_drawdown_pct": -1.217,
+   "avg_net_per_trade_usd": -0.068,
+   "modeled_costs_usd": 0.1232,
+   "gross_before_costs_usd": -0.0809,
+   "max_drawdown_pct": -0.405,
    "profit_factor": null,
    "positive_days": 0,
-   "avg_universe": 17.1
+   "avg_universe": 17.0
   },
   "top_rejections": {
-   "already have a position or order in this symbol": 17,
-   "expected gain 0.060 USD is under 2x costs 0.036 USD": 10,
-   "expected gain 0.059 USD is under 2x costs 0.036 USD": 9
+   "already have a position or order in this symbol": 21,
+   "expected gain 0.050 USD is under 2x costs 0.035 USD": 7,
+   "expected gain 0.060 USD is under 2x costs 0.036 USD": 7
   }
  },
  {
@@ -299,36 +301,36 @@
   },
   "in_sample": {
    "days": 14,
-   "trades": 4,
-   "net_pnl_usd": 0.4514,
-   "return_pct": 0.888,
-   "win_rate_pct": 100.0,
-   "avg_net_per_trade_usd": 0.1129,
-   "modeled_costs_usd": 0.1683,
-   "gross_before_costs_usd": 0.6198,
-   "max_drawdown_pct": 0.0,
-   "profit_factor": null,
+   "trades": 6,
+   "net_pnl_usd": 0.2108,
+   "return_pct": 0.418,
+   "win_rate_pct": 66.7,
+   "avg_net_per_trade_usd": 0.0351,
+   "modeled_costs_usd": 0.2431,
+   "gross_before_costs_usd": 0.4539,
+   "max_drawdown_pct": -0.473,
+   "profit_factor": 1.876,
    "positive_days": 2,
-   "avg_universe": 16.6
+   "avg_universe": 17.2
   },
   "out_of_sample": {
    "days": 7,
    "trades": 3,
-   "net_pnl_usd": -0.36,
-   "return_pct": -0.708,
-   "win_rate_pct": 0.0,
-   "avg_net_per_trade_usd": -0.12,
-   "modeled_costs_usd": 0.1124,
-   "gross_before_costs_usd": -0.2475,
-   "max_drawdown_pct": -0.708,
-   "profit_factor": null,
-   "positive_days": 0,
-   "avg_universe": 17.1
+   "net_pnl_usd": 0.1988,
+   "return_pct": 0.394,
+   "win_rate_pct": 66.7,
+   "avg_net_per_trade_usd": 0.0663,
+   "modeled_costs_usd": 0.1112,
+   "gross_before_costs_usd": 0.31,
+   "max_drawdown_pct": -0.306,
+   "profit_factor": 2.28,
+   "positive_days": 2,
+   "avg_universe": 17.0
   },
   "top_rejections": {
-   "market": 56,
-   "expected gain 0.056 USD is under 2x costs 0.049 USD": 2,
-   "expected gain 0.089 USD is under 2x costs 0.059 USD": 2
+   "market": 53,
+   "expected gain 0.026 USD is under 2x costs 0.036 USD": 3,
+   "expected gain 0.058 USD is under 2x costs 0.058 USD": 2
   }
  },
  {
@@ -354,32 +356,33 @@
    "days": 14,
    "trades": 1,
    "net_pnl_usd": -0.0787,
-   "return_pct": -0.155,
+   "return_pct": -0.156,
    "win_rate_pct": 0.0,
    "avg_net_per_trade_usd": -0.0787,
    "modeled_costs_usd": 0.0387,
    "gross_before_costs_usd": -0.04,
-   "max_drawdown_pct": -0.155,
+   "max_drawdown_pct": -0.156,
    "profit_factor": null,
    "positive_days": 0,
-   "avg_universe": 16.6
+   "avg_universe": 17.2
   },
   "out_of_sample": {
    "days": 7,
-   "trades": 0,
-   "net_pnl_usd": 0.0,
-   "return_pct": 0.0,
-   "win_rate_pct": null,
-   "avg_net_per_trade_usd": null,
-   "modeled_costs_usd": 0.0,
-   "gross_before_costs_usd": 0.0,
-   "max_drawdown_pct": 0.0,
+   "trades": 2,
+   "net_pnl_usd": -0.0951,
+   "return_pct": -0.189,
+   "win_rate_pct": 0.0,
+   "avg_net_per_trade_usd": -0.0476,
+   "modeled_costs_usd": 0.0702,
+   "gross_before_costs_usd": -0.0249,
+   "max_drawdown_pct": -0.189,
    "profit_factor": null,
    "positive_days": 0,
-   "avg_universe": 17.1
+   "avg_universe": 17.0
   },
   "top_rejections": {
-   "planned loss for 1 share exceeds the per-trade limit": 3
+   "planned loss for 1 share exceeds the per-trade limit": 5,
+   "already have a position or order in this symbol": 1
   }
  },
  {
@@ -402,34 +405,85 @@
   },
   "in_sample": {
    "days": 14,
-   "trades": 3,
-   "net_pnl_usd": -0.2885,
-   "return_pct": -0.568,
+   "trades": 1,
+   "net_pnl_usd": -0.083,
+   "return_pct": -0.165,
    "win_rate_pct": 0.0,
-   "avg_net_per_trade_usd": -0.0962,
-   "modeled_costs_usd": 0.1239,
-   "gross_before_costs_usd": -0.1646,
-   "max_drawdown_pct": -0.568,
+   "avg_net_per_trade_usd": -0.083,
+   "modeled_costs_usd": 0.0358,
+   "gross_before_costs_usd": -0.0472,
+   "max_drawdown_pct": -0.165,
    "profit_factor": null,
    "positive_days": 0,
-   "avg_universe": 16.6
+   "avg_universe": 17.2
   },
   "out_of_sample": {
    "days": 7,
-   "trades": 0,
-   "net_pnl_usd": 0.0,
-   "return_pct": 0.0,
-   "win_rate_pct": null,
-   "avg_net_per_trade_usd": null,
-   "modeled_costs_usd": 0.0,
-   "gross_before_costs_usd": 0.0,
-   "max_drawdown_pct": 0.0,
-   "profit_factor": null,
-   "positive_days": 0,
-   "avg_universe": 17.1
+   "trades": 3,
+   "net_pnl_usd": -0.0144,
+   "return_pct": -0.029,
+   "win_rate_pct": 33.3,
+   "avg_net_per_trade_usd": -0.0048,
+   "modeled_costs_usd": 0.1246,
+   "gross_before_costs_usd": 0.1102,
+   "max_drawdown_pct": -0.13,
+   "profit_factor": 0.918,
+   "positive_days": 1,
+   "avg_universe": 17.0
+  },
+  "top_rejections": {}
+ },
+ {
+  "strategy": {
+   "name": "rules",
+   "params": {
+    "first_minute": 15,
+    "last_entry_minute": 90,
+    "stop_atr": 2.0,
+    "trail": false,
+    "target_r": 2.5,
+    "take_profit": null,
+    "score": "gain",
+    "min_gain": 0.01,
+    "rvol_min": 1.5,
+    "new_high_minutes": 15,
+    "above_vwap": true,
+    "uptrend": true,
+    "min_atr_pct": 0.5,
+    "spy_above_vwap": true
+   }
+  },
+  "in_sample": {
+   "days": 14,
+   "trades": 9,
+   "net_pnl_usd": 0.78,
+   "return_pct": 1.547,
+   "win_rate_pct": 66.7,
+   "avg_net_per_trade_usd": 0.0867,
+   "modeled_costs_usd": 0.3654,
+   "gross_before_costs_usd": 1.1453,
+   "max_drawdown_pct": -0.119,
+   "profit_factor": 3.275,
+   "positive_days": 2,
+   "avg_universe": 17.2
+  },
+  "out_of_sample": {
+   "days": 7,
+   "trades": 10,
+   "net_pnl_usd": -0.1521,
+   "return_pct": -0.302,
+   "win_rate_pct": 40.0,
+   "avg_net_per_trade_usd": -0.0152,
+   "modeled_costs_usd": 0.441,
+   "gross_before_costs_usd": 0.2889,
+   "max_drawdown_pct": -1.172,
+   "profit_factor": 0.834,
+   "positive_days": 2,
+   "avg_universe": 17.0
   },
   "top_rejections": {
-   "already have a position or order in this symbol": 3
+   "already have a position or order in this symbol": 15,
+   "already traded this symbol this session": 1
   }
  }
 ]
