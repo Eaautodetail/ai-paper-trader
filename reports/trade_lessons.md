@@ -6,27 +6,27 @@ What winning and losing trades had in common at the moment of buying. Analysis o
 
 All simulated trades so far, updated after every session.
 
-* Trades: 31; winners: 16.1%; total net after costs: -1.924 USD
-* Average price move before costs: -0.34% per trade; average costs: 0.59% per trade
-* How trades ended: stop 21, window_end 8, target 2
+* Trades: 33; winners: 15.2%; total net after costs: -2.156 USD
+* Average price move before costs: -0.39% per trade; average costs: 0.59% per trade
+* How trades ended: stop 23, window_end 8, target 2
 
 **What stands out** (groups of at least 5 trades):
 
-* Minutes after the open: best when **15 to 30** (5 trades, 20% winners, avg -0.040 USD), worst when **30 to 45** (6 trades, 0% winners, avg -0.088 USD)
-* Stock's gain since the open, %: best when **1 to 2** (5 trades, 20% winners, avg -0.036 USD), worst when **0 to 1** (7 trades, 14% winners, avg -0.075 USD)
-* Volume vs normal (x): best when **1.5 to 2** (8 trades, 25% winners, avg -0.041 USD), worst when **2 to 3** (15 trades, 13% winners, avg -0.076 USD)
-* Price above VWAP, in ATRs: best when **1 to 2** (6 trades, 17% winners, avg -0.046 USD), worst when **3 or more** (18 trades, 17% winners, avg -0.069 USD)
-* Volatility: 1-min ATR as % of price: best when **0.5 or more** (8 trades, 25% winners, avg -0.028 USD), worst when **0.3 to 0.5** (22 trades, 14% winners, avg -0.072 USD)
-* Market (SPY) since the open, %: best when **-0.3 to 0** (5 trades, 20% winners, avg -0.034 USD), worst when **0.3 or more** (16 trades, 12% winners, avg -0.069 USD)
-* Costs as % of the trade: best when **0.5 to 0.75** (21 trades, 14% winners, avg -0.060 USD), worst when **0.3 to 0.5** (8 trades, 25% winners, avg -0.061 USD)
-* Share price, USD: best when **5 to 8** (9 trades, 22% winners, avg -0.037 USD), worst when **8 to 12** (6 trades, 0% winners, avg -0.120 USD)
+* Minutes after the open: best when **45 to 60** (12 trades, 17% winners, avg -0.061 USD), worst when **30 to 45** (6 trades, 0% winners, avg -0.088 USD)
+* Stock's gain since the open, %: best when **1 to 2** (5 trades, 20% winners, avg -0.036 USD), worst when **0 to 1** (8 trades, 12% winners, avg -0.076 USD)
+* Volume vs normal (x): best when **1.5 to 2** (8 trades, 25% winners, avg -0.041 USD), worst when **3 to 5** (5 trades, 0% winners, avg -0.104 USD)
+* Price above VWAP, in ATRs: best when **1 to 2** (7 trades, 14% winners, avg -0.061 USD), worst when **3 or more** (19 trades, 16% winners, avg -0.069 USD)
+* Volatility: 1-min ATR as % of price: best when **0.5 or more** (9 trades, 22% winners, avg -0.042 USD), worst when **0.3 to 0.5** (23 trades, 13% winners, avg -0.072 USD)
+* Market (SPY) since the open, %: best when **-0.3 to 0** (5 trades, 20% winners, avg -0.034 USD), worst when **0 to 0.3** (12 trades, 17% winners, avg -0.073 USD)
+* Costs as % of the trade: best when **0.3 to 0.5** (8 trades, 25% winners, avg -0.061 USD), worst when **0.5 to 0.75** (23 trades, 13% winners, avg -0.065 USD)
+* Share price, USD: best when **5 to 8** (11 trades, 18% winners, avg -0.051 USD), worst when **8 to 12** (6 trades, 0% winners, avg -0.120 USD)
 
 <details><summary>Minutes after the open</summary>
 
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
 | 0 to 15 | 3 | 33 | -0.0450 | -0.1350 | -0.17 |
-| 15 to 30 | 5 | 20 | -0.0400 | -0.1998 | -0.13 |
+| 15 to 30 | 7 | 14 | -0.0616 | -0.4315 | -0.46 |
 | 30 to 45 | 6 | 0 | -0.0883 | -0.5298 | -0.59 |
 | 45 to 60 | 12 | 17 | -0.0613 | -0.7352 | -0.32 |
 | 60 to 90 | 5 | 20 | -0.0649 | -0.3245 | -0.38 |
@@ -37,10 +37,10 @@ All simulated trades so far, updated after every session.
 
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
-| 0 to 1 | 7 | 14 | -0.0745 | -0.5215 | -0.33 |
+| 0 to 1 | 8 | 12 | -0.0755 | -0.6041 | -0.40 |
 | 1 to 2 | 5 | 20 | -0.0363 | -0.1816 | -0.11 |
 | 2 to 3 | 1 | 0 | -0.1361 | -0.1361 | -1.07 |
-| 3 to 5 | 14 | 14 | -0.0616 | -0.8629 | -0.29 |
+| 3 to 5 | 15 | 13 | -0.0675 | -1.0120 | -0.38 |
 | 5 or more | 4 | 25 | -0.0555 | -0.2221 | -0.58 |
 
 </details>
@@ -50,8 +50,8 @@ All simulated trades so far, updated after every session.
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
 | 1.5 to 2 | 8 | 25 | -0.0415 | -0.3318 | -0.11 |
-| 2 to 3 | 15 | 13 | -0.0756 | -1.1344 | -0.56 |
-| 3 to 5 | 4 | 0 | -0.0930 | -0.3721 | -0.52 |
+| 2 to 3 | 16 | 12 | -0.0761 | -1.2170 | -0.59 |
+| 3 to 5 | 5 | 0 | -0.1042 | -0.5212 | -0.74 |
 | 5 or more | 4 | 25 | -0.0215 | -0.0860 | +0.26 |
 
 </details>
@@ -61,9 +61,9 @@ All simulated trades so far, updated after every session.
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
 | 0 to 1 | 3 | 33 | -0.0252 | -0.0757 | -0.02 |
-| 1 to 2 | 6 | 17 | -0.0462 | -0.2770 | -0.15 |
+| 1 to 2 | 7 | 14 | -0.0609 | -0.4262 | -0.37 |
 | 2 to 3 | 4 | 0 | -0.0844 | -0.3374 | -0.52 |
-| 3 or more | 18 | 17 | -0.0686 | -1.2341 | -0.41 |
+| 3 or more | 19 | 16 | -0.0693 | -1.3167 | -0.44 |
 
 </details>
 
@@ -72,8 +72,8 @@ All simulated trades so far, updated after every session.
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
 | 0.2 to 0.3 | 1 | 0 | -0.1138 | -0.1138 | -0.81 |
-| 0.3 to 0.5 | 22 | 14 | -0.0720 | -1.5834 | -0.40 |
-| 0.5 or more | 8 | 25 | -0.0284 | -0.2270 | -0.11 |
+| 0.3 to 0.5 | 23 | 13 | -0.0724 | -1.6660 | -0.42 |
+| 0.5 or more | 9 | 22 | -0.0418 | -0.3762 | -0.28 |
 
 </details>
 
@@ -82,7 +82,7 @@ All simulated trades so far, updated after every session.
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
 | -0.3 to 0 | 5 | 20 | -0.0339 | -0.1696 | +0.07 |
-| 0 to 0.3 | 10 | 20 | -0.0646 | -0.6457 | -0.25 |
+| 0 to 0.3 | 12 | 17 | -0.0731 | -0.8774 | -0.42 |
 | 0.3 or more | 16 | 12 | -0.0693 | -1.1089 | -0.52 |
 
 </details>
@@ -92,7 +92,7 @@ All simulated trades so far, updated after every session.
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
 | 0.3 to 0.5 | 8 | 25 | -0.0614 | -0.4911 | -0.17 |
-| 0.5 to 0.75 | 21 | 14 | -0.0602 | -1.2635 | -0.31 |
+| 0.5 to 0.75 | 23 | 13 | -0.0650 | -1.4952 | -0.39 |
 | 0.75 to 1 | 2 | 0 | -0.0848 | -0.1697 | -1.29 |
 
 </details>
@@ -103,7 +103,7 @@ All simulated trades so far, updated after every session.
 |---|---|---|---|---|---|
 | 0 to 3 | 3 | 67 | +0.0542 | +0.1625 | +1.31 |
 | 3 to 5 | 13 | 8 | -0.0796 | -1.0342 | -0.56 |
-| 5 to 8 | 9 | 22 | -0.0368 | -0.3315 | -0.17 |
+| 5 to 8 | 11 | 18 | -0.0512 | -0.5632 | -0.37 |
 | 8 to 12 | 6 | 0 | -0.1202 | -0.7210 | -0.92 |
 
 </details>
