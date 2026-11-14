@@ -66,6 +66,18 @@ jobs:
         run: |
           gh issue create --title "Paper trading: session skipped $(date -u +%F)" \
             --body "The session was skipped safely because the exchange-open or data-freshness check failed. No trades were made and the session does not count toward the evaluation. Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      - name: Alert - session missed (run started after the window)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # GitHub sometimes starts scheduled runs hours late; say so instead of staying silent.
+          if [ -f run.log ] && grep -q "has ended; nothing to do" run.log; then
+            t="Paper trading: session missed $(date -u +%F)"
+            if ! gh issue list --state all --search "$t in:title" --json number -q '.[0].number' | grep -q .; then
+              gh issue create --title "$t" --body "GitHub started this scheduled run only at $(date -u +%H:%M) UTC, after today's trading window had closed, so no session ran today. Nothing was bought or sold; the account is unchanged. Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            fi
+          fi
       - name: Alert - run failed
         if: failure()
         env:
