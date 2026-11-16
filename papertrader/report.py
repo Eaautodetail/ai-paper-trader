@@ -149,6 +149,16 @@ def status_page(root: Path, cfg: dict, ctrl: dict, eval_led: Ledger | None, next
                   f"* Cash: {a['cash_usd']:.2f} USD",
                   f"* Strategy in use: `{a['strategy_json']}`"]
         try:
+            ip = root / "ledger" / "invest.json"
+            if ip.exists():
+                st = json.loads(ip.read_text())
+                ieq = st["equity"][-1]["equity"] if st["equity"] else st["initial_usd"]
+                ifx = st.get("fx_last") or st["fx_initial"]
+                lines.append(f"* Long-term investing account: {ieq:.2f} USD = {ieq * ifx:.2f} SEK, "
+                             f"{len(st['positions'])} holdings ([details](reports/invest.md))")
+        except Exception:
+            pass
+        try:
             from .lab import entries
             n_lab = sum(1 for x in entries(root) if x.get("active", True))
             if n_lab:

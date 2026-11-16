@@ -1,0 +1,44 @@
+# Long-term investing paper account (simulated only). Runs once per weekday after the US close
+# and processes every finished trading day it has not processed yet, so a late start loses nothing.
+name: Investing
+on:
+  schedule:
+    - cron: "17 22 * * 1-5"       # 22:17 UTC = after the 16:00 New York close all year
+    - cron: "17 2 * * 2-6"        # spare run a few hours later
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: paper-trading
+  cancel-in-progress: false
+jobs:
+  invest:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        timeout-minutes: 10
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+        timeout-minutes: 10
+      - name: Update the investing paper account
+        env:
+          PAPERTRADER_GIT_PERSIST: "1"
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          export PAPERTRADER_REPO_PRIVATE=$(gh api "repos/$GITHUB_REPOSITORY" --jq .private 2>/dev/null || echo true)
+          git config user.name "paper-trading-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python -m papertrader invest-run 2>&1 | tee run.log
+          { echo '## Investing run'; echo '```'; tail -n 40 run.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Alert - run failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title "Investing account: run failed $(date -u +%F)" \
+            --body "The daily investing update failed; the next run will catch up the missed days. Log: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

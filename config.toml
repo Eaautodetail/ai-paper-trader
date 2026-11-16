@@ -65,3 +65,21 @@ symbols = [
 ]
 benchmark = "SPY"
 fx_symbol = "SEK=X"                   # Yahoo ticker for USD/SEK
+
+[invest]
+# Long-term investing paper account (simulated only): big tech and future-tech companies from
+# strategy/watchlist.json, held for days or weeks. Checked once per trading day after the close.
+enabled = true
+initial_sek = 500.0
+fractional_shares = true              # buy parts of a share (like Trading 212 or Revolut); false = whole shares only
+min_order_usd = 1.0
+max_position_pct = 20.0               # same limit as day trading: never more than 20% in one company
+max_risk_per_position_pct = 0.5       # planned loss to the stop, plus costs, at most 0.5% of the account
+daily_loss_limit_pct = 2.0            # account down more than 2% in a day: no new buys that day
+max_positions = 8
+
+[invest.costs]
+# Very liquid large companies: tighter spreads than the small day-trading stocks.
+half_spread_bps = 2.0
+min_half_spread_usd = 0.005
+slippage_bps = 3.0

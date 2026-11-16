@@ -18,6 +18,7 @@ on:
           - weekly-review
           - fullday-study
           - lab-backtest
+          - invest-backtest
 permissions:
   contents: write
 concurrency:

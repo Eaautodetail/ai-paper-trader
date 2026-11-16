@@ -23,7 +23,7 @@ def git_persist(msg: str) -> None:
     """Commit the ledger, reports and status to GitHub (only inside GitHub Actions)."""
     if os.environ.get("PAPERTRADER_GIT_PERSIST") != "1":
         return
-    paths = ["ledger", "reports", "STATUS.md", "data", "strategy/lab.json"]
+    paths = ["ledger", "reports", "STATUS.md", "data", "strategy/lab.json", "strategy/invest_selected.json"]
     try:
         subprocess.run(["git", "add", *paths], cwd=ROOT, check=True)
         if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT).returncode == 0:
@@ -95,6 +95,20 @@ def main(argv=None) -> int:
         sel = run(cfg, ROOT / "reports", strategies=[build({"name": "no_trade"}), build(current)] + momentum_grid(),
                   tag="backtest_momentum", root=ROOT)
         print(json.dumps(sel, indent=2))
+        return 0
+    if cmd == "invest-run":
+        # Long-term investing paper account: process every finished trading day not yet done.
+        from .invest import run_live
+        msg = run_live(cfg, ROOT)
+        print(msg)
+        write_status(rt, cal)
+        git_persist("investing account update")
+        return 0
+    if cmd == "invest-backtest":
+        from .invest import backtest
+        res = backtest(cfg, ROOT)
+        print((ROOT / "reports" / "invest_backtest.md").read_text())
+        print("Selected:", json.dumps(res["selected"]))
         return 0
     if cmd == "lab-backtest":
         # Backtests every lab strategy on all stored history; changes nothing.
