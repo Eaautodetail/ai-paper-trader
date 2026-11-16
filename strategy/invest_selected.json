@@ -1,0 +1,12 @@
+{
+  "selected_at": "2026-11-16",
+  "rule": "Highest older-period return among variants with at least 10 older-period trades; the recent period is only reported.",
+  "params": {
+    "name": "trend_breakout",
+    "stop_atr": 2.5,
+    "trail_atr": 3.5,
+    "take_profit": null,
+    "max_hold_days": 120,
+    "trend_exit": true
+  }
+}
