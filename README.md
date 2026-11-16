@@ -125,6 +125,12 @@ You only need a web browser. Everything happens on github.com.
 17. A lab account is judged only after 20 sessions and 15 trades. It is retired (stops trading, record kept) if it is losing with a profit factor below 0.8, or if it is still losing after 40 sessions. Winners keep going.
 18. Every week new ideas are added to the lab as rule sets (no code changes); **Research -> lab-backtest** tests all lab strategies on the stored history.
 
+**Long-term investing account (big tech and future tech)**
+
+19. A separate 500 SEK paper account invests in the big and future-tech companies listed in `strategy/watchlist.json` (AI, chips, quantum computing, cybersecurity, plus the Nasdaq fund QQQ) and may hold for days or weeks. It buys parts of a share. Every weekday after the US close (**Actions -> Investing**) it processes the finished day: buys decided at the close fill at the next open; stops are checked every day.
+20. Same limits as day trading: at most 20% of the account in one company and at most 0.5% planned loss per position, no leverage or short selling. If the account falls more than 2% in a day, no new buys that day.
+21. Results: `reports/invest.md`. **Research -> invest-backtest** tests the rules on about four years of real daily prices against simply buying and holding (`reports/invest_backtest.md`). Every Saturday a research run checks the companies' news and outlook and updates the watchlist, with sources.
+
 ## 7. Useful extras
 
 * **Actions -> Research -> check-data**: tests the data feed and exchange calendar right now.
