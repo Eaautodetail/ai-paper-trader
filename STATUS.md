@@ -2,7 +2,7 @@
 
 **Mode: PAPER TRADING (simulated). Real-money trading: DISABLED - there is no brokerage connection in this program.**
 
-* Updated: 2026-11-16 17:30 Stockholm time
+* Updated: 2026-11-16 22:55 Stockholm time
 * Evaluation: **TRAINING - evaluation finished (3/3), 18 training sessions since (every trading day). See reports/readiness.md**
 * Readiness self-check: NOT READY - still training (0 of 8 criteria met) ([details](reports/readiness.md))
 * Next trading window: Tue 2026-11-17 15:30-17:30 Stockholm (09:30-11:30 New York)
@@ -37,6 +37,6 @@
 | [2026-11-11](reports/training/2026-11-11.md) | training | completed | 47.68 | 47.68 | 0 |
 | [2026-11-16](reports/training/2026-11-16.md) | training | completed | 47.68 | 47.68 | 0 |
 
-Last run: training session 2026-11-16 completed
+Last run: training session 2026-11-16 already completed.
 
 _Simulated paper trading only. No real money, no brokerage connection. Results from a few sessions are an operational test, not evidence of a profitable strategy._
