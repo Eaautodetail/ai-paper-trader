@@ -85,3 +85,13 @@ def test_live_catch_up_is_idempotent(cfg, tmp_root):
     assert s1 == s2 and s1["last_day"] == str(last.date())
     assert len(s1["equity"]) == len({e["day"] for e in s1["equity"]})
     assert (tmp_root / "reports" / "invest.md").exists()
+
+
+def test_daily_bars_keep_their_date():
+    from zoneinfo import ZoneInfo
+    import pandas as pd
+    from papertrader.data import _split
+    idx = pd.DatetimeIndex(["2026-11-13", "2026-11-16"])
+    raw = pd.DataFrame({"Open": [1.0, 2], "High": [1.0, 2], "Low": [1.0, 2], "Close": [1.0, 2], "Volume": [1, 1]}, index=idx)
+    out = _split(raw, ["X"], ZoneInfo("America/New_York"))["X"]
+    assert [d.isoformat() for d in out.index.date] == ["2026-11-13", "2026-11-16"]

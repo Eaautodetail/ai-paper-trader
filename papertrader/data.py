@@ -30,7 +30,12 @@ def _split(raw: pd.DataFrame, symbols: list[str], tz) -> dict[str, pd.DataFrame]
         if df.empty:
             continue
         idx = df.index
-        df.index = (idx.tz_localize("UTC") if idx.tz is None else idx).tz_convert(tz)
+        if idx.tz is None:
+            # Daily bars come as plain dates (midnight). They are exchange dates, not UTC times:
+            # reading them as UTC would move every day back to the evening before.
+            daily = bool(len(idx)) and bool((idx.normalize() == idx).all())
+            idx = idx.tz_localize(tz if daily else "UTC")
+        df.index = idx.tz_convert(tz)
         df["Volume"] = df["Volume"].fillna(0)
         out[s] = df.sort_index()
     return out
