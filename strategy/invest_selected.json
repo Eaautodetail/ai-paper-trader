@@ -1,5 +1,5 @@
 {
-  "selected_at": "2026-11-16",
+  "selected_at": "2026-11-17",
   "rule": "Highest older-period return among variants with at least 10 older-period trades; the recent period is only reported.",
   "params": {
     "name": "trend_breakout",
