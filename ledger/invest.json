@@ -1,0 +1,29 @@
+{
+ "initial_sek": 500.0,
+ "fx_initial": 10.133749961853027,
+ "initial_usd": 49.21672647119468,
+ "cash": 49.21672647119468,
+ "params": {
+  "name": "trend_breakout",
+  "stop_atr": 2.5,
+  "trail_atr": 3.5,
+  "take_profit": null,
+  "max_hold_days": 120,
+  "trend_exit": true
+ },
+ "start_day": "2026-11-17",
+ "last_day": "2026-11-17",
+ "positions": {},
+ "orders": [],
+ "trades": [],
+ "equity": [
+  {
+   "day": "2026-11-17",
+   "equity": 49.2167
+  }
+ ],
+ "events": [
+  "2026-11-17 Investing paper account opened with 500 SEK; rules {\"name\": \"trend_breakout\", \"stop_atr\": 2.5, \"trail_atr\": 3.5, \"take_profit\": null, \"max_hold_days\": 120, \"trend_exit\": true}"
+ ],
+ "fx_last": 10.133749961853027
+}
