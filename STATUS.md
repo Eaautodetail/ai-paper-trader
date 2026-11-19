@@ -2,7 +2,7 @@
 
 **Mode: PAPER TRADING (simulated). Real-money trading: DISABLED - there is no brokerage connection in this program.**
 
-* Updated: 2026-11-19 23:47 Stockholm time
+* Updated: 2026-11-20 00:16 Stockholm time
 * Evaluation: **TRAINING - evaluation finished (3/3), 19 training sessions since (every trading day). See reports/readiness.md**
 * Readiness self-check: NOT READY - still training (0 of 8 criteria met) ([details](reports/readiness.md))
 * Next trading window: Fri 2026-11-20 15:30-17:30 Stockholm (09:30-11:30 New York)
