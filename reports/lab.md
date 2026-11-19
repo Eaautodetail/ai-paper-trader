@@ -6,14 +6,14 @@ Retirement rule (fixed): judged only after 20 sessions and 15 trades; retired if
 
 | Rank | Lab account | Sessions | Trades | Winners | Net after costs USD | Account SEK (incl. currency moves) | Active | Idea |
 |---|---|---|---|---|---|---|---|---|
-| 1 | vwap_pullback_leader | 9 | 3 | 67% | +0.124 | 515.94 | yes | Instead of buying at a new high (where real losers often bought 4-5 ATR above VWAP), wait until a stock that is up 2%+ pulls back close to VWAP, with the market up, and aim for +2% |
-| 2 | momentum_no_chasing | 10 | 1 | 0% | -0.104 | 509.85 | yes | Current momentum rules, but skip stocks under 5 USD (higher costs) and stocks already far above VWAP (real losers were 4-5 ATR above) |
-| 3 | volatile_breakout | 4 | 9 | 22% | -0.376 | 508.05 | yes | Both the real trades and the 21-day history did best on the most volatile stocks (1-min ATR at least 0.5% of price): bigger moves beat the fixed costs. Breakout of the last 15 minutes' high, only in a strong market |
-| 4 | big_mover_ride | 9 | 4 | 0% | -0.436 | 510.30 | yes | Costs (~0.55%) eat the small +0.36% average move, so only take the day's very strongest movers (up 5%+) in a strong market and let a wide trailing stop ride the trend for a bigger move per trade |
-| 5 | orb_market_filter | 10 | 11 | 27% | -0.513 | 505.72 | yes | Opening-range breakout that only buys while the market is above its VWAP (top of the weekly review list on 2026-10-17) |
-| 6 | momentum_market_up | 10 | 14 | 21% | -0.666 | 504.19 | yes | Current momentum rules, but only buy when the whole market is up at least 0.3% (best group in the trade lessons) |
-| 7 | dip_buy_strong_market | 10 | 7 | 0% | -0.788 | 502.96 | yes | Different style: buy a short dip below VWAP in a stock that is still up on the day, only while the market is strong; aims for +1.5% |
-| 8 | momentum_later_entry | 10 | 18 | 17% | -1.044 | 500.38 | yes | Current momentum rules, but buy 45-90 min after the open (15-30 min was the worst group) |
+| 1 | vwap_pullback_leader | 10 | 3 | 67% | +0.124 | 519.50 | yes | Instead of buying at a new high (where real losers often bought 4-5 ATR above VWAP), wait until a stock that is up 2%+ pulls back close to VWAP, with the market up, and aim for +2% |
+| 2 | momentum_no_chasing | 11 | 1 | 0% | -0.104 | 513.36 | yes | Current momentum rules, but skip stocks under 5 USD (higher costs) and stocks already far above VWAP (real losers were 4-5 ATR above) |
+| 3 | volatile_breakout | 5 | 9 | 22% | -0.376 | 511.55 | yes | Both the real trades and the 21-day history did best on the most volatile stocks (1-min ATR at least 0.5% of price): bigger moves beat the fixed costs. Breakout of the last 15 minutes' high, only in a strong market |
+| 4 | big_mover_ride | 10 | 4 | 0% | -0.436 | 513.82 | yes | Costs (~0.55%) eat the small +0.36% average move, so only take the day's very strongest movers (up 5%+) in a strong market and let a wide trailing stop ride the trend for a bigger move per trade |
+| 5 | orb_market_filter | 11 | 11 | 27% | -0.513 | 509.21 | yes | Opening-range breakout that only buys while the market is above its VWAP (top of the weekly review list on 2026-10-17) |
+| 6 | momentum_market_up | 11 | 14 | 21% | -0.666 | 507.67 | yes | Current momentum rules, but only buy when the whole market is up at least 0.3% (best group in the trade lessons) |
+| 7 | dip_buy_strong_market | 11 | 7 | 0% | -0.788 | 506.42 | yes | Different style: buy a short dip below VWAP in a stock that is still up on the day, only while the market is strong; aims for +1.5% |
+| 8 | momentum_later_entry | 11 | 18 | 17% | -1.044 | 503.83 | yes | Current momentum rules, but buy 45-90 min after the open (15-30 min was the worst group) |
 
 ## Rules each account uses
 
