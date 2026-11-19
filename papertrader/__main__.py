@@ -30,10 +30,13 @@ def git_persist(msg: str) -> None:
             return
         subprocess.run(["git", "commit", "-q", "-m", f"paper-trading: {msg} [skip ci]"], cwd=ROOT, check=True)
         for _ in range(4):
-            # Only this job writes the ledger and reports; if the Control workflow changed
-            # STATUS.md at the same moment, keep this job's (newer) version.
-            if subprocess.run(["git", "pull", "-q", "--rebase", "-X", "theirs", "origin", "main"], cwd=ROOT).returncode != 0:
-                subprocess.run(["git", "rebase", "--abort"], cwd=ROOT, capture_output=True)
+            # Merge (not rebase): a rebase rewrites every file this job changed, which replaces the
+            # ledger database under the open connection ("attempt to write a readonly database",
+            # 2026-11-17). A merge leaves files that only this job changed untouched. On a clash
+            # (e.g. the Control workflow changed STATUS.md at the same moment) this job's version wins.
+            if subprocess.run(["git", "pull", "-q", "--no-rebase", "--no-edit", "-X", "ours", "origin", "main"],
+                              cwd=ROOT).returncode != 0:
+                subprocess.run(["git", "merge", "--abort"], cwd=ROOT, capture_output=True)
                 continue
             if subprocess.run(["git", "push", "-q", "origin", "HEAD:main"], cwd=ROOT).returncode == 0:
                 return
