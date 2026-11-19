@@ -12,13 +12,17 @@
   "trend_exit": true
  },
  "start_day": "2026-11-17",
- "last_day": "2026-11-17",
+ "last_day": "2026-11-18",
  "positions": {},
  "orders": [],
  "trades": [],
  "equity": [
   {
    "day": "2026-11-17",
+   "equity": 49.2167
+  },
+  {
+   "day": "2026-11-18",
    "equity": 49.2167
   }
  ],
