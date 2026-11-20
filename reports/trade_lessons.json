@@ -1,21 +1,21 @@
 {
   "real": {
-    "trades": 33,
-    "win_pct": 15.2,
-    "net": -2.156,
-    "avg_move_pct": -0.393,
-    "avg_cost_pct": 0.591,
+    "trades": 34,
+    "win_pct": 14.7,
+    "net": -2.2826,
+    "avg_move_pct": -0.4,
+    "avg_cost_pct": 0.596,
     "exits": {
-      "stop": 23,
+      "stop": 24,
       "window_end": 8,
       "target": 2
     },
     "patterns": [
       "Minutes after the open: best when **45 to 60** (12 trades, 17% winners, avg -0.061 USD), worst when **30 to 45** (6 trades, 0% winners, avg -0.088 USD)",
-      "Stock's gain since the open, %: best when **1 to 2** (5 trades, 20% winners, avg -0.036 USD), worst when **0 to 1** (8 trades, 12% winners, avg -0.076 USD)",
-      "Volume vs normal (x): best when **1.5 to 2** (8 trades, 25% winners, avg -0.041 USD), worst when **3 to 5** (5 trades, 0% winners, avg -0.104 USD)",
+      "Stock's gain since the open, %: best when **1 to 2** (6 trades, 17% winners, avg -0.051 USD), worst when **0 to 1** (8 trades, 12% winners, avg -0.076 USD)",
+      "Volume vs normal (x): best when **1.5 to 2** (8 trades, 25% winners, avg -0.041 USD), worst when **3 to 5** (6 trades, 0% winners, avg -0.108 USD)",
       "Price above VWAP, in ATRs: best when **1 to 2** (7 trades, 14% winners, avg -0.061 USD), worst when **3 or more** (19 trades, 16% winners, avg -0.069 USD)",
-      "Volatility: 1-min ATR as % of price: best when **0.5 or more** (9 trades, 22% winners, avg -0.042 USD), worst when **0.3 to 0.5** (23 trades, 13% winners, avg -0.072 USD)",
+      "Volatility: 1-min ATR as % of price: best when **0.5 or more** (9 trades, 22% winners, avg -0.042 USD), worst when **0.3 to 0.5** (24 trades, 12% winners, avg -0.075 USD)",
       "Market (SPY) since the open, %: best when **-0.3 to 0** (5 trades, 20% winners, avg -0.034 USD), worst when **0 to 0.3** (12 trades, 17% winners, avg -0.073 USD)",
       "Costs as % of the trade: best when **0.3 to 0.5** (8 trades, 25% winners, avg -0.061 USD), worst when **0.5 to 0.75** (23 trades, 13% winners, avg -0.065 USD)",
       "Share price, USD: best when **5 to 8** (11 trades, 18% winners, avg -0.051 USD), worst when **8 to 12** (6 trades, 0% winners, avg -0.120 USD)"
@@ -32,11 +32,11 @@
         },
         {
           "group": "15 to 30",
-          "trades": 7.0,
-          "win_pct": 14.2857,
-          "avg_net": -0.0616,
-          "total_net": -0.4315,
-          "avg_move_pct": -0.4584
+          "trades": 8.0,
+          "win_pct": 12.5,
+          "avg_net": -0.0698,
+          "total_net": -0.5581,
+          "avg_move_pct": -0.4802
         },
         {
           "group": "30 to 45",
@@ -74,11 +74,11 @@
         },
         {
           "group": "1 to 2",
-          "trades": 5.0,
-          "win_pct": 20.0,
-          "avg_net": -0.0363,
-          "total_net": -0.1816,
-          "avg_move_pct": -0.1088
+          "trades": 6.0,
+          "win_pct": 16.6667,
+          "avg_net": -0.0514,
+          "total_net": -0.3083,
+          "avg_move_pct": -0.1961
         },
         {
           "group": "2 to 3",
@@ -124,11 +124,11 @@
         },
         {
           "group": "3 to 5",
-          "trades": 5.0,
+          "trades": 6.0,
           "win_pct": 0.0,
-          "avg_net": -0.1042,
-          "total_net": -0.5212,
-          "avg_move_pct": -0.7413
+          "avg_net": -0.108,
+          "total_net": -0.6479,
+          "avg_move_pct": -0.7232
         },
         {
           "group": "5 or more",
@@ -142,11 +142,11 @@
       "vwap_dist_atr": [
         {
           "group": "0 to 1",
-          "trades": 3.0,
-          "win_pct": 33.3333,
-          "avg_net": -0.0252,
-          "total_net": -0.0757,
-          "avg_move_pct": -0.0231
+          "trades": 4.0,
+          "win_pct": 25.0,
+          "avg_net": -0.0506,
+          "total_net": -0.2023,
+          "avg_move_pct": -0.1755
         },
         {
           "group": "1 to 2",
@@ -184,11 +184,11 @@
         },
         {
           "group": "0.3 to 0.5",
-          "trades": 23.0,
-          "win_pct": 13.0435,
-          "avg_net": -0.0724,
-          "total_net": -1.666,
-          "avg_move_pct": -0.4188
+          "trades": 24.0,
+          "win_pct": 12.5,
+          "avg_net": -0.0747,
+          "total_net": -1.7926,
+          "avg_move_pct": -0.4277
         },
         {
           "group": "0.5 or more",
@@ -218,11 +218,11 @@
         },
         {
           "group": "0.3 or more",
-          "trades": 16.0,
-          "win_pct": 12.5,
-          "avg_net": -0.0693,
-          "total_net": -1.1089,
-          "avg_move_pct": -0.5172
+          "trades": 17.0,
+          "win_pct": 11.7647,
+          "avg_net": -0.0727,
+          "total_net": -1.2356,
+          "avg_move_pct": -0.524
         }
       ],
       "cost_pct": [
@@ -244,21 +244,21 @@
         },
         {
           "group": "0.75 to 1",
-          "trades": 2.0,
+          "trades": 3.0,
           "win_pct": 0.0,
-          "avg_net": -0.0848,
-          "total_net": -0.1697,
-          "avg_move_pct": -1.2942
+          "avg_net": -0.0988,
+          "total_net": -0.2963,
+          "avg_move_pct": -1.0737
         }
       ],
       "price": [
         {
           "group": "0 to 3",
-          "trades": 3.0,
-          "win_pct": 66.6667,
-          "avg_net": 0.0542,
-          "total_net": 0.1625,
-          "avg_move_pct": 1.3089
+          "trades": 4.0,
+          "win_pct": 50.0,
+          "avg_net": 0.009,
+          "total_net": 0.0358,
+          "avg_move_pct": 0.8235
         },
         {
           "group": "3 to 5",
