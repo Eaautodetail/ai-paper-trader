@@ -288,257 +288,264 @@
     }
   },
   "history": {
-    "trades": 23,
-    "win_pct": 34.8,
-    "net": -0.0688,
-    "avg_move_pct": 0.549,
-    "avg_cost_pct": 0.555,
+    "trades": 21,
+    "win_pct": 42.9,
+    "net": -0.1401,
+    "avg_move_pct": 0.305,
+    "avg_cost_pct": 0.476,
     "exits": {
-      "stop": 11,
-      "target": 7,
-      "window_end": 5
+      "stop": 10,
+      "target": 9,
+      "window_end": 2
     },
     "patterns": [
-      "Minutes after the open: best when **15 to 30** (7 trades, 57% winners, avg +0.048 USD), worst when **0 to 15** (5 trades, 20% winners, avg +0.009 USD)",
-      "Stock's gain since the open, %: best when **1 to 2** (10 trades, 60% winners, avg +0.063 USD), worst when **0 to 1** (9 trades, 11% winners, avg -0.070 USD)",
-      "Volume vs normal (x): best when **2 to 3** (12 trades, 42% winners, avg +0.034 USD), worst when **3 to 5** (5 trades, 20% winners, avg -0.071 USD)",
-      "Price above VWAP, in ATRs: best when **1 to 2** (10 trades, 30% winners, avg -0.004 USD), worst when **2 to 3** (6 trades, 33% winners, avg -0.034 USD)",
-      "Volatility: 1-min ATR as % of price: best when **0.5 or more** (7 trades, 43% winners, avg +0.066 USD), worst when **0.3 to 0.5** (16 trades, 31% winners, avg -0.033 USD)",
-      "Market (SPY) since the open, %: best when **0.3 or more** (11 trades, 45% winners, avg +0.010 USD), worst when **0 to 0.3** (11 trades, 27% winners, avg -0.006 USD)",
-      "Costs as % of the trade: best when **0.3 to 0.5** (7 trades, 86% winners, avg +0.148 USD), worst when **0.5 to 0.75** (16 trades, 12% winners, avg -0.069 USD)",
-      "Share price, USD: best when **5 to 8** (8 trades, 50% winners, avg +0.061 USD), worst when **3 to 5** (7 trades, 14% winners, avg -0.072 USD)"
+      "Minutes after the open: best when **15 to 30** (8 trades, 75% winners, avg +0.088 USD), worst when **0 to 15** (8 trades, 25% winners, avg -0.049 USD)",
+      "Stock's gain since the open, %: best when **0 to 1** (7 trades, 57% winners, avg +0.016 USD), worst when **2 to 3** (7 trades, 29% winners, avg -0.055 USD)",
+      "Volume vs normal (x): best when **2 to 3** (5 trades, 40% winners, avg +0.001 USD), worst when **1.5 to 2** (7 trades, 29% winners, avg -0.056 USD)",
+      "Price above VWAP, in ATRs: best when **1 to 2** (9 trades, 56% winners, avg +0.045 USD), worst when **3 or more** (5 trades, 40% winners, avg -0.039 USD)",
+      "Market (SPY) since the open, %: best when **0.3 or more** (5 trades, 60% winners, avg +0.023 USD), worst when **-0.3 to 0** (5 trades, 20% winners, avg -0.094 USD)",
+      "Costs as % of the trade: best when **0.3 to 0.5** (13 trades, 69% winners, avg +0.065 USD), worst when **0.5 to 0.75** (8 trades, 0% winners, avg -0.123 USD)",
+      "Share price, USD: best when **3 to 5** (7 trades, 57% winners, avg +0.042 USD), worst when **5 to 8** (9 trades, 33% winners, avg -0.034 USD)"
     ],
     "tables": {
       "entry_minute": [
         {
           "group": "0 to 15",
-          "trades": 5.0,
-          "win_pct": 20.0,
-          "avg_net": 0.0091,
-          "total_net": 0.0456,
-          "avg_move_pct": 0.8117
+          "trades": 8.0,
+          "win_pct": 25.0,
+          "avg_net": -0.0489,
+          "total_net": -0.3914,
+          "avg_move_pct": -0.2265
         },
         {
           "group": "15 to 30",
-          "trades": 7.0,
-          "win_pct": 57.1429,
-          "avg_net": 0.0484,
-          "total_net": 0.3386,
-          "avg_move_pct": 1.117
+          "trades": 8.0,
+          "win_pct": 75.0,
+          "avg_net": 0.0878,
+          "total_net": 0.7028,
+          "avg_move_pct": 1.441
         },
         {
           "group": "30 to 45",
-          "trades": 4.0,
-          "win_pct": 25.0,
-          "avg_net": -0.0597,
-          "total_net": -0.2388,
-          "avg_move_pct": -0.1758
-        },
-        {
-          "group": "45 to 60",
-          "trades": 4.0,
-          "win_pct": 25.0,
-          "avg_net": -0.0299,
-          "total_net": -0.1198,
-          "avg_move_pct": 0.335
+          "trades": 3.0,
+          "win_pct": 0.0,
+          "avg_net": -0.1419,
+          "total_net": -0.4258,
+          "avg_move_pct": -1.3075
         },
         {
           "group": "60 to 90",
-          "trades": 3.0,
-          "win_pct": 33.3333,
-          "avg_net": -0.0314,
-          "total_net": -0.0943,
-          "avg_move_pct": 0.0353
+          "trades": 2.0,
+          "win_pct": 50.0,
+          "avg_net": -0.0129,
+          "total_net": -0.0257,
+          "avg_move_pct": 0.3016
         }
       ],
       "gain_open_pct": [
         {
           "group": "0 to 1",
-          "trades": 9.0,
-          "win_pct": 11.1111,
-          "avg_net": -0.0702,
-          "total_net": -0.6318,
-          "avg_move_pct": -0.2504
+          "trades": 7.0,
+          "win_pct": 57.1429,
+          "avg_net": 0.016,
+          "total_net": 0.1123,
+          "avg_move_pct": 0.4633
         },
         {
           "group": "1 to 2",
-          "trades": 10.0,
-          "win_pct": 60.0,
-          "avg_net": 0.0626,
-          "total_net": 0.626,
-          "avg_move_pct": 1.3185
+          "trades": 3.0,
+          "win_pct": 33.3333,
+          "avg_net": -0.0201,
+          "total_net": -0.0604,
+          "avg_move_pct": 0.3238
         },
         {
           "group": "2 to 3",
-          "trades": 2.0,
-          "win_pct": 0.0,
-          "avg_net": -0.0866,
-          "total_net": -0.1732,
-          "avg_move_pct": -0.4639
+          "trades": 7.0,
+          "win_pct": 28.5714,
+          "avg_net": -0.0546,
+          "total_net": -0.3823,
+          "avg_move_pct": -0.2886
         },
         {
           "group": "3 to 5",
-          "trades": 2.0,
-          "win_pct": 50.0,
-          "avg_net": 0.0551,
-          "total_net": 0.1103,
-          "avg_move_pct": 1.3081
+          "trades": 3.0,
+          "win_pct": 33.3333,
+          "avg_net": -0.0217,
+          "total_net": -0.0652,
+          "avg_move_pct": 0.1424
+        },
+        {
+          "group": "5 or more",
+          "trades": 1.0,
+          "win_pct": 100.0,
+          "avg_net": 0.2555,
+          "total_net": 0.2555,
+          "avg_move_pct": 3.7753
         }
       ],
       "rvol": [
         {
+          "group": "0 to 1.5",
+          "trades": 4.0,
+          "win_pct": 75.0,
+          "avg_net": 0.0764,
+          "total_net": 0.3056,
+          "avg_move_pct": 1.1489
+        },
+        {
+          "group": "1.5 to 2",
+          "trades": 7.0,
+          "win_pct": 28.5714,
+          "avg_net": -0.0557,
+          "total_net": -0.3898,
+          "avg_move_pct": -0.3679
+        },
+        {
           "group": "2 to 3",
-          "trades": 12.0,
-          "win_pct": 41.6667,
-          "avg_net": 0.034,
-          "total_net": 0.4077,
-          "avg_move_pct": 1.0419
+          "trades": 5.0,
+          "win_pct": 40.0,
+          "avg_net": 0.0012,
+          "total_net": 0.0058,
+          "avg_move_pct": 0.6683
         },
         {
           "group": "3 to 5",
           "trades": 5.0,
-          "win_pct": 20.0,
-          "avg_net": -0.0706,
-          "total_net": -0.353,
-          "avg_move_pct": -0.3878
-        },
-        {
-          "group": "5 or more",
-          "trades": 6.0,
-          "win_pct": 33.3333,
-          "avg_net": -0.0206,
-          "total_net": -0.1235,
-          "avg_move_pct": 0.3427
+          "win_pct": 40.0,
+          "avg_net": -0.0123,
+          "total_net": -0.0617,
+          "avg_move_pct": 0.207
         }
       ],
       "vwap_dist_atr": [
         {
           "group": "0 to 1",
-          "trades": 1.0,
-          "win_pct": 100.0,
-          "avg_net": 0.2594,
-          "total_net": 0.2594,
-          "avg_move_pct": 4.2582
+          "trades": 4.0,
+          "win_pct": 25.0,
+          "avg_net": -0.0898,
+          "total_net": -0.3594,
+          "avg_move_pct": -0.616
         },
         {
           "group": "1 to 2",
-          "trades": 10.0,
-          "win_pct": 30.0,
-          "avg_net": -0.0039,
-          "total_net": -0.0388,
-          "avg_move_pct": 0.5393
+          "trades": 9.0,
+          "win_pct": 55.5556,
+          "avg_net": 0.0453,
+          "total_net": 0.408,
+          "avg_move_pct": 0.8684
         },
         {
           "group": "2 to 3",
-          "trades": 6.0,
+          "trades": 3.0,
           "win_pct": 33.3333,
-          "avg_net": -0.0343,
-          "total_net": -0.2057,
-          "avg_move_pct": 0.1545
+          "avg_net": 0.0017,
+          "total_net": 0.0051,
+          "avg_move_pct": 0.5136
         },
         {
           "group": "3 or more",
-          "trades": 6.0,
-          "win_pct": 33.3333,
-          "avg_net": -0.0139,
-          "total_net": -0.0837,
-          "avg_move_pct": 0.3402
+          "trades": 5.0,
+          "win_pct": 40.0,
+          "avg_net": -0.0388,
+          "total_net": -0.1938,
+          "avg_move_pct": -0.099
         }
       ],
       "atr_pct": [
         {
           "group": "0.3 to 0.5",
-          "trades": 16.0,
-          "win_pct": 31.25,
-          "avg_net": -0.0331,
-          "total_net": -0.5291,
-          "avg_move_pct": 0.1517
+          "trades": 2.0,
+          "win_pct": 50.0,
+          "avg_net": -0.0129,
+          "total_net": -0.0257,
+          "avg_move_pct": 0.3016
         },
         {
           "group": "0.5 or more",
-          "trades": 7.0,
-          "win_pct": 42.8571,
-          "avg_net": 0.0658,
-          "total_net": 0.4603,
-          "avg_move_pct": 1.4562
+          "trades": 19.0,
+          "win_pct": 42.1053,
+          "avg_net": -0.006,
+          "total_net": -0.1144,
+          "avg_move_pct": 0.3049
         }
       ],
       "spy_gain_pct": [
         {
-          "group": "-0.3 to 0",
+          "group": "below -0.3",
           "trades": 1.0,
-          "win_pct": 0.0,
-          "avg_net": -0.1173,
-          "total_net": -0.1173,
-          "avg_move_pct": -0.709
+          "win_pct": 100.0,
+          "avg_net": 0.1216,
+          "total_net": 0.1216,
+          "avg_move_pct": 1.7547
+        },
+        {
+          "group": "-0.3 to 0",
+          "trades": 5.0,
+          "win_pct": 20.0,
+          "avg_net": -0.0939,
+          "total_net": -0.4693,
+          "avg_move_pct": -0.9227
         },
         {
           "group": "0 to 0.3",
-          "trades": 11.0,
-          "win_pct": 27.2727,
-          "avg_net": -0.0057,
-          "total_net": -0.0628,
-          "avg_move_pct": 0.4721
+          "trades": 10.0,
+          "win_pct": 40.0,
+          "avg_net": 0.0091,
+          "total_net": 0.0908,
+          "avg_move_pct": 0.5241
         },
         {
           "group": "0.3 or more",
-          "trades": 11.0,
-          "win_pct": 45.4545,
-          "avg_net": 0.0101,
-          "total_net": 0.1113,
-          "avg_move_pct": 0.7396
+          "trades": 5.0,
+          "win_pct": 60.0,
+          "avg_net": 0.0233,
+          "total_net": 0.1167,
+          "avg_move_pct": 0.803
         }
       ],
       "cost_pct": [
         {
           "group": "0.3 to 0.5",
-          "trades": 7.0,
-          "win_pct": 85.7143,
-          "avg_net": 0.1483,
-          "total_net": 1.0379,
-          "avg_move_pct": 2.366
+          "trades": 13.0,
+          "win_pct": 69.2308,
+          "avg_net": 0.0648,
+          "total_net": 0.8422,
+          "avg_move_pct": 1.2178
         },
         {
           "group": "0.5 to 0.75",
-          "trades": 16.0,
-          "win_pct": 12.5,
-          "avg_net": -0.0692,
-          "total_net": -1.1067,
-          "avg_move_pct": -0.2464
+          "trades": 8.0,
+          "win_pct": 0.0,
+          "avg_net": -0.1228,
+          "total_net": -0.9823,
+          "avg_move_pct": -1.1794
         }
       ],
       "price": [
         {
-          "group": "0 to 3",
-          "trades": 5.0,
-          "win_pct": 20.0,
-          "avg_net": -0.0386,
-          "total_net": -0.1932,
-          "avg_move_pct": 0.2111
-        },
-        {
           "group": "3 to 5",
           "trades": 7.0,
-          "win_pct": 14.2857,
-          "avg_net": -0.0722,
-          "total_net": -0.5053,
-          "avg_move_pct": -0.305
+          "win_pct": 57.1429,
+          "avg_net": 0.042,
+          "total_net": 0.2942,
+          "avg_move_pct": 0.9666
         },
         {
           "group": "5 to 8",
-          "trades": 8.0,
-          "win_pct": 50.0,
-          "avg_net": 0.0612,
-          "total_net": 0.4896,
-          "avg_move_pct": 1.347
+          "trades": 9.0,
+          "win_pct": 33.3333,
+          "avg_net": -0.0343,
+          "total_net": -0.309,
+          "avg_move_pct": -0.0675
         },
         {
           "group": "8 to 12",
-          "trades": 3.0,
-          "win_pct": 66.6667,
-          "avg_net": 0.0467,
-          "total_net": 0.1402,
-          "avg_move_pct": 0.9745
+          "trades": 5.0,
+          "win_pct": 40.0,
+          "avg_net": -0.0251,
+          "total_net": -0.1253,
+          "avg_move_pct": 0.0477
         }
       ]
     },
@@ -546,13 +553,12 @@
       "name": "orb",
       "params": {
         "or_minutes": 5,
-        "rvol_min": 2.0,
-        "target_r": 2.5,
+        "rvol_min": 1.2,
+        "target_r": 1.5,
         "stop_atr": 2.0,
-        "last_entry_minute": 90,
-        "market_filter": true
+        "last_entry_minute": 90
       }
     },
-    "days": 21
+    "days": 25
   }
 }

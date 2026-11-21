@@ -110,32 +110,30 @@ All simulated trades so far, updated after every session.
 
 ## Current strategy replayed on all stored history
 
-Strategy `{"name": "orb", "params": {"or_minutes": 5, "rvol_min": 2.0, "target_r": 2.5, "stop_atr": 2.0, "last_entry_minute": 90, "market_filter": true}}` over 21 trading days, updated by the weekly review. Larger sample, so patterns here are more reliable than in the real trades.
+Strategy `{"name": "orb", "params": {"or_minutes": 5, "rvol_min": 1.2, "target_r": 1.5, "stop_atr": 2.0, "last_entry_minute": 90}}` over 25 trading days, updated by the weekly review. Larger sample, so patterns here are more reliable than in the real trades.
 
-* Trades: 23; winners: 34.8%; total net after costs: -0.069 USD
-* Average price move before costs: +0.55% per trade; average costs: 0.56% per trade
-* How trades ended: stop 11, target 7, window_end 5
+* Trades: 21; winners: 42.9%; total net after costs: -0.140 USD
+* Average price move before costs: +0.30% per trade; average costs: 0.48% per trade
+* How trades ended: stop 10, target 9, window_end 2
 
 **What stands out** (groups of at least 5 trades):
 
-* Minutes after the open: best when **15 to 30** (7 trades, 57% winners, avg +0.048 USD), worst when **0 to 15** (5 trades, 20% winners, avg +0.009 USD)
-* Stock's gain since the open, %: best when **1 to 2** (10 trades, 60% winners, avg +0.063 USD), worst when **0 to 1** (9 trades, 11% winners, avg -0.070 USD)
-* Volume vs normal (x): best when **2 to 3** (12 trades, 42% winners, avg +0.034 USD), worst when **3 to 5** (5 trades, 20% winners, avg -0.071 USD)
-* Price above VWAP, in ATRs: best when **1 to 2** (10 trades, 30% winners, avg -0.004 USD), worst when **2 to 3** (6 trades, 33% winners, avg -0.034 USD)
-* Volatility: 1-min ATR as % of price: best when **0.5 or more** (7 trades, 43% winners, avg +0.066 USD), worst when **0.3 to 0.5** (16 trades, 31% winners, avg -0.033 USD)
-* Market (SPY) since the open, %: best when **0.3 or more** (11 trades, 45% winners, avg +0.010 USD), worst when **0 to 0.3** (11 trades, 27% winners, avg -0.006 USD)
-* Costs as % of the trade: best when **0.3 to 0.5** (7 trades, 86% winners, avg +0.148 USD), worst when **0.5 to 0.75** (16 trades, 12% winners, avg -0.069 USD)
-* Share price, USD: best when **5 to 8** (8 trades, 50% winners, avg +0.061 USD), worst when **3 to 5** (7 trades, 14% winners, avg -0.072 USD)
+* Minutes after the open: best when **15 to 30** (8 trades, 75% winners, avg +0.088 USD), worst when **0 to 15** (8 trades, 25% winners, avg -0.049 USD)
+* Stock's gain since the open, %: best when **0 to 1** (7 trades, 57% winners, avg +0.016 USD), worst when **2 to 3** (7 trades, 29% winners, avg -0.055 USD)
+* Volume vs normal (x): best when **2 to 3** (5 trades, 40% winners, avg +0.001 USD), worst when **1.5 to 2** (7 trades, 29% winners, avg -0.056 USD)
+* Price above VWAP, in ATRs: best when **1 to 2** (9 trades, 56% winners, avg +0.045 USD), worst when **3 or more** (5 trades, 40% winners, avg -0.039 USD)
+* Market (SPY) since the open, %: best when **0.3 or more** (5 trades, 60% winners, avg +0.023 USD), worst when **-0.3 to 0** (5 trades, 20% winners, avg -0.094 USD)
+* Costs as % of the trade: best when **0.3 to 0.5** (13 trades, 69% winners, avg +0.065 USD), worst when **0.5 to 0.75** (8 trades, 0% winners, avg -0.123 USD)
+* Share price, USD: best when **3 to 5** (7 trades, 57% winners, avg +0.042 USD), worst when **5 to 8** (9 trades, 33% winners, avg -0.034 USD)
 
 <details><summary>Minutes after the open</summary>
 
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
-| 0 to 15 | 5 | 20 | +0.0091 | +0.0456 | +0.81 |
-| 15 to 30 | 7 | 57 | +0.0484 | +0.3386 | +1.12 |
-| 30 to 45 | 4 | 25 | -0.0597 | -0.2388 | -0.18 |
-| 45 to 60 | 4 | 25 | -0.0299 | -0.1198 | +0.34 |
-| 60 to 90 | 3 | 33 | -0.0314 | -0.0943 | +0.04 |
+| 0 to 15 | 8 | 25 | -0.0489 | -0.3914 | -0.23 |
+| 15 to 30 | 8 | 75 | +0.0878 | +0.7028 | +1.44 |
+| 30 to 45 | 3 | 0 | -0.1419 | -0.4258 | -1.31 |
+| 60 to 90 | 2 | 50 | -0.0129 | -0.0257 | +0.30 |
 
 </details>
 
@@ -143,10 +141,11 @@ Strategy `{"name": "orb", "params": {"or_minutes": 5, "rvol_min": 2.0, "target_r
 
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
-| 0 to 1 | 9 | 11 | -0.0702 | -0.6318 | -0.25 |
-| 1 to 2 | 10 | 60 | +0.0626 | +0.6260 | +1.32 |
-| 2 to 3 | 2 | 0 | -0.0866 | -0.1732 | -0.46 |
-| 3 to 5 | 2 | 50 | +0.0551 | +0.1103 | +1.31 |
+| 0 to 1 | 7 | 57 | +0.0160 | +0.1123 | +0.46 |
+| 1 to 2 | 3 | 33 | -0.0201 | -0.0604 | +0.32 |
+| 2 to 3 | 7 | 29 | -0.0546 | -0.3823 | -0.29 |
+| 3 to 5 | 3 | 33 | -0.0217 | -0.0652 | +0.14 |
+| 5 or more | 1 | 100 | +0.2555 | +0.2555 | +3.78 |
 
 </details>
 
@@ -154,9 +153,10 @@ Strategy `{"name": "orb", "params": {"or_minutes": 5, "rvol_min": 2.0, "target_r
 
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
-| 2 to 3 | 12 | 42 | +0.0340 | +0.4077 | +1.04 |
-| 3 to 5 | 5 | 20 | -0.0706 | -0.3530 | -0.39 |
-| 5 or more | 6 | 33 | -0.0206 | -0.1235 | +0.34 |
+| 0 to 1.5 | 4 | 75 | +0.0764 | +0.3056 | +1.15 |
+| 1.5 to 2 | 7 | 29 | -0.0557 | -0.3898 | -0.37 |
+| 2 to 3 | 5 | 40 | +0.0012 | +0.0058 | +0.67 |
+| 3 to 5 | 5 | 40 | -0.0123 | -0.0617 | +0.21 |
 
 </details>
 
@@ -164,10 +164,10 @@ Strategy `{"name": "orb", "params": {"or_minutes": 5, "rvol_min": 2.0, "target_r
 
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
-| 0 to 1 | 1 | 100 | +0.2594 | +0.2594 | +4.26 |
-| 1 to 2 | 10 | 30 | -0.0039 | -0.0388 | +0.54 |
-| 2 to 3 | 6 | 33 | -0.0343 | -0.2057 | +0.15 |
-| 3 or more | 6 | 33 | -0.0139 | -0.0837 | +0.34 |
+| 0 to 1 | 4 | 25 | -0.0898 | -0.3594 | -0.62 |
+| 1 to 2 | 9 | 56 | +0.0453 | +0.4080 | +0.87 |
+| 2 to 3 | 3 | 33 | +0.0017 | +0.0051 | +0.51 |
+| 3 or more | 5 | 40 | -0.0388 | -0.1938 | -0.10 |
 
 </details>
 
@@ -175,8 +175,8 @@ Strategy `{"name": "orb", "params": {"or_minutes": 5, "rvol_min": 2.0, "target_r
 
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
-| 0.3 to 0.5 | 16 | 31 | -0.0331 | -0.5291 | +0.15 |
-| 0.5 or more | 7 | 43 | +0.0658 | +0.4603 | +1.46 |
+| 0.3 to 0.5 | 2 | 50 | -0.0129 | -0.0257 | +0.30 |
+| 0.5 or more | 19 | 42 | -0.0060 | -0.1144 | +0.30 |
 
 </details>
 
@@ -184,9 +184,10 @@ Strategy `{"name": "orb", "params": {"or_minutes": 5, "rvol_min": 2.0, "target_r
 
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
-| -0.3 to 0 | 1 | 0 | -0.1173 | -0.1173 | -0.71 |
-| 0 to 0.3 | 11 | 27 | -0.0057 | -0.0628 | +0.47 |
-| 0.3 or more | 11 | 45 | +0.0101 | +0.1113 | +0.74 |
+| below -0.3 | 1 | 100 | +0.1216 | +0.1216 | +1.75 |
+| -0.3 to 0 | 5 | 20 | -0.0939 | -0.4693 | -0.92 |
+| 0 to 0.3 | 10 | 40 | +0.0091 | +0.0908 | +0.52 |
+| 0.3 or more | 5 | 60 | +0.0233 | +0.1167 | +0.80 |
 
 </details>
 
@@ -194,8 +195,8 @@ Strategy `{"name": "orb", "params": {"or_minutes": 5, "rvol_min": 2.0, "target_r
 
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
-| 0.3 to 0.5 | 7 | 86 | +0.1483 | +1.0379 | +2.37 |
-| 0.5 to 0.75 | 16 | 12 | -0.0692 | -1.1067 | -0.25 |
+| 0.3 to 0.5 | 13 | 69 | +0.0648 | +0.8422 | +1.22 |
+| 0.5 to 0.75 | 8 | 0 | -0.1228 | -0.9823 | -1.18 |
 
 </details>
 
@@ -203,9 +204,8 @@ Strategy `{"name": "orb", "params": {"or_minutes": 5, "rvol_min": 2.0, "target_r
 
 | Group | Trades | Winners % | Avg net USD | Total net USD | Avg move before costs % |
 |---|---|---|---|---|---|
-| 0 to 3 | 5 | 20 | -0.0386 | -0.1932 | +0.21 |
-| 3 to 5 | 7 | 14 | -0.0722 | -0.5053 | -0.30 |
-| 5 to 8 | 8 | 50 | +0.0612 | +0.4896 | +1.35 |
-| 8 to 12 | 3 | 67 | +0.0467 | +0.1402 | +0.97 |
+| 3 to 5 | 7 | 57 | +0.0420 | +0.2942 | +0.97 |
+| 5 to 8 | 9 | 33 | -0.0343 | -0.3090 | -0.07 |
+| 8 to 12 | 5 | 40 | -0.0251 | -0.1253 | +0.05 |
 
 </details>
