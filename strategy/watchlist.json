@@ -1,24 +1,228 @@
 {
   "note": "Companies the long-term investing paper account may buy. Descriptions are a starting point from general knowledge (2026-11-16); the weekly research run checks and updates them, adds or removes companies, and records the date and sources it used. The trading rules only use prices; this list decides WHICH companies are eligible.",
-  "updated": "2026-11-16",
+  "updated": "2026-11-21",
   "benchmark": "QQQ",
   "companies": [
-    {"symbol": "NVDA", "name": "NVIDIA", "theme": "AI chips", "what": "Designs the graphics processors (GPUs) and networking used to train and run most AI models.", "potential": "AI data-centre spending.", "risks": "Very high expectations already in the price; customers building their own chips; export limits to China.", "active": true},
-    {"symbol": "MSFT", "name": "Microsoft", "theme": "AI software & cloud", "what": "Windows, Office, the Azure cloud and a large stake in OpenAI's technology.", "potential": "AI features sold to businesses through Azure and Office.", "risks": "Huge AI data-centre costs; competition in cloud.", "active": true},
-    {"symbol": "GOOGL", "name": "Alphabet (Google)", "theme": "AI & search", "what": "Google search and ads, YouTube, Google Cloud, its own AI models (Gemini) and AI chips (TPUs); also quantum computing research.", "potential": "AI in search and cloud; quantum and self-driving (Waymo) as long-term options.", "risks": "AI chatbots changing search habits; regulation.", "active": true},
-    {"symbol": "AMZN", "name": "Amazon", "theme": "Cloud & AI", "what": "Online shop and AWS, the largest cloud provider; builds its own AI chips.", "potential": "AI workloads on AWS.", "risks": "Thin shop margins; large spending.", "active": true},
-    {"symbol": "META", "name": "Meta Platforms", "theme": "AI & social", "what": "Facebook, Instagram and WhatsApp; earns from ads; large AI research and open AI models.", "potential": "Better ad targeting with AI; AI assistants.", "risks": "Big spending on AI and virtual reality; regulation.", "active": true},
-    {"symbol": "AAPL", "name": "Apple", "theme": "Consumer tech", "what": "iPhone, Mac and services like the App Store.", "potential": "Services growth; on-device AI.", "risks": "Slower iPhone growth; China.", "active": true},
-    {"symbol": "AVGO", "name": "Broadcom", "theme": "AI chips & networking", "what": "Networking chips and custom AI chips for large cloud companies, plus infrastructure software.", "potential": "Custom AI chips for Google, Meta and others.", "risks": "Depends on a few big customers.", "active": true},
-    {"symbol": "AMD", "name": "AMD", "theme": "AI chips", "what": "Processors for PCs and servers and AI accelerators competing with NVIDIA.", "potential": "Winning a share of AI accelerator spending.", "risks": "NVIDIA's lead; price competition.", "active": true},
-    {"symbol": "TSM", "name": "TSMC", "theme": "Chip manufacturing", "what": "Taiwanese company that manufactures most of the world's advanced chips, including NVIDIA's and Apple's.", "potential": "Every AI chip maker needs it.", "risks": "Geopolitical risk around Taiwan.", "active": true},
-    {"symbol": "ASML", "name": "ASML", "theme": "Chip equipment", "what": "Dutch maker of the lithography machines needed to make advanced chips; near-monopoly in the most advanced machines.", "potential": "More chip factories worldwide.", "risks": "Export rules; cyclical orders.", "active": true},
-    {"symbol": "PLTR", "name": "Palantir", "theme": "AI software", "what": "Data and AI software for governments and companies.", "potential": "Companies adopting AI on their own data.", "risks": "Very high valuation; big price swings.", "active": true},
-    {"symbol": "CRWD", "name": "CrowdStrike", "theme": "Cybersecurity", "what": "Cloud-based cybersecurity for companies.", "potential": "Security needs grow with cloud and AI.", "risks": "High valuation; competition.", "active": true},
-    {"symbol": "IONQ", "name": "IonQ", "theme": "Quantum computing", "what": "Builds quantum computers using trapped ions, sold through the cloud.", "potential": "Could be large if quantum computers become useful.", "risks": "Small revenue, losses; technology may take many years; extreme price swings.", "active": true},
-    {"symbol": "RGTI", "name": "Rigetti Computing", "theme": "Quantum computing", "what": "Builds superconducting quantum chips and computers.", "potential": "Early quantum market.", "risks": "Losses, needs funding; extreme price swings.", "active": true},
-    {"symbol": "QBTS", "name": "D-Wave Quantum", "theme": "Quantum computing", "what": "Quantum annealing computers for optimisation problems, sold as a cloud service.", "potential": "Early commercial quantum uses.", "risks": "Losses; extreme price swings.", "active": true},
-    {"symbol": "QQQ", "name": "Invesco QQQ (Nasdaq-100 fund)", "theme": "Index fund", "what": "A fund that holds the 100 largest non-financial Nasdaq companies.", "potential": "Broad big-tech exposure in one purchase.", "risks": "Falls with the whole tech market.", "active": true},
-    {"symbol": "SMH", "name": "VanEck Semiconductor fund", "theme": "Chip index fund", "what": "A fund holding the largest chip companies.", "potential": "Broad AI-chip exposure.", "risks": "Chip stocks swing a lot.", "active": true}
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA",
+      "theme": "AI chips",
+      "what": "Designs the graphics processors (GPUs) and networking used to train and run most AI models.",
+      "potential": "AI data-centre spending is still growing fast: quarterly revenue (to 25 Oct 2026) was 115.8 billion USD, more than double a year earlier, with about 130 billion USD expected next quarter.",
+      "risks": "Founder and CEO Jensen Huang resigned on 12 Nov 2026; the CFO is interim CEO and the stock fell about 10% after. Also very high expectations, customers building their own chips, and export limits (no China data-centre sales assumed).",
+      "active": true,
+      "researched": "2026-11-21",
+      "sources": [
+        "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/",
+        "https://techcrunch.com/2026/11/12/nvidias-jensen-huang-resigns-chipmaker-names-cfo-colette-kress-as-interim-ceo/",
+        "https://techcrunch.com/2026/11/17/nvidia-promises-that-revenue-will-keep-soaring-for-now/"
+      ]
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft",
+      "theme": "AI software & cloud",
+      "what": "Windows, Office, the Azure cloud and a large stake in OpenAI's technology.",
+      "potential": "Azure cloud grew 48% in Jul-Sep 2026; companies keep buying AI capacity.",
+      "risks": "Huge AI data-centre costs (about 45 billion USD in one quarter); competition in cloud.",
+      "active": true,
+      "researched": "2026-11-21",
+      "sources": [
+        "https://marketanalysis.com/ai-capex-tracker-november-2026/",
+        "https://www.useluminix.com/reports/industry-analysis/hyperscaler-capex-q3-2026"
+      ]
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet (Google)",
+      "theme": "AI & search",
+      "what": "Google search and ads, YouTube, Google Cloud, its own AI models (Gemini) and AI chips (TPUs); also quantum computing research.",
+      "potential": "Google Cloud revenue roughly doubled (+103%) in Jul-Sep 2026; quantum and self-driving (Waymo) as long-term options.",
+      "risks": "Spending on AI is now larger than the cash it brings in (negative free cash flow, much more debt); AI chatbots changing search habits; regulation. The stock had its worst one-day drop on record in early Nov 2026.",
+      "active": true,
+      "researched": "2026-11-21",
+      "sources": [
+        "https://marketanalysis.com/ai-capex-tracker-november-2026/",
+        "https://www.useluminix.com/reports/industry-analysis/hyperscaler-capex-q3-2026",
+        "https://fortune.com/2026/11/02/palantir-q3-results-stock-ai-trade-selloff/"
+      ]
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon",
+      "theme": "Cloud & AI",
+      "what": "Online shop and AWS, the largest cloud provider; builds its own AI chips.",
+      "potential": "AWS grew 39% in Jul-Sep 2026 with a very large order backlog.",
+      "risks": "Spending about 220 billion USD on data centres in 2026, so more money goes out than comes in; thin shop margins.",
+      "active": true,
+      "researched": "2026-11-21",
+      "sources": [
+        "https://marketanalysis.com/ai-capex-tracker-november-2026/",
+        "https://www.useluminix.com/reports/industry-analysis/hyperscaler-capex-q3-2026"
+      ]
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms",
+      "theme": "AI & social",
+      "what": "Facebook, Instagram and WhatsApp; earns from ads; large AI research and open AI models.",
+      "potential": "Better ad targeting with AI; AI assistants.",
+      "risks": "Very large AI spending (135-145 billion USD in 2026) paid partly with debt; spending on virtual reality; regulation.",
+      "active": true,
+      "researched": "2026-11-21",
+      "sources": [
+        "https://marketanalysis.com/ai-capex-tracker-november-2026/",
+        "https://www.useluminix.com/reports/industry-analysis/hyperscaler-capex-q3-2026"
+      ]
+    },
+    {
+      "symbol": "AAPL",
+      "name": "Apple",
+      "theme": "Consumer tech",
+      "what": "iPhone, Mac and services like the App Store.",
+      "potential": "Services growth; on-device AI.",
+      "risks": "Slower iPhone growth; China.",
+      "active": true
+    },
+    {
+      "symbol": "AVGO",
+      "name": "Broadcom",
+      "theme": "AI chips & networking",
+      "what": "Networking chips and custom AI chips for large cloud companies, plus infrastructure software.",
+      "potential": "Custom AI chips for Google, Meta and others.",
+      "risks": "Depends on a few big customers.",
+      "active": true
+    },
+    {
+      "symbol": "AMD",
+      "name": "AMD",
+      "theme": "AI chips",
+      "what": "Processors for PCs and servers and AI accelerators competing with NVIDIA.",
+      "potential": "Winning a share of AI accelerator spending.",
+      "risks": "NVIDIA's lead; price competition.",
+      "active": true
+    },
+    {
+      "symbol": "TSM",
+      "name": "TSMC",
+      "theme": "Chip manufacturing",
+      "what": "Taiwanese company that manufactures most of the world's advanced chips, including NVIDIA's and Apple's.",
+      "potential": "Record sales: October 2026 revenue up about 60% on a year earlier.",
+      "risks": "Geopolitical risk around Taiwan.",
+      "active": true,
+      "researched": "2026-11-21",
+      "sources": [
+        "https://growbeansprout.com/beansprout-ai-tracker-nov-2026"
+      ]
+    },
+    {
+      "symbol": "MU",
+      "name": "Micron Technology",
+      "theme": "AI memory chips",
+      "what": "US maker of memory chips, including the high-bandwidth memory (HBM) that sits next to NVIDIA's and AMD's AI chips.",
+      "potential": "AI chips need lots of memory: revenue in Jun-Aug 2026 was 54.2 billion USD, almost 5 times a year earlier, and most of its 2027 HBM supply is already agreed with customers.",
+      "risks": "Memory has always gone from boom to bust; SK hynix and Samsung are bigger in HBM and adding capacity; depends on AI spending staying high.",
+      "active": true,
+      "added": "2026-11-21",
+      "researched": "2026-11-21",
+      "sources": [
+        "https://siliconangle.com/2026/09/30/micron-almost-quadruples-its-revenue-thanks-to-ais-insatiable-demand-for-memory-chips/",
+        "https://www.unite.ai/micron-posts-record-revenue-and-earnings-for-fiscal-2026/"
+      ]
+    },
+    {
+      "symbol": "ASML",
+      "name": "ASML",
+      "theme": "Chip equipment",
+      "what": "Dutch maker of the lithography machines needed to make advanced chips; near-monopoly in the most advanced machines.",
+      "potential": "More chip factories worldwide.",
+      "risks": "Export rules; cyclical orders.",
+      "active": true
+    },
+    {
+      "symbol": "PLTR",
+      "name": "Palantir",
+      "theme": "AI software",
+      "what": "Data and AI software for governments and companies.",
+      "potential": "Revenue grew 96% in Jul-Sep 2026 and the company raised its 2026 forecast to about 8.5 billion USD.",
+      "risks": "Very high valuation; falls hard when the whole AI sector sells off, even after good results.",
+      "active": true,
+      "researched": "2026-11-21",
+      "sources": [
+        "https://fortune.com/2026/11/02/palantir-q3-results-stock-ai-trade-selloff/",
+        "https://investinglive.com/stocks/palantir-beats-q3-estimates-lifts-2026-revenue-outlook-to-around-8-5-billion/"
+      ]
+    },
+    {
+      "symbol": "CRWD",
+      "name": "CrowdStrike",
+      "theme": "Cybersecurity",
+      "what": "Cloud-based cybersecurity for companies.",
+      "potential": "Security needs grow with cloud and AI.",
+      "risks": "High valuation; competition.",
+      "active": true
+    },
+    {
+      "symbol": "IONQ",
+      "name": "IonQ",
+      "theme": "Quantum computing",
+      "what": "Builds quantum computers using trapped ions, sold through the cloud.",
+      "potential": "Largest of the quantum companies by revenue: 2026 forecast raised to 505-515 million USD (partly from buying other companies).",
+      "risks": "Still loses money; sold 2 billion USD of new shares and paid for acquisitions in shares, so each share owns less; stock fell about a third in a month.",
+      "active": true,
+      "researched": "2026-11-21",
+      "sources": [
+        "https://247wallst.com/investing/2026/11/06/ionq-surges-18-on-beat-and-raised-guidance-rigetti-computing-jumps-18-d-wave-quantum-surges-16/",
+        "https://247wallst.com/investing/2026/11/18/ionq-drops-5-extending-losing-streak-on-dilution-worries-after-2-billion-stock-sale-d-wave-slides-3-rigetti-dips/"
+      ]
+    },
+    {
+      "symbol": "RGTI",
+      "name": "Rigetti Computing",
+      "theme": "Quantum computing",
+      "what": "Builds superconducting quantum chips and computers.",
+      "potential": "Early quantum market.",
+      "risks": "Revenue only 1.4 million USD in Jul-Sep 2026 (below forecasts); its CEO said quantum computers can't yet beat normal computers on cost, maybe in about three years. Losses; extreme price swings.",
+      "active": true,
+      "researched": "2026-11-21",
+      "sources": [
+        "https://247wallst.com/investing/2026/11/12/rigetti-falls-5-after-ceo-admits-quantum-cant-yet-prove-roi-ionq-sinks-8-d-wave-slides-5/"
+      ]
+    },
+    {
+      "symbol": "QBTS",
+      "name": "D-Wave Quantum",
+      "theme": "Quantum computing",
+      "what": "Quantum annealing computers for optimisation problems, sold as a cloud service.",
+      "potential": "Early commercial quantum uses.",
+      "risks": "Tiny revenue (4.5 million USD in Jul-Sep 2026) and new orders fell; losses; stock down about two thirds this year.",
+      "active": true,
+      "researched": "2026-11-21",
+      "sources": [
+        "https://247wallst.com/investing/2026/11/16/d-wave-quantum-falls-7-as-post-earnings-selloff-deepens-on-weak-bookings-ionq-sinks-8-rigetti-slides-5/"
+      ]
+    },
+    {
+      "symbol": "QQQ",
+      "name": "Invesco QQQ (Nasdaq-100 fund)",
+      "theme": "Index fund",
+      "what": "A fund that holds the 100 largest non-financial Nasdaq companies.",
+      "potential": "Broad big-tech exposure in one purchase.",
+      "risks": "Falls with the whole tech market.",
+      "active": true
+    },
+    {
+      "symbol": "SMH",
+      "name": "VanEck Semiconductor fund",
+      "theme": "Chip index fund",
+      "what": "A fund holding the largest chip companies.",
+      "potential": "Broad AI-chip exposure.",
+      "risks": "Chip stocks swing a lot: the chip index fell about 38% from its June 2026 peak by early November.",
+      "active": true,
+      "researched": "2026-11-21",
+      "sources": [
+        "https://growbeansprout.com/beansprout-ai-tracker-nov-2026"
+      ]
+    }
   ]
 }
