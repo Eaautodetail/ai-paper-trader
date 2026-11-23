@@ -2,12 +2,12 @@
 
 **Mode: PAPER TRADING (simulated). Real-money trading: DISABLED - there is no brokerage connection in this program.**
 
-* Updated: 2026-11-21 17:48 Stockholm time
-* Evaluation: **TRAINING - evaluation finished (3/3), 20 training sessions since (every trading day). See reports/readiness.md**
+* Updated: 2026-11-23 17:30 Stockholm time
+* Evaluation: **TRAINING - evaluation finished (3/3), 21 training sessions since (every trading day). See reports/readiness.md**
 * Readiness self-check: NOT READY - still training (0 of 8 criteria met) ([details](reports/readiness.md))
-* Next trading window: Mon 2026-11-23 15:30-17:30 Stockholm (09:30-11:30 New York)
+* Next trading window: Tue 2026-11-24 15:30-17:30 Stockholm (09:30-11:30 New York)
 * Starting capital: 500.00 SEK (= 50.09 USD after a 1.25 SEK conversion fee)
-* Current equity: 47.55 USD = 485.44 SEK at USD/SEK 10.2086
+* Current equity: 47.55 USD = 487.42 SEK at USD/SEK 10.2503
 * Cash: 47.55 USD
 * Strategy in use: `{"name": "orb", "params": {"or_minutes": 5, "rvol_min": 1.2, "target_r": 1.5, "stop_atr": 2.0, "last_entry_minute": 90}}`
 * Long-term investing account: 49.22 USD = 498.75 SEK, 0 holdings ([details](reports/invest.md))
@@ -40,5 +40,6 @@
 | [2026-11-17](reports/training/2026-11-17.md) | training | running | 47.68 | 0.00 | 0 |
 | [2026-11-19](reports/training/2026-11-19.md) | training | completed | 47.68 | 47.68 | 0 |
 | [2026-11-20](reports/training/2026-11-20.md) | training | completed | 47.68 | 47.55 | 1 |
+| [2026-11-23](reports/training/2026-11-23.md) | training | completed | 47.55 | 47.55 | 0 |
 
 _Simulated paper trading only. No real money, no brokerage connection. Results from a few sessions are an operational test, not evidence of a profitable strategy._
