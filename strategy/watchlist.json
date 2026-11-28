@@ -1,6 +1,6 @@
 {
   "note": "Companies the long-term investing paper account may buy. Descriptions are a starting point from general knowledge (2026-11-16); the weekly research run checks and updates them, adds or removes companies, and records the date and sources it used. The trading rules only use prices; this list decides WHICH companies are eligible.",
-  "updated": "2026-11-21",
+  "updated": "2026-11-28",
   "benchmark": "QQQ",
   "companies": [
     {
@@ -9,13 +9,15 @@
       "theme": "AI chips",
       "what": "Designs the graphics processors (GPUs) and networking used to train and run most AI models.",
       "potential": "AI data-centre spending is still growing fast: quarterly revenue (to 25 Oct 2026) was 115.8 billion USD, more than double a year earlier, with about 130 billion USD expected next quarter.",
-      "risks": "Founder and CEO Jensen Huang resigned on 12 Nov 2026; the CFO is interim CEO and the stock fell about 10% after. Also very high expectations, customers building their own chips, and export limits (no China data-centre sales assumed).",
+      "risks": "Leadership turmoil: CEO Jensen Huang resigned on 12 Nov 2026 and was reinstated on 23 Nov 2026; a board committee is still investigating reports that he was targeted by a foreign intelligence effort. The stock swings hard (fell 14% on 20 Nov, rose 31% on 23 Nov) and was still about 37% below its October high on 27 Nov. Also customers building their own chips and export limits (no China data-centre sales assumed).",
       "active": true,
-      "researched": "2026-11-21",
+      "researched": "2026-11-28",
       "sources": [
         "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/",
         "https://techcrunch.com/2026/11/12/nvidias-jensen-huang-resigns-chipmaker-names-cfo-colette-kress-as-interim-ceo/",
-        "https://techcrunch.com/2026/11/17/nvidia-promises-that-revenue-will-keep-soaring-for-now/"
+        "https://techcrunch.com/2026/11/17/nvidia-promises-that-revenue-will-keep-soaring-for-now/",
+        "https://www.stocktitan.net/articles/stock-market-today-live-november-23-2026",
+        "https://finance.yahoo.com/markets/stocks/articles/stock-market-today-major-indexes-140450439.html"
       ]
     },
     {
@@ -158,9 +160,15 @@
       "name": "CrowdStrike",
       "theme": "Cybersecurity",
       "what": "Cloud-based cybersecurity for companies.",
-      "potential": "Security needs grow with cloud and AI.",
-      "risks": "High valuation; competition.",
-      "active": true
+      "potential": "Security needs grow with cloud and AI; in Nov 2026 it agreed to buy rival Zscaler in an all-stock deal, which would make it a much bigger security company.",
+      "risks": "High valuation; the Zscaler deal issues many new shares and must still be approved (expected to close Aug 2027 to Jan 2028); next results due 1 Dec 2026.",
+      "active": true,
+      "researched": "2026-11-28",
+      "sources": [
+        "https://www.sec.gov/Archives/edgar/data/0001713683/000110465926130801/tm2630454d2_ex99-1.htm",
+        "https://www.stocktitan.net/articles/stock-market-today-live-november-23-2026",
+        "https://ir.crowdstrike.com/news-releases/news-release-details/crowdstrike-announces-date-fiscal-third-quarter-2027-financial"
+      ]
     },
     {
       "symbol": "IONQ",
